@@ -18,7 +18,7 @@ build/
 .ipynb_checkpoints
 
 # VS Code workspace settings
-*.code-workspace
+pythonparts.code-workspace
 
 # Generated HTML and CSS
 experiments/html/
