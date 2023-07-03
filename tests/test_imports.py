@@ -1,6 +1,3 @@
-import pytest
-
-
 def test_import_pythonparts():
     try:
         import pythonparts
@@ -18,6 +15,21 @@ def test_import_geometry():
     assert True
 
 
-# def test_coords_import():
-#     try:
-#         from pythonparts.
+def test_import_NemAll_Python_Geometry():
+    try:
+        import NemAll_Python_Geometry as AllplanGeo
+    except ModuleNotFoundError:
+        assert False, "No such module: NemAll_Python_Geometry"
+    except ImportError:
+        assert False, "Failed to import AllplanGeo from NemAll_Python_Geometry"
+    assert True
+
+
+def test_import_NemAll_Python_BaseElements():
+    try:
+        import NemAll_Python_BaseElements as AllplanBaseElements
+    except ModuleNotFoundError:
+        assert False, "No such module: AllplanBaseElements"
+    except ImportError:
+        assert False, "Failed to import AllplanBaseElements from NemAll_Python_BaseElements"
+    assert True
