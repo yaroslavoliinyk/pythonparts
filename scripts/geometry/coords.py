@@ -15,7 +15,7 @@ class Coords:
     def start_point(self):
         return self.__start_point
     
-    @property.setter
+    @start_point.setter
     def start_point(self, p: AllplanGeo.Point3D):
         self.__start_point = AllplanGeo.Point3D(p)
     
@@ -23,7 +23,7 @@ class Coords:
     def end_point(self):
         return self.__end_point
     
-    @property.setter
+    @end_point.setter
     def end_point(self, p: AllplanGeo.Point3D):
         self.__end_point = AllplanGeo.Point3D(p)
     

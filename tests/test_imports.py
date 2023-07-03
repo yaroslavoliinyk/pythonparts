@@ -1,3 +1,26 @@
+def test_import_NemAll_Python_Geometry():
+    try:
+        import pythonparts      # Without pythonparts import, path to NemAll_Python_Geometry is undefined
+        import NemAll_Python_Geometry as AllplanGeo
+    except ModuleNotFoundError:
+        assert False, "No such module: NemAll_Python_Geometry"
+    except ImportError:
+        assert False, "Failed to import AllplanGeo from NemAll_Python_Geometry"
+    assert True
+
+
+def test_import_NemAll_Python_BaseElements():
+    try:
+        import pythonparts      # Without pythonparts import, path to NemAll_Python_BaseElements is undefined
+        import NemAll_Python_BaseElements as AllplanBaseElements
+    except ModuleNotFoundError:
+        assert False, "No such module: AllplanBaseElements"
+    except ImportError:
+        assert False, "Failed to import AllplanBaseElements from NemAll_Python_BaseElements"
+    assert True
+
+
+
 def test_import_pythonparts():
     try:
         import pythonparts
@@ -15,21 +38,14 @@ def test_import_geometry():
     assert True
 
 
-def test_import_NemAll_Python_Geometry():
-    try:
-        import NemAll_Python_Geometry as AllplanGeo
-    except ModuleNotFoundError:
-        assert False, "No such module: NemAll_Python_Geometry"
-    except ImportError:
-        assert False, "Failed to import AllplanGeo from NemAll_Python_Geometry"
-    assert True
 
 
-def test_import_NemAll_Python_BaseElements():
+def test_import_geometry_coords():
     try:
-        import NemAll_Python_BaseElements as AllplanBaseElements
+        from pythonparts import geometry as geo 
+        coords = geo.Coords()
     except ModuleNotFoundError:
-        assert False, "No such module: AllplanBaseElements"
+        assert False, "No such module: geometry"
     except ImportError:
-        assert False, "Failed to import AllplanBaseElements from NemAll_Python_BaseElements"
+        assert False, "Failed to import geometry from pythonparts"
     assert True
