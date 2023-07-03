@@ -6,10 +6,8 @@ import NemAll_Python_Geometry as AllplanGeo    # type: ignore
 class Coords:
 
     def __init__(self, start_point: Optional[AllplanGeo.Point3D]=None, end_point: Optional[AllplanGeo.Point3D]=None):
-        if start_point is not None:
-            self.__start_point = start_point
-        if end_point is not None:
-            self.__end_point   = end_point
+        self.__start_point = start_point
+        self.__end_point   = end_point
 
     @property
     def start_point(self):
@@ -17,6 +15,8 @@ class Coords:
     
     @start_point.setter
     def start_point(self, p: AllplanGeo.Point3D):
+        if not isinstance(p, AllplanGeo.Point3D):
+            raise TypeError("start_point should be of type AllplanGeo.Point3D")
         self.__start_point = AllplanGeo.Point3D(p)
     
     @property
@@ -25,6 +25,8 @@ class Coords:
     
     @end_point.setter
     def end_point(self, p: AllplanGeo.Point3D):
+        if not isinstance(p, AllplanGeo.Point3D):
+            raise TypeError("end_point should be of type AllplanGeo.Point3D")
         self.__end_point = AllplanGeo.Point3D(p)
     
     def __repr__(self):
