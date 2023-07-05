@@ -38,12 +38,21 @@ def test_import_geometry():
     assert True
 
 
-
-
 def test_import_geometry_coords():
     try:
         from pythonparts import geometry as geo 
         coords = geo.Coords()
+    except ModuleNotFoundError:
+        assert False, "No such module: geometry"
+    except ImportError:
+        assert False, "Failed to import geometry from pythonparts"
+    assert True
+
+
+def test_import_geometry_space_coords():
+    try:
+        from pythonparts import geometry as geo 
+        coords = geo.SpaceCoords(geo.Coords(), geo.Coords())
     except ModuleNotFoundError:
         assert False, "No such module: geometry"
     except ImportError:

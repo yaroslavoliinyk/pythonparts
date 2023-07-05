@@ -36,9 +36,13 @@ class Coords:
         self.__end_point = p
 
     def move_start_point(self, vec: AllplanGeo.Vector3D):
+        if not isinstance(vec, AllplanGeo.Vector3D):
+            raise TypeError(f"Wrong type: {vec}.\n You can move point only with AllplanGeo.Vector3D")
         self.start_point = self.start_point + vec
 
     def move_end_point(self, vec: AllplanGeo.Vector3D):
+        if not isinstance(vec, AllplanGeo.Vector3D):
+            raise TypeError(f"Wrong type: {vec}.\n You can move point only with AllplanGeo.Vector3D")
         self.end_point = self.end_point + vec
 
     def move(self, vec: AllplanGeo.Vector3D):
@@ -93,24 +97,6 @@ class SpaceCoords:
     def set_global_start_pnt(self, p: AllplanGeo.Point3D):
         self.global_.start_point = p
         self.global_.end_point   = p + (self.local.end_point - self.local.start_point)
-
-    def move_start_point(self, vec: AllplanGeo.Vector3D):
-        if not isinstance(vec, AllplanGeo.Vector3D):
-            raise TypeError(f"Wrong type: {vec}.\n You can move point only with AllplanGeo.Vector3D")
-        if self.global_ is not None:
-            self.global_.start_point = self.global_.start_point + vec
-        self.local.start_point       = self.local.start_point + vec
-        
-    def move_end_point(self, vec: AllplanGeo.Vector3D):
-        if not isinstance(vec, AllplanGeo.Vector3D):
-            raise TypeError(f"Wrong type: {vec}.\n You can move point only with AllplanGeo.Vector3D")
-        if self.global_ is not None:
-            self.global_.end_point = self.global_.end_point + vec
-        self.local.end_point        = self.local.end_point + vec
-        
-    def move(self, vec: AllplanGeo.Vector3D):
-        self.move_start_point(vec)
-        self.move_end_point(vec)
 
     def __eq__(self, other):
         return self.global_ == other.global_ and self.local == other.local
