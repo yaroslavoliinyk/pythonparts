@@ -19,8 +19,7 @@ class Space:
         if not self.__created_with_classmethod:
             raise TypeError("You cannot instatiate this class directly. Use classmethod.")
         if (global_ != Coords.from_empty() and 
-            (local.end_point - local.start_point) != 
-            (global_.end_point - global_.start_point)):
+            (local.end_point - local.start_point) != (global_.end_point - global_.start_point)):
             raise ValueError(f"Incorrect global or local coordinates!\nlocal={local}\nglobal={global_}")
         self._local  = local
         self._global = global_
