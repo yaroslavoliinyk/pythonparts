@@ -1,6 +1,8 @@
 import pytest
 import random
 
+from typing import List, Tuple
+
 from pythonparts import geometry as geo
 import NemAll_Python_Geometry as AllplanGeo
 
@@ -49,7 +51,18 @@ points = [random_point(),
           unit_point_x(), 
           unit_point_y(), 
           unit_point_z(),
+          random_unit_point(),
           zero_point()]
+points_combinations = [(p1, p2) for p1, p2 in zip(random.sample(points, len(points)), random.sample(points, len(points)))]
 
-# print(points)
-print(list(zip(random.sample(points, len(points)), random.sample(points, len(points)))))
+# coords_combinations: List[geo.Coords] = [geo.Coords(p1, p2) for (p1, p2) in points_combinations]
+# space_coords_combinations = [geo.SpaceCoords(from_poin(local=local_coords, global_=global_coords) 
+#                              for local_coords, global_coords in 
+#                              zip(random.sample(coords_combinations, len(coords_combinations)), 
+#                                  random.sample(coords_combinations, len(coords_combinations)))]
+
+# def random_coords():
+#     return random.choice(coords_combinations)
+
+# def random_space_coords():
+#     return random.choice(space_coords_combinations)

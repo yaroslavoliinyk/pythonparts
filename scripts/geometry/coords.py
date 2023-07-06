@@ -60,46 +60,45 @@ class Coords:
 
 
 
-class SpaceCoords:
+# class SpaceCoords:
 
-    def __init__(self, local: Coords, global_: Coords):
-        self._local  = local
-        self._global = global_
-        
-    @classmethod
-    def from_local_points(cls, start_point, end_point):
-        local_coords  = Coords(start_point, end_point)
-        global_coords = Coords.from_empty()
-        return cls(local_coords, global_coords)
+#     __created_with_classmethod = False
 
-    @classmethod
-    def from_points(cls, local_start_pnt, local_end_pnt, global_start_pnt):
-        local_coords = Coords(local_start_pnt, local_end_pnt)
-        global_coords = Coords(global_start_pnt, global_start_pnt + (local_end_pnt - local_start_pnt))
-        return cls(local_coords, global_coords)
 
-    @property
-    def local(self):
-        return self._local
+#     def __init__(self, local: Coords, global_: Coords):
+#         if not self.__created_with_classmethod:
+#             raise TypeError("You cannot instatiate this class directly. Use classmethod.")
+#         if (global_ != Coords.from_empty() and 
+#             (local.end_point - local.start_point) != 
+#             (global_.end_point - global_.start_point)):
+#             raise ValueError(f"Incorrect global or local coordinates!\nlocal={local}\nglobal={global_}")
+#         self._local  = local
+#         self._global = global_
+#         self.__created_with_classmethod = False
+
+
+#     @property
+#     def local(self):
+#         return self._local
     
-    @local.setter
-    def local(self, value):
-        raise AttributePermissionError("You cannot set local coords this way.")
+#     @local.setter
+#     def local(self, value):
+#         raise AttributePermissionError("You cannot set local coords this way.")
     
-    @property
-    def global_(self):
-        return self._global
+#     @property
+#     def global_(self):
+#         return self._global
     
-    @global_.setter
-    def global_(self, value):
-        raise AttributePermissionError("You cannot set global coords this way.")
+#     @global_.setter
+#     def global_(self, value):
+#         raise AttributePermissionError("You cannot set global coords this way.")
     
-    def set_global_start_pnt(self, p: AllplanGeo.Point3D):
-        self.global_.start_point = p
-        self.global_.end_point   = p + (self.local.end_point - self.local.start_point)
+#     def set_global_start_pnt(self, p: AllplanGeo.Point3D):
+#         self.global_.start_point = p
+#         self.global_.end_point   = p + (self.local.end_point - self.local.start_point)
 
-    def __eq__(self, other):
-        return self.global_ == other.global_ and self.local == other.local
+#     def __eq__(self, other):
+#         return self.global_ == other.global_ and self.local == other.local
 
-    def __repr__(self):
-        return f"SpaceCoords(local={self.local!r}, global_=({self.global_!r}))"
+#     def __repr__(self):
+#         return f"SpaceCoords(local={self.local!r}, global_=({self.global_!r}))"
