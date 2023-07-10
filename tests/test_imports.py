@@ -49,12 +49,13 @@ def test_import_geometry_coords():
     assert True
 
 
-def test_import_geometry_space_coords():
+def test_import_local_exception():
     try:
-        from pythonparts import geometry as geo 
-        coords = geo.SpaceCoords(geo.Coords(), geo.Coords())
+        from pythonparts import AttributePermissionError
+        import pythonparts as pp
+        print(pp.AttributePermissionError)
     except ModuleNotFoundError:
-        assert False, "No such module: geometry"
+        assert False, "No such exception: AttributePermissionError"
     except ImportError:
-        assert False, "Failed to import geometry from pythonparts"
+        assert False, "Failed to import AttributePermissionError from pythonparts"
     assert True

@@ -4,3 +4,4 @@ sys.path.append("C:\\Program Files\\Allplan\\Allplan\\2023\\Prg")    # TODO: Cha
 print(sys.path)
 
 from .scripts import geometry
+from .scripts import AttributePermissionError

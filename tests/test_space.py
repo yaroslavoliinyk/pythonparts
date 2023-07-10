@@ -1,7 +1,7 @@
 import pytest
 import random
 
-from pythonparts import geometry as geo
+from pythonparts import geometry as geo, AttributePermissionError
 
 import NemAll_Python_Geometry as AllplanGeo
 
@@ -9,33 +9,64 @@ import utils
 
 
 class TestSpace:
-    def test_equal(self):
-        local_coords = random.choice(utils.coords_combinations)
-        global_pnt = random.choice(utils.points_combinations)
-        sc1 = geo.from_points(local_coords, global_pnt)
-        space = geo.Space(sc1)
+    def test_create_init(self):
+        with pytest.raises(TypeError):
+            sample_point = random.choice(utils.points)
+            space = geo.Space(sample_point, sample_point)
 
-        assert space == geo.Space(geo.SpaceCoords(local_coords, global_coords))
+    def test_create_from_classmethod_equal(self):
+        end_pnt = random.choice(utils.points)
+        space1 = geo.Space.from_dimensions(length=end_pnt.Y, 
+                                           width=end_pnt.X, 
+                                           height=end_pnt.Z)
 
-    def test_coords(self):
-        local_coords = random.choice(utils.coords_combinations)
-        global_coords = random.choice(utils.coords_combinations)
-        sc1 = geo.SpaceCoords(local_coords, global_coords)
-        space = geo.Space(sc1)
+        assert space1 == geo.Space.from_dimensions_global_point(length=end_pnt.Y, 
+                                                                width=end_pnt.X, 
+                                                                height=end_pnt.Z, 
+                                                                global_start_pnt=AllplanGeo.Point3D(0, 0, 0)
+                                                                )
 
-        assert space.coords == sc1
+    def test_from_points_set_global(self):
+        end_pnt          = random.choice(utils.points)
+        global_start_pnt = random.choice(utils.points)
+        space1 = geo.Space.from_dimensions_global_point(length=end_pnt.Y, 
+                                                        width=end_pnt.X, 
+                                                        height=end_pnt.Z, 
+                                                        global_start_pnt=global_start_pnt)
 
-    def test_length(self):
-        sc = utils.random_space_coords()
-        space = geo.Space(sc)
+        space2 = geo.Space.from_dimensions(length=end_pnt.Y, 
+                                            width=end_pnt.X, 
+                                            height=end_pnt.Z,)
+        space2.set_global_start_pnt(global_start_pnt)
 
-        assert space.length == sc.local.start_point
+        assert space1 == space2
 
-    def test_width(self):
-        pass
+    def test_length_width_height(self):
+        end_pnt = random.choice(utils.points)
+        global_start_pnt = random.choice(utils.points)
+        space1 = geo.Space.from_dimensions_global_point(length=end_pnt.Y, 
+                                                        width=end_pnt.X, 
+                                                        height=end_pnt.Z, 
+                                                        global_start_pnt=global_start_pnt)
 
-    def test_height(self):
-        pass
+        assert space1.length == abs(end_pnt.Y)
+        assert space1.width == abs(end_pnt.X)
+        assert space1.height == abs(end_pnt.Z)
+
+    def test_set_lengt_width_height(self):
+        end_pnt = random.choice(utils.points)
+        global_start_pnt = random.choice(utils.points)
+        space1 = geo.Space.from_dimensions_global_point(length=end_pnt.Y, 
+                                                        width=end_pnt.X, 
+                                                        height=end_pnt.Z, 
+                                                        global_start_pnt=global_start_pnt)
+
+        with pytest.raises(AttributePermissionError):
+            space1.length = 1
+        with pytest.raises(AttributePermissionError):
+            space1.width = 1
+        with pytest.raises(AttributePermissionError):
+            space1.height = 1
 
     def test_place1(self):
         pass

@@ -114,26 +114,26 @@ class TestCoords:
         assert coords == geo.Coords(p1 + vec, p2 + vec)
 
 
-@pytest.mark.parametrize('p1, p2', points_combinations)
-class TestSpaceCoords:
+# @pytest.mark.parametrize('p1, p2', points_combinations)
+# class TestSpaceCoords:
 
-    def test_create_space_coords_directly(self, p1, p2):
-        lcoords = geo.Coords(p1, p2)
-        gcoords = geo.Coords(p1, p2)
+#     def test_create_space_coords_directly(self, p1, p2):
+#         lcoords = geo.Coords(p1, p2)
+#         gcoords = geo.Coords(p1, p2)
         
-        with pytest.raises(TypeError):
-            space_coords = geo.SpaceCoords(local=lcoords, global_=gcoords)
+#         with pytest.raises(TypeError):
+#             space_coords = geo.SpaceCoords(local=lcoords, global_=gcoords)
 
-    def test_space_coords_equal(self, p1, p2):
-        space_coords = geo.SpaceCoords.from_local_points(p1, p2)
+#     def test_space_coords_equal(self, p1, p2):
+#         space_coords = geo.SpaceCoords.from_local_points(p1, p2)
 
-        assert space_coords == geo.SpaceCoords.from_local_points(p1, p2)
+#         assert space_coords == geo.SpaceCoords.from_local_points(p1, p2)
 
-    def test_space_coords_equal_global(self, p1, p2):
-        global_pnt = random.choice(points)
-        space_coords = geo.SpaceCoords.from_points(p1, p2, global_pnt)
+#     def test_space_coords_equal_global(self, p1, p2):
+#         global_pnt = random.choice(points)
+#         space_coords = geo.SpaceCoords.from_points(p1, p2, global_pnt)
         
-        space_coords2 = geo.SpaceCoords.from_local_points(p1, p2)
-        space_coords2.set_global_start_pnt(global_pnt)
+#         space_coords2 = geo.SpaceCoords.from_local_points(p1, p2)
+#         space_coords2.set_global_start_pnt(global_pnt)
 
-        assert space_coords == space_coords2
+#         assert space_coords == space_coords2

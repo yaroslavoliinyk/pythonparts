@@ -29,16 +29,16 @@ class Space:
         self.__created_with_classmethod = False
 
     @classmethod
-    def from_local_points(cls, start_point, end_point):
-        local_coords  = Coords(start_point, end_point)
-        global_coords = Coords.from_empty()
+    def from_dimensions(cls, length, width, height):
+        local_coords  = Coords(AllplanGeo.Point3D(), AllplanGeo.Point3D(width, length, height))
+        global_coords = Coords(AllplanGeo.Point3D(), AllplanGeo.Point3D(width, length, height))
         cls.__created_with_classmethod = True
         return cls(local_coords, global_coords)
 
     @classmethod
-    def from_points(cls, local_start_pnt, local_end_pnt, global_start_pnt):
-        local_coords = Coords(local_start_pnt, local_end_pnt)
-        global_coords = Coords(global_start_pnt, global_start_pnt + (local_end_pnt - local_start_pnt))
+    def from_dimensions_global_point(cls, length, width, height, global_start_pnt):
+        local_coords = Coords(AllplanGeo.Point3D(), AllplanGeo.Point3D(width, length, height))
+        global_coords = Coords(global_start_pnt, global_start_pnt + AllplanGeo.Vector3D(width, length, height))
         cls.__created_with_classmethod = True
         return cls(local_coords, global_coords)
     
@@ -60,19 +60,31 @@ class Space:
     
     def set_global_start_pnt(self, p: AllplanGeo.Point3D):
         self.global_.start_point = p
-        self.global_.end_point   = p + (self.local.end_point - self.local.start_point)
+        self.global_.end_point   = self.global_.start_point + AllplanGeo.Point3D(self.width, self.length, self.height)
 
     @property
     def length(self):
         return abs(self.local.end_point.Y - self.local.start_point.Y)
     
+    @length.setter
+    def length(self, value):
+        raise AttributePermissionError("You cannot set length of Space.")
+
     @property
     def width(self):
         return abs(self.local.end_point.X - self.local.start_point.X)
     
+    @width.setter
+    def width(self, value):
+        raise AttributePermissionError("You cannot set width of Space.")
+
     @property
     def height(self):
         return abs(self.local.end_point.Z - self.local.start_point.Z)
+
+    @height.setter
+    def height(self, value):
+        raise AttributePermissionError("You cannot set height of Space.")
 
     def place(self, other_space: "Space",
               left: float=0, right: float=0,
