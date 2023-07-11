@@ -59,3 +59,14 @@ def test_import_local_exception():
     except ImportError:
         assert False, "Failed to import AttributePermissionError from pythonparts"
     assert True
+
+
+def test_import_utils_center_calc():
+    try:
+        import pythonparts as pp
+        print(pp.scripts.utils.center_calc)
+    except ModuleNotFoundError:
+        assert False, "No such method: utils.center_calc"
+    except ImportError:
+        assert False, "Failed to import utils.center_calc from pythonparts"
+    assert True

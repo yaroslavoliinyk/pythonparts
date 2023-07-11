@@ -4,6 +4,7 @@ from abc import ABC
 from typing import Optional, List
 
 from .coords import Coords, AllplanGeo
+from .concrete_cover import ConcreteCover
 from ..utils import center_calc
 from ..exceptions import AttributePermissionError
 
@@ -60,7 +61,10 @@ class Space:
     
     def set_global_start_pnt(self, p: AllplanGeo.Point3D):
         self.global_.start_point = p
-        self.global_.end_point   = self.global_.start_point + AllplanGeo.Point3D(self.width, self.length, self.height)
+        self.global_.end_point   = self.global_.start_point + AllplanGeo.Vector3D(self.width, self.length, self.height)
+    
+    def setup_global_coords(self, parent_global_coords: Coords, concov: ConcreteCover):
+        pass
 
     @property
     def length(self):
@@ -86,28 +90,24 @@ class Space:
     def height(self, value):
         raise AttributePermissionError("You cannot set height of Space.")
 
-    def place(self, other_space: "Space",
-              left: float=0, right: float=0,
-              top: float=0, bottom: float=0,
-              front: float=0, back: float=0,
-              center: bool=False):
-        other_space.set_global_start_pnt(self.global_.start_point)
+    def place(self, child_space: "Space",
+              center: bool=False, **concov_kwargs
+              ):
+        """
+            Places child Space inside parent Space according to given settings.
+
+            Opposite sides are not allowed to have positive values at same time.
+            
+            E.g. left and right shifts == 0 and center == True,
+            then left and right shifts will be redefined by center_calc.
+            Same for top and bottom; front and back.
+        """
+        concov = ConcreteCover(concov_kwargs)
         if center:
-            if (math.isclose(left, 0) and math.isclose(right, 0)):
-                left, right = center_calc(self.global_.start_point.X, 
-                                            self.global_.end_point.X,
-                                            other_space.width)
-            if (math.isclose(front, 0) and math.isclose(back, 0)):
-                front, back = center_calc(self.global_.start_point.Y, 
-                                            self.global_.end_point.Y,
-                                            other_space.width)
-            if (math.isclose(top, 0) and math.isclose(bottom, 0)):
-                top, bottom = center_calc(self.global_.start_point.Z, 
-                                            self.global_.end_point.Z,
-                                            other_space.width)
-        other_space.global_.move(AllplanGeo.Vector3D(left, front, bottom))    
-        other_space.global_.move(AllplanGeo.Vector3D(right, back, top).Reverse())
-        self._add_child(other_space)
+            left, front, bottom = center_calc(concov, self.global_, child_space)
+        child_space.setup_global_coords(self.global_, concov)
+        self._add_child(child_space)
+
 
     def _add_child(self, child_space: "Space"):
         self._children.append(child_space)
