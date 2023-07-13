@@ -5,7 +5,7 @@ from typing import Optional, List
 
 from .coords import Coords, AllplanGeo
 from .concrete_cover import ConcreteCover
-from ..utils import center_calc
+from ..utils import center_calc, child_global_coords_calc, equal_points
 from ..exceptions import AttributePermissionError
 
 
@@ -20,14 +20,15 @@ class Space:
         if not self.__created_with_classmethod:
             raise TypeError("You cannot instatiate this class directly. Use classmethod.")
         if (global_ != Coords.from_empty() and 
-            (local.end_point - local.start_point) != (global_.end_point - global_.start_point)):
+            not equal_points(local.end_point - local.start_point, global_.end_point - global_.start_point)):
             raise ValueError(f"Incorrect global or local coordinates!\nlocal={local}\nglobal={global_}")
         self._local  = local
         self._global = global_
         self._children: List[Space] = []
         self._visible               = True
         self._union_parent          = True
-        self.__created_with_classmethod = False
+        cls = type(self)
+        cls.__created_with_classmethod = False
 
     @classmethod
     def from_dimensions(cls, length, width, height):
@@ -64,7 +65,8 @@ class Space:
         self.global_.end_point   = self.global_.start_point + AllplanGeo.Vector3D(self.width, self.length, self.height)
     
     def setup_global_coords(self, parent_global_coords: Coords, concov: ConcreteCover):
-        pass
+        start_point, end_point = child_global_coords_calc(concov, parent_global_coords, self)
+        self._global           = Coords(start_point, end_point)
 
     @property
     def length(self):
@@ -104,13 +106,19 @@ class Space:
         """
         concov = ConcreteCover(concov_kwargs)
         if center:
-            left, front, bottom = center_calc(concov, self.global_, child_space)
+            concov.left, concov.front, concov.bottom = center_calc(concov, self.global_, child_space)
         child_space.setup_global_coords(self.global_, concov)
         self._add_child(child_space)
 
 
     def _add_child(self, child_space: "Space"):
         self._children.append(child_space)
+
+    def __len__(self):
+        return len(self._children)
+    
+    def __getitem__(self, index):
+        return self._children[index]
 
     def __eq__(self, other):
         return (self.local == other.local

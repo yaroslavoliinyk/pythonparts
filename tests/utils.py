@@ -7,16 +7,19 @@ from pythonparts import geometry as geo
 import NemAll_Python_Geometry as AllplanGeo
 
 
-MIN_COORD = -1_000_000_000.0
-MAX_COORD =  1_000_000_000.0
+MIN_COORD = -1000.0
+MAX_COORD =  1000.0
 
 
-def random_point():
+def random_point(n=9):
     randX = random.uniform(MIN_COORD, MAX_COORD)
     randY = random.uniform(MIN_COORD, MAX_COORD)
     randZ = random.uniform(MIN_COORD, MAX_COORD)
 
-    return AllplanGeo.Point3D(randX, randY, randZ)
+    return AllplanGeo.Point3D(round(randX, n), 
+                              round(randY, n), 
+                              round(randZ, n))
+
 
 
 def unit_point_x():

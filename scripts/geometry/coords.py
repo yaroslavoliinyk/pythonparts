@@ -3,6 +3,7 @@ from typing import Optional
 import NemAll_Python_Geometry as AllplanGeo    # type: ignore
 
 from ..exceptions import AttributePermissionError
+from ..utils import equal_points
 
 
 class Coords:
@@ -50,7 +51,7 @@ class Coords:
         self.move_end_point(vec)
 
     def __eq__(self, other_coords) -> bool:
-        return self.start_point == other_coords.start_point and self.end_point == other_coords.end_point
+        return equal_points(self.start_point, other_coords.start_point) and equal_points(self.end_point, other_coords.end_point)
 
     def __repr__(self):
         return f"Coords(start_point={self.start_point!r}, end_point={self.end_point!r})"
