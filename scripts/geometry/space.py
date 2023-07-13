@@ -7,6 +7,7 @@ from .coords import Coords, AllplanGeo
 from .concrete_cover import ConcreteCover
 from ..utils import center_calc, child_global_coords_calc, equal_points
 from ..exceptions import AttributePermissionError
+from ..config import TOLERANCE
 
 
 class Space:
@@ -123,9 +124,9 @@ class Space:
     def __eq__(self, other):
         return (self.local == other.local
                 and self.global_ == other.global_ 
-                and self.length == other.length
-                and self.width == other.width
-                and self.height == other.height
+                and math.isclose(self.length, other.length, rel_tol=TOLERANCE, abs_tol=TOLERANCE) 
+                and math.isclose(self.width, other.width, rel_tol=TOLERANCE, abs_tol=TOLERANCE) 
+                and math.isclose(self.height, other.height, rel_tol=TOLERANCE, abs_tol=TOLERANCE)
                 and self._visible == other._visible
                 and self._union_parent == other._union_parent
                 and len(self._children) == len(other._children)

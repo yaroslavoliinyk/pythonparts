@@ -13,6 +13,9 @@ class ConcreteCover:
         for name, value in sides_dict.items():
             self.__setattr__(name, value)
 
+    @classmethod
+    def from_kwargs(cls, **kwargs):
+        return cls(kwargs)
 
     def __setattr__(self, __name: str, __value: Any) -> None:
         cls = type(self)
@@ -37,11 +40,10 @@ class ConcreteCover:
 
             Opposite sides: left and right; top and bottom; front and back
         """
+        cls = type(self)
         if ((self.left > 0 and self.right > 0) 
             or (self.top > 0  and self.bottom > 0)
             or (self.front > 0 and self.back > 0)):
             raise ValueError("You cannot have both opposite sides to" 
-                             f"be positive at same time:" 
-                             f"left={self.left}, right={self.right}"
-                             f"top={self.top}, bottom={self.bottom}"
-                             f"front={self.front}, back={self.back}")
+                             f"be positive at same time: "
+                             f"{(side + '=' + self.__getattr__[side] + ',' for side in cls.__match_args__)}")

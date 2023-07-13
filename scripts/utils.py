@@ -4,6 +4,8 @@ from typing import Optional
 
 import NemAll_Python_Geometry as AllplanGeo    # type: ignore
 
+from .config import TOLERANCE
+
 
 def child_global_coords_calc(concov, global_, child_space):
     start_X, end_X = __coords_calc_axis(concov.left, 
@@ -50,15 +52,15 @@ def center_calc(concov, global_, child_space):
                              child_space.height)
 
 
-def equal_points(p1: Optional[AllplanGeo.Point3D], p2: Optional[AllplanGeo.Point3D], tol=1e-6):
+def equal_points(p1: Optional[AllplanGeo.Point3D], p2: Optional[AllplanGeo.Point3D]):
     if (p1 is None) and (p2 is None):
         return True
     if (p1 is None) or (p2 is None):
         return False
  
-    return  (math.isclose(p1.X, p2.X, rel_tol=tol, abs_tol=tol)  
-            and math.isclose(p1.Y, p2.Y, rel_tol=tol, abs_tol=tol)
-            and math.isclose(p1.Z, p2.Z, rel_tol=tol, abs_tol=tol)
+    return  (math.isclose(p1.X, p2.X, rel_tol=TOLERANCE, abs_tol=TOLERANCE)  
+            and math.isclose(p1.Y, p2.Y, rel_tol=TOLERANCE, abs_tol=TOLERANCE)
+            and math.isclose(p1.Z, p2.Z, rel_tol=TOLERANCE, abs_tol=TOLERANCE)
     )
 
 

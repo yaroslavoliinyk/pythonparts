@@ -102,75 +102,139 @@ class TestSpace:
         assert parent_space[0].global_.start_point == expected_child_global_start_pnt
         assert parent_space[0].global_.end_point == expected_child_global_end_pnt
 
-    # def test_place2(self):
-    #     end_pnt          = utils.random_point()
-    #     global_start_pnt = utils.random_point()
-    #     parent_space = geo.Space.from_dimensions_global_point(length=end_pnt.Y, 
-    #                                                         width=end_pnt.X, 
-    #                                                         height=end_pnt.Z, 
-    #                                                         global_start_pnt=global_start_pnt)
+    def test_place2(self):
+        end_pnt          = utils.random_point()
+        global_start_pnt = utils.random_point()
+        parent_space = geo.Space.from_dimensions_global_point(length=end_pnt.Y, 
+                                                            width=end_pnt.X, 
+                                                            height=end_pnt.Z, 
+                                                            global_start_pnt=global_start_pnt)
 
-    #     end_pnt          = utils.random_point()
-    #     child_space = geo.Space.from_dimensions(length=end_pnt.Y, 
-    #                                             width=end_pnt.X, 
-    #                                             height=end_pnt.Z,)
+        end_pnt          = utils.random_point()
+        child_space = geo.Space.from_dimensions(length=end_pnt.Y, 
+                                                width=end_pnt.X, 
+                                                height=end_pnt.Z,)
         
-    #     # ------------ child space 1 place ---------------
-    #     expected_child_global_start_pnt = AllplanGeo.Point3D(parent_space.global_.start_point)
-    #     expected_child_global_end_pnt = AllplanGeo.Point3D(parent_space.global_.end_point)
-    #     child_width = child_space.width
-    #     child_length = child_space.length
-    #     child_height = child_space.height
+        # ------------ child space 1 place ---------------
+        expected_child_global_start_pnt = AllplanGeo.Point3D(parent_space.global_.start_point)
+        expected_child_global_end_pnt = AllplanGeo.Point3D(parent_space.global_.end_point)
+        child_width = child_space.width
+        child_length = child_space.length
+        child_height = child_space.height
         
-    #     expected_child_global_start_pnt.X = parent_space.global_.start_point.X + 200.
-    #     expected_child_global_end_pnt.X   = expected_child_global_start_pnt.X + child_width
-    #     expected_child_global_start_pnt.Z = parent_space.global_.start_point.Z + 15
-    #     expected_child_global_end_pnt.Z   = expected_child_global_start_pnt.Z + child_height
-    #     expected_child_global_start_pnt.Y = parent_space.global_.start_point.Y
-    #     expected_child_global_end_pnt.Y   = expected_child_global_start_pnt.Y + child_length
+        expected_child_global_start_pnt.X = parent_space.global_.start_point.X + 200.
+        expected_child_global_end_pnt.X   = expected_child_global_start_pnt.X + child_width
+        expected_child_global_start_pnt.Z = parent_space.global_.start_point.Z + 15
+        expected_child_global_end_pnt.Z   = expected_child_global_start_pnt.Z + child_height
+        expected_child_global_start_pnt.Y = parent_space.global_.start_point.Y
+        expected_child_global_end_pnt.Y   = expected_child_global_start_pnt.Y + child_length
 
-    #     parent_space.place(child_space, center=False, left=200., bottom=15.,)
+        parent_space.place(child_space, center=False, left=200., bottom=15.,)
 
-    #     # ------------ child space 2 place ---------------
-    #     end_pnt          = utils.random_point()
-    #     child_space2 = geo.Space.from_dimensions(length=end_pnt.Y, 
-    #                                             width=end_pnt.X, 
-    #                                             height=end_pnt.Z,)
-    #     expected_child_global_start_pnt2 = AllplanGeo.Point3D(parent_space.global_.start_point)
-    #     expected_child_global_end_pnt2 = AllplanGeo.Point3D(parent_space.global_.end_point)
-    #     child_width = child_space2.width
-    #     child_length = child_space2.length
-    #     child_height = child_space2.height
+        # ------------ child space 2 place ---------------
+        end_pnt          = utils.random_point()
+        child_space2 = geo.Space.from_dimensions(length=end_pnt.Y, 
+                                                width=end_pnt.X, 
+                                                height=end_pnt.Z,)
+        expected_child_global_start_pnt2 = AllplanGeo.Point3D(parent_space.global_.start_point)
+        expected_child_global_end_pnt2 = AllplanGeo.Point3D(parent_space.global_.end_point)
+        child_width = child_space2.width
+        child_length = child_space2.length
+        child_height = child_space2.height
 
-    #     expected_child_global_start_pnt2.X = parent_space.global_.start_point.X + 1000.
-    #     expected_child_global_end_pnt2.X   = expected_child_global_start_pnt2.X + child_width
-    #     expected_child_global_start_pnt2.Y = parent_space.global_.start_point.Y + 200.
-    #     expected_child_global_end_pnt2.Y   = expected_child_global_start_pnt2.Y + child_length
+        expected_child_global_start_pnt2.X = parent_space.global_.start_point.X + 1000.
+        expected_child_global_end_pnt2.X   = expected_child_global_start_pnt2.X + child_width
+        expected_child_global_start_pnt2.Y = parent_space.global_.start_point.Y + 200.
+        expected_child_global_end_pnt2.Y   = expected_child_global_start_pnt2.Y + child_length
 
-    #     parent_z_delta = parent_space.height/2.
-    #     child_z_delta  = child_height/2.
-    #     expected_child_global_start_pnt2.Z = parent_space.global_.start_point.Z + (parent_z_delta - child_z_delta)
-    #     expected_child_global_end_pnt2.Z   = expected_child_global_start_pnt2.Z + child_height
+        parent_z_delta = parent_space.height/2.
+        child_z_delta  = child_height/2.
+        expected_child_global_start_pnt2.Z = parent_space.global_.start_point.Z + (parent_z_delta - child_z_delta)
+        expected_child_global_end_pnt2.Z   = expected_child_global_start_pnt2.Z + child_height
 
-    #     parent_space.place(child_space2, center=True, front=200., left=1000.)
+        parent_space.place(child_space2, center=True, front=200., left=1000.)
 
-    #     assert len(parent_space) == 2
-    #     assert len(child_space) == 0
-    #     assert len(child_space2) == 0
-    #     assert parent_space[0].global_.start_point == expected_child_global_start_pnt
-    #     assert parent_space[0].global_.end_point == expected_child_global_end_pnt
-    #     assert parent_space[1].global_.start_point == expected_child_global_start_pnt2
-    #     assert parent_space[1].global_.end_point == expected_child_global_end_pnt2
+        assert len(parent_space) == 2
+        assert len(child_space) == 0
+        assert len(child_space2) == 0
+        assert parent_space[0].global_.start_point == expected_child_global_start_pnt
+        assert parent_space[0].global_.end_point == expected_child_global_end_pnt
+        assert parent_space[1].global_.start_point == expected_child_global_start_pnt2
+        assert parent_space[1].global_.end_point == expected_child_global_end_pnt2
 
     def test_add_child(self):
-        pass
+        end_pnt          = utils.random_point()
+        global_start_pnt = utils.random_point()
+        parent_space = geo.Space.from_dimensions_global_point(length=end_pnt.Y, 
+                                                            width=end_pnt.X, 
+                                                            height=end_pnt.Z, 
+                                                            global_start_pnt=global_start_pnt)
+        
+        end_pnt1          = utils.random_point()
+        child_space1 = geo.Space.from_dimensions(length=end_pnt1.Y, 
+                                                width=end_pnt1.X, 
+                                                height=end_pnt1.Z,)
+        
+        end_pnt2          = utils.random_point()
+        child_space2 = geo.Space.from_dimensions(length=end_pnt2.Y, 
+                                                width=end_pnt2.X, 
+                                                height=end_pnt2.Z,)
+        
+        end_pnt3          = utils.random_point()
+        grandchild_space3 = geo.Space.from_dimensions(length=end_pnt3.Y, 
+                                                width=end_pnt3.X, 
+                                                height=end_pnt3.Z,)
+        
+        child_space2._add_child(grandchild_space3)
+        parent_space._add_child(child_space1)
+        parent_space._add_child(child_space2)
+
+        # ------------------------- Expected values ---------------------
+        expected_child_space2 = geo.Space.from_dimensions(length=end_pnt2.Y, 
+                                                        width=end_pnt2.X, 
+                                                        height=end_pnt2.Z,)
+        expected_grandchild_space3 = geo.Space.from_dimensions(length=end_pnt3.Y, 
+                                                width=end_pnt3.X, 
+                                                height=end_pnt3.Z,)
+        expected_child_space1 = geo.Space.from_dimensions(length=end_pnt1.Y, 
+                                                width=end_pnt1.X, 
+                                                height=end_pnt1.Z,)
+        expected_parent_space = geo.Space.from_dimensions_global_point(length=end_pnt.Y, 
+                                                            width=end_pnt.X, 
+                                                            height=end_pnt.Z, 
+                                                            global_start_pnt=global_start_pnt)
+        
+        expected_child_space2._add_child(expected_grandchild_space3)
+        expected_parent_space._add_child(expected_child_space1)
+        expected_parent_space._add_child(expected_child_space2)
+
+        assert len(parent_space) == 2
+        assert len(child_space1) == 0
+        assert len(child_space2) == 1
+        assert parent_space == expected_parent_space
+        assert child_space1 == expected_child_space1
+        assert child_space2 == expected_child_space2
+        assert grandchild_space3 == expected_grandchild_space3
 
 
 
 class TestConcreteCover:
 
-    pass
+    def test_init(self):
+        with pytest.raises(TypeError):
+            cc = geo.ConcreteCover()
 
+    def test_from_kwargs(self):
+        cc = geo.ConcreteCover.from_kwargs(left=200, top=-100)
+        
+        assert cc.left == 200
+        assert cc.top == -100
 
-# ts = TestSpace()
-# ts.test_place2()
+    def test_opposite_sides(self):
+        with pytest.raises(ValueError):
+            cc = geo.ConcreteCover.from_kwargs(left=100, right=200)
+    
+    def test_opposite_sides2(self):
+        # No exception should be here.
+        cc = geo.ConcreteCover.from_kwargs(left=100, right=0.0)
+        assert True
