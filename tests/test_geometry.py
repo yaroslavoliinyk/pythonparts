@@ -238,3 +238,27 @@ class TestConcreteCover:
         # No exception should be here.
         cc = geo.ConcreteCover.from_kwargs(left=100, right=0.0)
         assert True
+
+
+class TestCuboid:
+
+    def test_init(self):
+        cuboid = geo.Cuboid(10, 20, 30)
+        assert cuboid.width == 10
+        assert cuboid.length == 20
+        assert cuboid.height == 30
+
+
+class TestScene:
+
+    def test_get_instance(self, clear_scene):
+        scene = geo.Scene.get_instance("build_element")
+        assert len(scene.model_ele_list) == 0
+
+    def test_two_scenes_create(self, clear_scene):
+        scene1 = geo.Scene()
+        with pytest.raises(TypeError):
+            scene2 = geo.Scene()
+
+ 
+    

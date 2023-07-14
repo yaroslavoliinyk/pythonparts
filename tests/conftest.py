@@ -9,7 +9,15 @@ import NemAll_Python_Geometry as AllplanGeo
 pytest.mark.debug_this = pytest.mark.marker('debug_this')    # type: ignore
 
 
+@pytest.fixture()
+def clear_scene():
+    print('Clearing Scene')
+    geo.Scene._instance = None
+    geo.Scene.build_ele = None
 
+    yield
+
+    print('After Scene Test')
 
 # @pytest.fixture()
 # def random_point(scope='function'):

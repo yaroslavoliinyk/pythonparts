@@ -11,16 +11,18 @@ class Scene:
     def get_instance(cls, build_ele):
         if not cls._instance:
             cls.build_ele = build_ele
-            cls._instance = cls()
+            return cls()
         return cls._instance
 
     def __init__(self):
-        if not self._instance:
-            self.__model_ele_list = []
-            self.__reinf_ele_list = []
-            self.space = Space.from_points(AllplanGeo.Point3D(), AllplanGeo.Point3D(), AllplanGeo.Point3D())
-        else:
+        cls = type(self)
+        if cls._instance:
             raise TypeError("Singleton implementation. Cannot create one more object.")
+        self.__model_ele_list = []
+        self.__reinf_ele_list = []
+        self.space = Space.from_dimensions(0, 0, 0)
+        cls._instance = self
+        
 
     @property
     def model_ele_list(self):

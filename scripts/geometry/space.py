@@ -32,7 +32,7 @@ class Space:
         cls.__created_with_classmethod = False
 
     @classmethod
-    def from_dimensions(cls, length, width, height):
+    def from_dimensions(cls, width, length, height):
         local_coords  = Coords(AllplanGeo.Point3D(), AllplanGeo.Point3D(width, length, height))
         global_coords = Coords(AllplanGeo.Point3D(), AllplanGeo.Point3D(width, length, height))
         cls.__created_with_classmethod = True

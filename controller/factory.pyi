@@ -13,13 +13,13 @@ class Factory:
         """
         
     @typing.overload
-    def create_cuboid(be_name):
+    def create_cuboid(self, be_name):
         """
             Create Cuboid fetching all parameters from pyp file.
         """
     
     @typing.overload
-    def create_cuboid(width: float, height: float, length: float):
+    def create_cuboid(self, width: float, height: float, length: float):
         """
             Create Cuboid with parameters explicitly.    
         """
