@@ -20,5 +20,11 @@ class Cuboid:
     def height(self):
         return self.space.height
 
+    def place(self, child_cuboid: "Cuboid", center: bool=False, **concov_kwargs):
+        self.space.place(child_cuboid.space, concov_dict=concov_kwargs, center=center,)
+
     def build(self):
         return AllplanGeo.Polyhedron3D.CreateCuboid(self.global_.start_point, self.global_.end_point)
+
+    def __repr__(self):
+        return repr(self.space)

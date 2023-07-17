@@ -4,7 +4,7 @@ import pythonparts as pp
 
 
 def test_center_calc1():
-    cc1 = pp.scripts.utils.__center_calc_axis(5, 
+    cc1 = pp.src.utils.__center_calc_axis(5, 
                                             0,
                                             500.2, 
                                             300,
@@ -16,7 +16,7 @@ def test_center_calc2():
     child_len = 300
     parent_start_point_coord = 1300
     parent_end_point_coord = 1900
-    cc1 = pp.scripts.utils.__center_calc_axis(0, 
+    cc1 = pp.src.utils.__center_calc_axis(0, 
                                             0, 
                                             parent_start_point_coord, 
                                             parent_end_point_coord,
@@ -29,7 +29,7 @@ def test_center_calc3():
     child_len = 1000
     parent_start_point_coord = 1300
     parent_end_point_coord = 1900
-    cc1 = pp.scripts.utils.__center_calc_axis(0, 
+    cc1 = pp.src.utils.__center_calc_axis(0, 
                                             0, 
                                             parent_start_point_coord, 
                                             parent_end_point_coord,
@@ -42,7 +42,7 @@ def test_center_calc3():
 
 
 def test_child_global_coords_calc1():
-    start_coord, end_coord = pp.scripts.utils.__coords_calc_axis(5, 
+    start_coord, end_coord = pp.src.utils.__coords_calc_axis(5, 
                                                                 0,
                                                                 500.2, 
                                                                 300,
@@ -55,7 +55,7 @@ def test_child_global_coords_calc2():
     child_len = 300
     parent_start_point_coord = 1300
     parent_end_point_coord = 1900
-    start_coord, end_coord = pp.scripts.utils.__coords_calc_axis(0, 
+    start_coord, end_coord = pp.src.utils.__coords_calc_axis(0, 
                                             200, 
                                             parent_start_point_coord, 
                                             parent_end_point_coord,
@@ -68,7 +68,7 @@ def test_child_global_coords_calc3():
     child_len = 1000
     parent_start_point_coord = 1300
     parent_end_point_coord = 1900
-    start_coord, end_coord = pp.scripts.utils.__coords_calc_axis(0, 
+    start_coord, end_coord = pp.src.utils.__coords_calc_axis(0, 
                                             0, 
                                             parent_start_point_coord, 
                                             parent_end_point_coord,

@@ -93,9 +93,7 @@ class Space:
     def height(self, value):
         raise AttributePermissionError("You cannot set height of Space.")
 
-    def place(self, child_space: "Space",
-              center: bool=False, **concov_kwargs
-              ):
+    def place(self, child_space: "Space", concov_dict, center: bool=False,):
         """
             Places child Space inside parent Space according to given settings.
 
@@ -105,7 +103,7 @@ class Space:
             then left and right shifts will be redefined by center_calc.
             Same for top and bottom; front and back.
         """
-        concov = ConcreteCover(concov_kwargs)
+        concov = ConcreteCover(concov_dict)
         if center:
             concov.left, concov.front, concov.bottom = center_calc(concov, self.global_, child_space)
         child_space.setup_global_coords(self.global_, concov)

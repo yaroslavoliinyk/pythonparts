@@ -64,7 +64,7 @@ def test_import_local_exception():
 def test_import_utils_center_calc():
     try:
         import pythonparts as pp
-        print(pp.scripts.utils.center_calc)
+        print(pp.src.utils.center_calc)
     except ModuleNotFoundError:
         assert False, "No such method: utils.center_calc"
     except ImportError:

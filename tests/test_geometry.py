@@ -1,12 +1,12 @@
 import pytest
 import random
-import copy
 
 from pythonparts import geometry as geo, AttributePermissionError
 
 import NemAll_Python_Geometry as AllplanGeo
-
 import utils
+
+from ..src.utils import equal_points
 
 
 class TestSpace:
@@ -88,7 +88,7 @@ class TestSpace:
         child_length = child_space.length
         child_height = child_space.height
         
-        parent_space.place(child_space, center=False, left=200., bottom=15.,)
+        parent_space.place(child_space, dict(center=False, left=200., bottom=15.),)
 
         expected_child_global_start_pnt.X = parent_space.global_.start_point.X + 200.
         expected_child_global_end_pnt.X   = expected_child_global_start_pnt.X + child_width
@@ -99,8 +99,8 @@ class TestSpace:
 
         assert len(parent_space) == 1
         assert len(child_space) == 0
-        assert parent_space[0].global_.start_point == expected_child_global_start_pnt
-        assert parent_space[0].global_.end_point == expected_child_global_end_pnt
+        assert equal_points(parent_space[0].global_.start_point, expected_child_global_start_pnt)
+        assert equal_points(parent_space[0].global_.end_point, expected_child_global_end_pnt)
 
     def test_place2(self):
         end_pnt          = utils.random_point()
@@ -129,7 +129,7 @@ class TestSpace:
         expected_child_global_start_pnt.Y = parent_space.global_.start_point.Y
         expected_child_global_end_pnt.Y   = expected_child_global_start_pnt.Y + child_length
 
-        parent_space.place(child_space, center=False, left=200., bottom=15.,)
+        parent_space.place(child_space, dict(center=False, left=200., bottom=15.),)
 
         # ------------ child space 2 place ---------------
         end_pnt          = utils.random_point()
@@ -152,15 +152,15 @@ class TestSpace:
         expected_child_global_start_pnt2.Z = parent_space.global_.start_point.Z + (parent_z_delta - child_z_delta)
         expected_child_global_end_pnt2.Z   = expected_child_global_start_pnt2.Z + child_height
 
-        parent_space.place(child_space2, center=True, front=200., left=1000.)
+        parent_space.place(child_space2, dict(front=200., left=1000.), center=True,)
 
         assert len(parent_space) == 2
         assert len(child_space) == 0
         assert len(child_space2) == 0
-        assert parent_space[0].global_.start_point == expected_child_global_start_pnt
-        assert parent_space[0].global_.end_point == expected_child_global_end_pnt
-        assert parent_space[1].global_.start_point == expected_child_global_start_pnt2
-        assert parent_space[1].global_.end_point == expected_child_global_end_pnt2
+        assert equal_points(parent_space[0].global_.start_point, expected_child_global_start_pnt)
+        assert equal_points(parent_space[0].global_.end_point, expected_child_global_end_pnt)
+        assert equal_points(parent_space[1].global_.start_point, expected_child_global_start_pnt2)
+        assert equal_points(parent_space[1].global_.end_point, expected_child_global_end_pnt2)
 
     def test_add_child(self):
         end_pnt          = utils.random_point()
