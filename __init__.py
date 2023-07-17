@@ -4,6 +4,4 @@ sys.path.append("C:\\Program Files\\Allplan\\Allplan\\2023\\Prg")    # TODO: Cha
 
 import NemAll_Python_Geometry as AllplanGeo    # type: ignore
 
-from .src import geometry
-from .src import AttributePermissionError
 from .src import create_scene, create_cuboid

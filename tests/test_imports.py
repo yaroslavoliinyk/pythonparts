@@ -30,7 +30,7 @@ def test_import_pythonparts():
 
 def test_import_geometry():
     try:
-        from pythonparts import geometry
+        from pythonparts.src import geometry
     except ModuleNotFoundError:
         assert False, "No such module: pythonparts"
     except ImportError:
@@ -40,7 +40,7 @@ def test_import_geometry():
 
 def test_import_geometry_coords():
     try:
-        from pythonparts import geometry as geo 
+        from pythonparts.src import geometry as geo 
         coords = geo.Coords()
     except ModuleNotFoundError:
         assert False, "No such module: geometry"
@@ -51,9 +51,9 @@ def test_import_geometry_coords():
 
 def test_import_local_exception():
     try:
-        from pythonparts import AttributePermissionError
+        from pythonparts.src import AttributePermissionError
         import pythonparts as pp
-        print(pp.AttributePermissionError)
+        print(AttributePermissionError)
     except ModuleNotFoundError:
         assert False, "No such exception: AttributePermissionError"
     except ImportError:
@@ -70,3 +70,16 @@ def test_import_utils_center_calc():
     except ImportError:
         assert False, "Failed to import utils.center_calc from pythonparts"
     assert True
+
+
+def test_public_interface():
+    try:
+        import pythonparts as pp
+        print(pp.create_cuboid)
+        print(pp.create_scene)
+    except ModuleNotFoundError:
+        assert False, "No such method: utils.center_calc"
+    except ImportError:
+        assert False, "Failed to import utils.center_calc from pythonparts"
+    assert True
+

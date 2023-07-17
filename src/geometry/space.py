@@ -39,7 +39,7 @@ class Space:
         return cls(local_coords, global_coords)
 
     @classmethod
-    def from_dimensions_global_point(cls, length, width, height, global_start_pnt):
+    def from_dimensions_global_point(cls, width, length, height, global_start_pnt):
         local_coords = Coords(AllplanGeo.Point3D(), AllplanGeo.Point3D(width, length, height))
         global_coords = Coords(global_start_pnt, global_start_pnt + AllplanGeo.Vector3D(width, length, height))
         cls.__created_with_classmethod = True

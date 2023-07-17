@@ -1,12 +1,10 @@
 import pytest
 import random
 
-from pythonparts import geometry as geo, AttributePermissionError
+from pythonparts.src import geometry as geo, AttributePermissionError, utils as pp_utils
 
 import NemAll_Python_Geometry as AllplanGeo
 import utils
-
-from ..src.utils import equal_points
 
 
 class TestSpace:
@@ -99,8 +97,8 @@ class TestSpace:
 
         assert len(parent_space) == 1
         assert len(child_space) == 0
-        assert equal_points(parent_space[0].global_.start_point, expected_child_global_start_pnt)
-        assert equal_points(parent_space[0].global_.end_point, expected_child_global_end_pnt)
+        assert pp_utils.equal_points(parent_space[0].global_.start_point, expected_child_global_start_pnt)
+        assert pp_utils.equal_points(parent_space[0].global_.end_point, expected_child_global_end_pnt)
 
     def test_place2(self):
         end_pnt          = utils.random_point()
@@ -157,10 +155,10 @@ class TestSpace:
         assert len(parent_space) == 2
         assert len(child_space) == 0
         assert len(child_space2) == 0
-        assert equal_points(parent_space[0].global_.start_point, expected_child_global_start_pnt)
-        assert equal_points(parent_space[0].global_.end_point, expected_child_global_end_pnt)
-        assert equal_points(parent_space[1].global_.start_point, expected_child_global_start_pnt2)
-        assert equal_points(parent_space[1].global_.end_point, expected_child_global_end_pnt2)
+        assert pp_utils.equal_points(parent_space[0].global_.start_point, expected_child_global_start_pnt)
+        assert pp_utils.equal_points(parent_space[0].global_.end_point, expected_child_global_end_pnt)
+        assert pp_utils.equal_points(parent_space[1].global_.start_point, expected_child_global_start_pnt2)
+        assert pp_utils.equal_points(parent_space[1].global_.end_point, expected_child_global_end_pnt2)
 
     def test_add_child(self):
         end_pnt          = utils.random_point()
@@ -259,6 +257,3 @@ class TestScene:
         scene1 = geo.Scene()
         with pytest.raises(TypeError):
             scene2 = geo.Scene()
-
- 
-    

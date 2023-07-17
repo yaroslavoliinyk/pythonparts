@@ -2,7 +2,7 @@ import pytest
 
 import random
 
-from pythonparts import geometry as geo
+from pythonparts.src import geometry as geo
 import NemAll_Python_Geometry as AllplanGeo
 
 
