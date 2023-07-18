@@ -3,7 +3,7 @@ import math
 from abc import ABC, abstractmethod, abstractproperty
 from typing import Optional, List, Dict
 
-import NemAll_Python_BasisElements as AllplanBasisElements
+import NemAll_Python_BasisElements as AllplanBasisElements    # type: ignore
 
 from .coords import Coords, AllplanGeo
 from .concrete_cover import ConcreteCover
@@ -110,9 +110,6 @@ class Space(ABC):
         child_space.update_global_coords(self.global_)
         self._children.append(child_space)
 
-
-    # def _add_child(self, child_space: "Space"):
-        
     def __len__(self):
         return len(self._children)
     
