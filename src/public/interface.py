@@ -5,13 +5,13 @@ from numbers import Real
 
 
 def create_scene(build_ele):
-    return f"Scene: build_ele"
+    return pp.src.geometry.Scene.get_instance(build_ele)
 
 def create_cuboid(param1, param2=0., param3=0.):
     if isinstance(param1, str):
         return f"Cuboid: build_ele"
     if isinstance(param1, Real) and isinstance(param2, Real) and isinstance(param3, Real):
         width, length, height = param1, param2, param3
-        return pp.geometry.Cuboid(width, length, height)
+        return pp.src.geometry.Cuboid(width, length, height)
     
     raise NotImplemented()

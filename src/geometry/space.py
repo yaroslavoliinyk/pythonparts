@@ -28,6 +28,7 @@ class Space(ABC):
             not equal_points(local.end_point - local.start_point, global_.end_point - global_.start_point)):
             raise ValueError(f"Incorrect global or local coordinates!\nlocal={local}\nglobal={global_}")
         
+        self._concov = ConcreteCover.from_sides()
         self._local  = local
         self._global = global_
         self._children: List[Space] = []
@@ -80,14 +81,11 @@ class Space(ABC):
     def height(self, value):
         raise AttributePermissionError("You cannot set height of Space.")
 
-
-    def set_global_start_pnt(self, p: AllplanGeo.Point3D):
-        self.global_.start_point = p
-        self.global_.end_point   = self.global_.start_point + AllplanGeo.Vector3D(self.width, self.length, self.height)
-    
-    def setup_global_coords(self, parent_global_coords: Coords, concov: ConcreteCover):
-        start_point, end_point = child_global_coords_calc(concov, parent_global_coords, self)
+    def update_global_coords(self, parent_global_coords: Coords):
+        start_point, end_point = child_global_coords_calc(self._concov, parent_global_coords, self)
         self._global           = Coords(start_point, end_point)
+        for child in self._children:
+            child.update_global_coords(self._global)
 
     def build(self) -> List[AllplanBasisElements.ModelElement3D]:
         builded = [AllplanBasisElements.ModelElement3D(self.com_prop, self.polyhedron)]
@@ -95,7 +93,7 @@ class Space(ABC):
             builded.extend(child.build())
         return builded
 
-    def place(self, child_space: "Space", concov_dict: Dict, center: bool=False,):
+    def place(self, child_space: "Space", center: bool=False, **concov_sides,):
         """
             Places child Space inside parent Space according to given settings.
 
@@ -105,10 +103,11 @@ class Space(ABC):
             then left and right shifts will be redefined by center_calc.
             Same for top and bottom; front and back.
         """
-        concov = ConcreteCover(concov_dict)
+        concov = ConcreteCover(concov_sides)
         if center:
             concov.left, concov.front, concov.bottom = center_calc(concov, self.global_, child_space)
-        child_space.setup_global_coords(self.global_, concov)
+        child_space._concov.update(concov.as_dict())
+        child_space.update_global_coords(self.global_)
         self._children.append(child_space)
 
 

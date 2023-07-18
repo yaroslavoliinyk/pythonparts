@@ -23,23 +23,6 @@ class TestSpace:
                                     global_start_pnt=AllplanGeo.Point3D(0, 0, 0)
                                     )
 
-    def test_from_points_set_global(self):
-        end_pnt          = random.choice(utils.points)
-        global_start_pnt = random.choice(utils.points)
-        space1 = geo.Cuboid(
-                            width=end_pnt.X, 
-                            length=end_pnt.Y, 
-                            height=end_pnt.Z, 
-                            global_start_pnt=global_start_pnt)
-
-        space2 = geo.Cuboid(
-                            width=end_pnt.X, 
-                            length=end_pnt.Y, 
-                            height=end_pnt.Z,)
-        space2.set_global_start_pnt(global_start_pnt)
-
-        assert space1 == space2
-
     def test_length_width_height(self):
         end_pnt = random.choice(utils.points)
         global_start_pnt = random.choice(utils.points)
@@ -86,7 +69,7 @@ class TestSpace:
         child_length = child_space.length
         child_height = child_space.height
         
-        parent_space.place(child_space, dict(center=False, left=200., bottom=15.),)
+        parent_space.place(child_space, center=False, left=200., bottom=15.,)
 
         expected_child_global_start_pnt.X = parent_space.global_.start_point.X + 200.
         expected_child_global_end_pnt.X   = expected_child_global_start_pnt.X + child_width
@@ -127,7 +110,7 @@ class TestSpace:
         expected_child_global_start_pnt.Y = parent_space.global_.start_point.Y
         expected_child_global_end_pnt.Y   = expected_child_global_start_pnt.Y + child_length
 
-        parent_space.place(child_space, dict(center=False, left=200., bottom=15.),)
+        parent_space.place(child_space, center=False, left=200., bottom=15.)
 
         # ------------ child space 2 place ---------------
         end_pnt          = utils.random_point()
@@ -150,7 +133,7 @@ class TestSpace:
         expected_child_global_start_pnt2.Z = parent_space.global_.start_point.Z + (parent_z_delta - child_z_delta)
         expected_child_global_end_pnt2.Z   = expected_child_global_start_pnt2.Z + child_height
 
-        parent_space.place(child_space2, dict(front=200., left=1000.), center=True,)
+        parent_space.place(child_space2, center=True, front=200., left=1000.,)
 
         assert len(parent_space) == 2
         assert len(child_space) == 0
@@ -168,18 +151,18 @@ class TestConcreteCover:
             cc = geo.ConcreteCover()
 
     def test_from_kwargs(self):
-        cc = geo.ConcreteCover.from_kwargs(left=200, top=-100)
+        cc = geo.ConcreteCover.from_sides(left=200, top=-100)
         
         assert cc.left == 200
         assert cc.top == -100
 
     def test_opposite_sides(self):
         with pytest.raises(ValueError):
-            cc = geo.ConcreteCover.from_kwargs(left=100, right=200)
+            cc = geo.ConcreteCover.from_sides(left=100, right=200)
     
     def test_opposite_sides2(self):
         # No exception should be here.
-        cc = geo.ConcreteCover.from_kwargs(left=100, right=0.0)
+        cc = geo.ConcreteCover.from_sides(left=100, right=0.0)
         assert True
 
 

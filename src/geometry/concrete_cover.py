@@ -10,12 +10,18 @@ class ConcreteCover:
     def __init__(self, sides_dict):
         cls = type(self)
         self._sides = defaultdict.fromkeys(cls.__match_args__, 0.0)
+        self.update(sides_dict)
+
+    @classmethod
+    def from_sides(cls, **sides):
+        return cls(sides)
+
+    def update(self, sides_dict):
         for name, value in sides_dict.items():
             self.__setattr__(name, value)
 
-    @classmethod
-    def from_kwargs(cls, **kwargs):
-        return cls(kwargs)
+    def as_dict(self):
+        return self._sides
 
     def __setattr__(self, __name: str, __value: Any) -> None:
         cls = type(self)

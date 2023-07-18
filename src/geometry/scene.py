@@ -25,7 +25,8 @@ class Scene:
 
     def __init__(self):
         self.scene_space = Cuboid(self.MAX_AXIS_UNIT, self.MAX_AXIS_UNIT, self.MAX_AXIS_UNIT)
-        
+        self.place = self.scene_space.place    # Assigning a Space method here(Monkey patching)
+
         cls = type(self)
         if cls._instance:
             raise TypeError("Singleton implementation. Cannot create one more object.")
@@ -53,9 +54,13 @@ class Scene:
         pyp_util.add_pythonpart_view_2d3d(self.model_ele_list)
         pyp_util.add_reinforcement_elements(self.reinf_ele_list)
 
-        model_ele_list = pyp_util.create_pythonpart(self.build_ele)
+        model_ele_list = pyp_util.create_pythonpart(self.build_ele)   # TODO: Add build_ele
         handle_list = []
         return model_ele_list, handle_list
 
-    def place(self, child_space, concov_dict, center=False,):
-        self.scene_space.place(child_space, concov_dict, center)
+    # def place(self, child_space, concov_dict, center=False,):
+    #     self.scene_space.place(child_space, concov_dict, center)
+
+    def __repr__(self):
+        cls = type(self)
+        return f"Scene(build_ele={cls.build_ele!r})"
