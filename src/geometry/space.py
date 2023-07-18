@@ -1,7 +1,9 @@
 import math
 
-from abc import ABC
-from typing import Optional, List
+from abc import ABC, abstractmethod, abstractproperty
+from typing import Optional, List, Dict
+
+import NemAll_Python_BasisElements as AllplanBasisElements
 
 from .coords import Coords, AllplanGeo
 from .concrete_cover import ConcreteCover
@@ -10,41 +12,34 @@ from ..exceptions import AttributePermissionError
 from ..config import TOLERANCE
 
 
-class Space:
-    
-    __created_with_classmethod = False
-
+class Space(ABC):
 
     def __init__(
-        self, local: Coords, global_: Coords
+        self, width, length, height, global_start_pnt=None,
     ):
-        if not self.__created_with_classmethod:
-            raise TypeError("You cannot instatiate this class directly. Use classmethod.")
+        local    = Coords(AllplanGeo.Point3D(), AllplanGeo.Point3D(width, length, height))
+        
+        if global_start_pnt is not None:
+            global_ = Coords(global_start_pnt, global_start_pnt + AllplanGeo.Vector3D(width, length, height))
+        else:
+            global_  = Coords(AllplanGeo.Point3D(), AllplanGeo.Point3D(width, length, height))
+
         if (global_ != Coords.from_empty() and 
             not equal_points(local.end_point - local.start_point, global_.end_point - global_.start_point)):
             raise ValueError(f"Incorrect global or local coordinates!\nlocal={local}\nglobal={global_}")
+        
         self._local  = local
         self._global = global_
         self._children: List[Space] = []
         self._visible               = True
         self._union_parent          = True
-        cls = type(self)
-        cls.__created_with_classmethod = False
 
-    @classmethod
-    def from_dimensions(cls, width, length, height):
-        local_coords  = Coords(AllplanGeo.Point3D(), AllplanGeo.Point3D(width, length, height))
-        global_coords = Coords(AllplanGeo.Point3D(), AllplanGeo.Point3D(width, length, height))
-        cls.__created_with_classmethod = True
-        return cls(local_coords, global_coords)
-
-    @classmethod
-    def from_dimensions_global_point(cls, width, length, height, global_start_pnt):
-        local_coords = Coords(AllplanGeo.Point3D(), AllplanGeo.Point3D(width, length, height))
-        global_coords = Coords(global_start_pnt, global_start_pnt + AllplanGeo.Vector3D(width, length, height))
-        cls.__created_with_classmethod = True
-        return cls(local_coords, global_coords)
+    @abstractproperty
+    def polyhedron(self): ...
     
+    @abstractproperty
+    def com_prop(self): ...
+
     @property
     def local(self):
         return self._local
@@ -61,14 +56,6 @@ class Space:
     def global_(self, value):
         raise AttributePermissionError("You cannot set global coords this way.")
     
-    def set_global_start_pnt(self, p: AllplanGeo.Point3D):
-        self.global_.start_point = p
-        self.global_.end_point   = self.global_.start_point + AllplanGeo.Vector3D(self.width, self.length, self.height)
-    
-    def setup_global_coords(self, parent_global_coords: Coords, concov: ConcreteCover):
-        start_point, end_point = child_global_coords_calc(concov, parent_global_coords, self)
-        self._global           = Coords(start_point, end_point)
-
     @property
     def length(self):
         return abs(self.local.end_point.Y - self.local.start_point.Y)
@@ -93,7 +80,22 @@ class Space:
     def height(self, value):
         raise AttributePermissionError("You cannot set height of Space.")
 
-    def place(self, child_space: "Space", concov_dict, center: bool=False,):
+
+    def set_global_start_pnt(self, p: AllplanGeo.Point3D):
+        self.global_.start_point = p
+        self.global_.end_point   = self.global_.start_point + AllplanGeo.Vector3D(self.width, self.length, self.height)
+    
+    def setup_global_coords(self, parent_global_coords: Coords, concov: ConcreteCover):
+        start_point, end_point = child_global_coords_calc(concov, parent_global_coords, self)
+        self._global           = Coords(start_point, end_point)
+
+    def build(self) -> List[AllplanBasisElements.ModelElement3D]:
+        builded = [AllplanBasisElements.ModelElement3D(self.com_prop, self.polyhedron)]
+        for child in self._children:
+            builded.extend(child.build())
+        return builded
+
+    def place(self, child_space: "Space", concov_dict: Dict, center: bool=False,):
         """
             Places child Space inside parent Space according to given settings.
 
@@ -107,12 +109,11 @@ class Space:
         if center:
             concov.left, concov.front, concov.bottom = center_calc(concov, self.global_, child_space)
         child_space.setup_global_coords(self.global_, concov)
-        self._add_child(child_space)
-
-
-    def _add_child(self, child_space: "Space"):
         self._children.append(child_space)
 
+
+    # def _add_child(self, child_space: "Space"):
+        
     def __len__(self):
         return len(self._children)
     

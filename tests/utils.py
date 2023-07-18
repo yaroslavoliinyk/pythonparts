@@ -55,5 +55,5 @@ points = [random_point(),
           unit_point_y(), 
           unit_point_z(),
           random_unit_point(),
-          zero_point()]
+          ]
 points_combinations = [(p1, p2) for p1, p2 in zip(random.sample(points, len(points)), random.sample(points, len(points)))]

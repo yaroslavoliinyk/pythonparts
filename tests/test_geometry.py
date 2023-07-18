@@ -8,34 +8,34 @@ import utils
 
 
 class TestSpace:
-    def test_create_init(self):
-        with pytest.raises(TypeError):
-            sample_point = random.choice(utils.points)
-            space = geo.Space(sample_point, sample_point)
 
     def test_create_from_classmethod_equal(self):
         end_pnt = random.choice(utils.points)
-        space1 = geo.Space.from_dimensions(length=end_pnt.Y, 
-                                           width=end_pnt.X, 
-                                           height=end_pnt.Z)
+        space1 = geo.Cuboid(
+                            width=end_pnt.X, 
+                            length=end_pnt.Y, 
+                            height=end_pnt.Z)
 
-        assert space1 == geo.Space.from_dimensions_global_point(length=end_pnt.Y, 
-                                                                width=end_pnt.X, 
-                                                                height=end_pnt.Z, 
-                                                                global_start_pnt=AllplanGeo.Point3D(0, 0, 0)
-                                                                )
+        assert space1 == geo.Cuboid(
+                                    width=end_pnt.X, 
+                                    length=end_pnt.Y, 
+                                    height=end_pnt.Z, 
+                                    global_start_pnt=AllplanGeo.Point3D(0, 0, 0)
+                                    )
 
     def test_from_points_set_global(self):
         end_pnt          = random.choice(utils.points)
         global_start_pnt = random.choice(utils.points)
-        space1 = geo.Space.from_dimensions_global_point(length=end_pnt.Y, 
-                                                        width=end_pnt.X, 
-                                                        height=end_pnt.Z, 
-                                                        global_start_pnt=global_start_pnt)
+        space1 = geo.Cuboid(
+                            width=end_pnt.X, 
+                            length=end_pnt.Y, 
+                            height=end_pnt.Z, 
+                            global_start_pnt=global_start_pnt)
 
-        space2 = geo.Space.from_dimensions(length=end_pnt.Y, 
-                                            width=end_pnt.X, 
-                                            height=end_pnt.Z,)
+        space2 = geo.Cuboid(
+                            width=end_pnt.X, 
+                            length=end_pnt.Y, 
+                            height=end_pnt.Z,)
         space2.set_global_start_pnt(global_start_pnt)
 
         assert space1 == space2
@@ -43,7 +43,7 @@ class TestSpace:
     def test_length_width_height(self):
         end_pnt = random.choice(utils.points)
         global_start_pnt = random.choice(utils.points)
-        space1 = geo.Space.from_dimensions_global_point(length=end_pnt.Y, 
+        space1 = geo.Cuboid(length=end_pnt.Y, 
                                                         width=end_pnt.X, 
                                                         height=end_pnt.Z, 
                                                         global_start_pnt=global_start_pnt)
@@ -55,7 +55,7 @@ class TestSpace:
     def test_set_lengt_width_height(self):
         end_pnt = random.choice(utils.points)
         global_start_pnt = random.choice(utils.points)
-        space1 = geo.Space.from_dimensions_global_point(length=end_pnt.Y, 
+        space1 = geo.Cuboid(length=end_pnt.Y, 
                                                         width=end_pnt.X, 
                                                         height=end_pnt.Z, 
                                                         global_start_pnt=global_start_pnt)
@@ -70,13 +70,13 @@ class TestSpace:
     def test_place1(self):
         end_pnt          = utils.random_point()
         global_start_pnt = utils.random_point()
-        parent_space = geo.Space.from_dimensions_global_point(length=end_pnt.Y, 
+        parent_space = geo.Cuboid(length=end_pnt.Y, 
                                                             width=end_pnt.X, 
                                                             height=end_pnt.Z, 
                                                             global_start_pnt=global_start_pnt)
 
         end_pnt          = utils.random_point()
-        child_space = geo.Space.from_dimensions(length=end_pnt.Y, 
+        child_space = geo.Cuboid(length=end_pnt.Y, 
                                                 width=end_pnt.X, 
                                                 height=end_pnt.Z,)
         
@@ -103,13 +103,13 @@ class TestSpace:
     def test_place2(self):
         end_pnt          = utils.random_point()
         global_start_pnt = utils.random_point()
-        parent_space = geo.Space.from_dimensions_global_point(length=end_pnt.Y, 
+        parent_space = geo.Cuboid(length=end_pnt.Y, 
                                                             width=end_pnt.X, 
                                                             height=end_pnt.Z, 
                                                             global_start_pnt=global_start_pnt)
 
         end_pnt          = utils.random_point()
-        child_space = geo.Space.from_dimensions(length=end_pnt.Y, 
+        child_space = geo.Cuboid(length=end_pnt.Y, 
                                                 width=end_pnt.X, 
                                                 height=end_pnt.Z,)
         
@@ -131,7 +131,7 @@ class TestSpace:
 
         # ------------ child space 2 place ---------------
         end_pnt          = utils.random_point()
-        child_space2 = geo.Space.from_dimensions(length=end_pnt.Y, 
+        child_space2 = geo.Cuboid(length=end_pnt.Y, 
                                                 width=end_pnt.X, 
                                                 height=end_pnt.Z,)
         expected_child_global_start_pnt2 = AllplanGeo.Point3D(parent_space.global_.start_point)
@@ -159,61 +159,6 @@ class TestSpace:
         assert pp_utils.equal_points(parent_space[0].global_.end_point, expected_child_global_end_pnt)
         assert pp_utils.equal_points(parent_space[1].global_.start_point, expected_child_global_start_pnt2)
         assert pp_utils.equal_points(parent_space[1].global_.end_point, expected_child_global_end_pnt2)
-
-    def test_add_child(self):
-        end_pnt          = utils.random_point()
-        global_start_pnt = utils.random_point()
-        parent_space = geo.Space.from_dimensions_global_point(length=end_pnt.Y, 
-                                                            width=end_pnt.X, 
-                                                            height=end_pnt.Z, 
-                                                            global_start_pnt=global_start_pnt)
-        
-        end_pnt1          = utils.random_point()
-        child_space1 = geo.Space.from_dimensions(length=end_pnt1.Y, 
-                                                width=end_pnt1.X, 
-                                                height=end_pnt1.Z,)
-        
-        end_pnt2          = utils.random_point()
-        child_space2 = geo.Space.from_dimensions(length=end_pnt2.Y, 
-                                                width=end_pnt2.X, 
-                                                height=end_pnt2.Z,)
-        
-        end_pnt3          = utils.random_point()
-        grandchild_space3 = geo.Space.from_dimensions(length=end_pnt3.Y, 
-                                                width=end_pnt3.X, 
-                                                height=end_pnt3.Z,)
-        
-        child_space2._add_child(grandchild_space3)
-        parent_space._add_child(child_space1)
-        parent_space._add_child(child_space2)
-
-        # ------------------------- Expected values ---------------------
-        expected_child_space2 = geo.Space.from_dimensions(length=end_pnt2.Y, 
-                                                        width=end_pnt2.X, 
-                                                        height=end_pnt2.Z,)
-        expected_grandchild_space3 = geo.Space.from_dimensions(length=end_pnt3.Y, 
-                                                width=end_pnt3.X, 
-                                                height=end_pnt3.Z,)
-        expected_child_space1 = geo.Space.from_dimensions(length=end_pnt1.Y, 
-                                                width=end_pnt1.X, 
-                                                height=end_pnt1.Z,)
-        expected_parent_space = geo.Space.from_dimensions_global_point(length=end_pnt.Y, 
-                                                            width=end_pnt.X, 
-                                                            height=end_pnt.Z, 
-                                                            global_start_pnt=global_start_pnt)
-        
-        expected_child_space2._add_child(expected_grandchild_space3)
-        expected_parent_space._add_child(expected_child_space1)
-        expected_parent_space._add_child(expected_child_space2)
-
-        assert len(parent_space) == 2
-        assert len(child_space1) == 0
-        assert len(child_space2) == 1
-        assert parent_space == expected_parent_space
-        assert child_space1 == expected_child_space1
-        assert child_space2 == expected_child_space2
-        assert grandchild_space3 == expected_grandchild_space3
-
 
 
 class TestConcreteCover:

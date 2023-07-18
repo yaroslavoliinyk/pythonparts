@@ -1,3 +1,7 @@
+from typing import List
+
+import NemAll_Python_BasisElements as AllplanBasisElements
+
 from PythonPartUtil import PythonPartUtil
 
 from .space import Space, AllplanGeo
@@ -6,6 +10,9 @@ from ..reinforcement import Reinforcement
 
 
 class Scene:
+
+    MAX_AXIS_UNIT = 1_000_000_000_000
+
     build_ele = None
     _instance = None
 
@@ -17,32 +24,38 @@ class Scene:
         return cls._instance
 
     def __init__(self):
+        self.scene_space = Cuboid(self.MAX_AXIS_UNIT, self.MAX_AXIS_UNIT, self.MAX_AXIS_UNIT)
+        
         cls = type(self)
         if cls._instance:
             raise TypeError("Singleton implementation. Cannot create one more object.")
-        self.__model_spaces = []
-        self.__reinf_spaces = []
-        self.space = Space.from_dimensions(0, 0, 0)
         cls._instance = self
 
     @property
-    def model_ele_list(self):
-        return self.__model_spaces
+    def model_ele_list(self) -> List[AllplanBasisElements.ModelElement3D]:
+        model_ele_list = []
+        for model in self.scene_space._children:
+            if isinstance(model, Cuboid):
+                model_ele_list.extend(model.build())
+        return model_ele_list
 
     @property
     def reinf_ele_list(self):
-        return self.__reinf_spaces
+        reinf_ele_list = []
+        for reinf in self.scene_space._children:
+            if isinstance(reinf, Reinforcement):
+                reinf_ele_list.extend(reinf.build())
+        return reinf_ele_list
 
-    def build(self):
+    @property
+    def pythonpart(self):
         pyp_util = PythonPartUtil()
-        self.__model_ele_list
-        pyp_util.add_pythonpart_view_2d3d()
+        pyp_util.add_pythonpart_view_2d3d(self.model_ele_list)
+        pyp_util.add_reinforcement_elements(self.reinf_ele_list)
 
-    def _add_child(self, child_space: "Space"):
-        self.space._add_child(child_space)
-        if isinstance(child_space, Cuboid):
-            self.__model_spaces.append(child_space)
-        elif isinstance(child_space, Reinforcement):
-            self.__reinf_spaces.append(child_space)
-        else:
-            raise TypeError("Child has to be either Cuboid or Reinforcement.")
+        model_ele_list = pyp_util.create_pythonpart(self.build_ele)
+        handle_list = []
+        return model_ele_list, handle_list
+
+    def place(self, child_space, concov_dict, center=False,):
+        self.scene_space.place(child_space, concov_dict, center)
