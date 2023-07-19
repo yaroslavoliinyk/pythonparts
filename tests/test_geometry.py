@@ -54,14 +54,14 @@ class TestSpace:
         end_pnt          = utils.random_point()
         global_start_pnt = utils.random_point()
         parent_space = geo.Cuboid(length=end_pnt.Y, 
-                                                            width=end_pnt.X, 
-                                                            height=end_pnt.Z, 
-                                                            global_start_pnt=global_start_pnt)
+                                width=end_pnt.X, 
+                                height=end_pnt.Z, 
+                                global_start_pnt=global_start_pnt)
 
         end_pnt          = utils.random_point()
         child_space = geo.Cuboid(length=end_pnt.Y, 
-                                                width=end_pnt.X, 
-                                                height=end_pnt.Z,)
+                                width=end_pnt.X, 
+                                height=end_pnt.Z,)
         
         expected_child_global_start_pnt = AllplanGeo.Point3D(parent_space.global_.start_point)
         expected_child_global_end_pnt = AllplanGeo.Point3D(parent_space.global_.end_point)
@@ -162,7 +162,7 @@ class TestConcreteCover:
     
     def test_opposite_sides2(self):
         # No exception should be here.
-        cc = geo.ConcreteCover.from_sides(left=100, right=0.0)
+        cc = geo.ConcreteCover.from_sides(left=100, right=None)
         assert True
 
 
@@ -175,13 +175,17 @@ class TestCuboid:
         assert cuboid.height == 30
 
 
-class TestScene:
+# class TestScene:
 
-    def test_get_instance(self, clear_scene):
-        scene = geo.Scene.get_instance("build_element")
-        assert len(scene.model_ele_list) == 0
+    # def test_get_instance(self, clear_scene):
+    #     scene = geo.Scene.get_instance("build_element")
+    #     assert len(scene.model_ele_list) == 0
 
-    def test_two_scenes_create(self, clear_scene):
-        scene1 = geo.Scene()
-        with pytest.raises(TypeError):
-            scene2 = geo.Scene()
+    # def test_two_scenes_create(self, clear_scene):
+    #     scene1 = geo.Scene()
+    #     with pytest.raises(TypeError):
+    #         scene2 = geo.Scene()
+
+
+# ts = TestSpace()
+# ts.test_place1()

@@ -9,7 +9,7 @@ class ConcreteCover:
 
     def __init__(self, sides_dict):
         cls = type(self)
-        self._sides = defaultdict.fromkeys(cls.__match_args__, 0.0)
+        self._sides = defaultdict.fromkeys(cls.__match_args__, None)
         self.update(sides_dict)
 
     @classmethod
@@ -38,7 +38,7 @@ class ConcreteCover:
         raise AttributeError(f"Wrong. Attribute does not exist. Try one of the attributes: {' ,'.join(cls.__match_args__)}")
 
     def __repr__(self):
-        return "ConcreteCover({" + ', '.join([f"{name}={value}" for name, value in self._sides.items() if value > 0]) + "})"
+        return "ConcreteCover({" + ', '.join([f"{name}={value}" for name, value in self._sides.items() if value is not None]) + "})"
 
     def __check_opposite_sides(self):
         """
@@ -47,9 +47,9 @@ class ConcreteCover:
             Opposite sides: left and right; top and bottom; front and back
         """
         cls = type(self)
-        if ((self.left > 0 and self.right > 0) 
-            or (self.top > 0  and self.bottom > 0)
-            or (self.front > 0 and self.back > 0)):
+        if ((self.left is not None and self.right is not None) 
+            or (self.top is not None and self.bottom is not None)
+            or (self.front is not None and self.back is not None)):
             raise ValueError("You cannot have both opposite sides to" 
                              f"be positive at same time: "
                              f"{(side + '=' + self.__getattr__[side] + ',' for side in cls.__match_args__)}")

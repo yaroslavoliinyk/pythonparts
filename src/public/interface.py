@@ -5,7 +5,7 @@ from numbers import Real
 
 
 def create_scene(build_ele):
-    return pp.src.geometry.Scene.get_instance(build_ele)
+    return pp.src.geometry.Scene(build_ele)
 
 def create_cuboid(param1, param2=0., param3=0.):
     if isinstance(param1, str):

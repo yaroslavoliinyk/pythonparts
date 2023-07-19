@@ -3,34 +3,22 @@ from typing import List
 import NemAll_Python_BasisElements as AllplanBasisElements
 
 from PythonPartUtil import PythonPartUtil
+from CreateElementResult import CreateElementResult
 
 from .space import Space, AllplanGeo
 from .cuboid import Cuboid
+from .concrete_cover import ConcreteCover
 from ..reinforcement import Reinforcement
+from ..utils import center_scene_calc
 
 
 class Scene:
 
     MAX_AXIS_UNIT = 1_000_000_000_000
 
-    build_ele = None
-    _instance = None
-
-    @classmethod
-    def get_instance(cls, build_ele):
-        if not cls._instance:
-            cls.build_ele = build_ele
-            return cls()
-        return cls._instance
-
-    def __init__(self):
+    def __init__(self, build_ele):
         self.scene_space = Cuboid(self.MAX_AXIS_UNIT, self.MAX_AXIS_UNIT, self.MAX_AXIS_UNIT)
-        self.place = self.scene_space.place    # Assigning a Space method here(Monkey patching)
-
-        cls = type(self)
-        if cls._instance:
-            raise TypeError("Singleton implementation. Cannot create one more object.")
-        cls._instance = self
+        self.build_ele = build_ele
 
     @property
     def model_ele_list(self) -> List[AllplanBasisElements.ModelElement3D]:
@@ -54,13 +42,24 @@ class Scene:
         pyp_util.add_pythonpart_view_2d3d(self.model_ele_list)
         pyp_util.add_reinforcement_elements(self.reinf_ele_list)
 
-        model_ele_list = pyp_util.create_pythonpart(self.build_ele)   # TODO: Add build_ele
-        handle_list = []
-        return model_ele_list, handle_list
+        return CreateElementResult(pyp_util.create_pythonpart(self.build_ele))
 
-    # def place(self, child_space, concov_dict, center=False,):
-    #     self.scene_space.place(child_space, concov_dict, center)
+
+    def place(self, child_space: Space, center=False, **concov_sides):
+        """
+            In this method, parameter 'center' will act differently.
+            If center is True => put child_space in the very middle of Axis
+
+            Sides 'right', 'top', 'back' will not be taken into account.
+        """
+        concov = ConcreteCover(concov_sides)
+        concov.right = None
+        concov.top   = None
+        concov.back  = None
+        if center:
+            concov.left, concov.front, concov.bottom = center_scene_calc(concov, child_space)
+        self.scene_space.place(child_space, left=concov.left, front=concov.front, bottom=concov.bottom)
+
 
     def __repr__(self):
-        cls = type(self)
-        return f"Scene(build_ele={cls.build_ele!r})"
+        return f"Scene(build_ele={self.build_ele!r})"

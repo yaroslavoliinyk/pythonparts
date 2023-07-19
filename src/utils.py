@@ -52,6 +52,12 @@ def center_calc(concov, global_, child_space):
                              child_space.height)
 
 
+def center_scene_calc(concov, child_space):
+    yield -child_space.width/2. if concov.left is None else None
+    yield -child_space.length/2. if concov.front is None else None
+    yield -child_space.height/2. if concov.bottom is None else None
+
+
 def equal_points(p1: Optional[AllplanGeo.Point3D], p2: Optional[AllplanGeo.Point3D]):
     if (p1 is None) and (p2 is None):
         return True
@@ -65,19 +71,22 @@ def equal_points(p1: Optional[AllplanGeo.Point3D], p2: Optional[AllplanGeo.Point
 
 
 def __coords_calc_axis(cc_start, cc_end, parent_global_start_point, parent_global_end_point, child_len):
-    if cc_end == 0:
+    if cc_start is not None:
         child_global_start_point = parent_global_start_point + cc_start
         child_global_end_point   = child_global_start_point + child_len
-    else:
+    elif cc_end is not None:
         child_global_end_point   = parent_global_end_point - cc_end
         child_global_start_point = child_global_end_point - child_len
-    
+    else:
+        child_global_start_point = parent_global_start_point
+        child_global_end_point   = child_global_start_point + child_len
+
     return child_global_start_point, child_global_end_point
 
 
-def __center_calc_axis(shift1, shift2, parent_global_start_point, parent_global_end_point, child_len):
-    if not (math.isclose(shift1, 0) and math.isclose(shift2, 0)):
-        return shift1
+def __center_calc_axis(cc_start, cc_end, parent_global_start_point, parent_global_end_point, child_len):
+    if not (cc_start is None and cc_end is None):
+        return cc_start
     parent_len = abs(parent_global_end_point - parent_global_start_point)
     shift = (parent_len - child_len) / 2.
     return shift
