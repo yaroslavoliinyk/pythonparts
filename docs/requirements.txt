@@ -8,7 +8,6 @@ myst-parser==2.0.0
 readme-renderer==40.0
 readthedocs-sphinx-search==0.3.1
 sphinx==6.2.1
-sphinx-autodoc-typehints==1.23.3
 sphinx-design==0.5.0
 sphinx-rtd-theme==1.2.2
 sphinxcontrib-applehelp==1.0.4
