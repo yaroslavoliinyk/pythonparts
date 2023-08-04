@@ -1,0 +1,246 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Getting started &#8212; pythonparts yaroliinyk documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/design-tabs.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="API Reference" href="api-reference.html" />
+    <link rel="prev" title="Installation" href="installation.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="getting-started">
+<h1>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this heading">¶</a></h1>
+<p>Welcome! This tutorial highlights Pythonparts’ core features; for further details,
+see the links within, or the documentation index which has links to conceptual
+and API doc sections.</p>
+<section id="basic-usage">
+<h2>Basic usage<a class="headerlink" href="#basic-usage" title="Permalink to this heading">¶</a></h2>
+<p>Users will mostly import <code class="docutils literal notranslate"><span class="pre">pythonparts</span></code> package.
+Let’s build a simple joint that consists of a vertical
+Wall part and a horizontal Slab part:</p>
+<figure class="align-center">
+<img alt="Joint" src="../_images/joint2.png" />
+</figure>
+<p>In order to create the following Python Part, we need to define <code class="docutils literal notranslate"><span class="pre">Joint.pyp</span></code> for Control menu
+and <code class="docutils literal notranslate"><span class="pre">joint.py</span></code> for logics.
+<code class="docutils literal notranslate"><span class="pre">Joint.pyp</span></code> will look this way:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;Element&gt;
+    &lt;Script&gt;
+        &lt;Name&gt;PP_API\joint.py&lt;/Name&gt;
+        &lt;Title&gt;Joint&lt;/Title&gt;
+        &lt;Version&gt;1.0&lt;/Version&gt;
+    &lt;/Script&gt;
+
+    &lt;Page&gt;
+        &lt;Name&gt;Page1&lt;/Name&gt;
+        &lt;Text&gt;Joint&lt;/Text&gt;
+
+        &lt;Parameter&gt;
+            &lt;Name&gt;Length&lt;/Name&gt;
+            &lt;Text&gt;Length&lt;/Text&gt;
+            &lt;Value&gt;2000.&lt;/Value&gt;
+            &lt;ValueType&gt;Length&lt;/ValueType&gt;
+        &lt;/Parameter&gt;
+
+        &lt;Parameter&gt;
+            &lt;Name&gt;Separator1&lt;/Name&gt;
+            &lt;ValueType&gt;Separator&lt;/ValueType&gt;
+        &lt;/Parameter&gt;
+
+        &lt;Parameter&gt;
+            &lt;Name&gt;ColumnWidth&lt;/Name&gt;
+            &lt;Text&gt;Column Width&lt;/Text&gt;
+            &lt;Value&gt;200.&lt;/Value&gt;
+            &lt;ValueType&gt;Length&lt;/ValueType&gt;
+        &lt;/Parameter&gt;
+
+        &lt;Parameter&gt;
+            &lt;Name&gt;SlabDist&lt;/Name&gt;
+            &lt;Text&gt;Distance to Slab&lt;/Text&gt;
+            &lt;Value&gt;800.&lt;/Value&gt;
+            &lt;ValueType&gt;Length&lt;/ValueType&gt;
+        &lt;/Parameter&gt;
+
+        &lt;Parameter&gt;
+            &lt;Name&gt;Separator2&lt;/Name&gt;
+            &lt;ValueType&gt;Separator&lt;/ValueType&gt;
+        &lt;/Parameter&gt;
+
+        &lt;Parameter&gt;
+            &lt;Name&gt;SlabWidth&lt;/Name&gt;
+            &lt;Text&gt;Slab Width&lt;/Text&gt;
+            &lt;Value&gt;1000.&lt;/Value&gt;
+            &lt;ValueType&gt;Length&lt;/ValueType&gt;
+        &lt;/Parameter&gt;
+
+        &lt;Parameter&gt;
+            &lt;Name&gt;SlabHeight&lt;/Name&gt;
+            &lt;Text&gt;Slab Height&lt;/Text&gt;
+            &lt;Value&gt;300.&lt;/Value&gt;
+            &lt;ValueType&gt;Length&lt;/ValueType&gt;
+        &lt;/Parameter&gt;
+
+    &lt;/Page&gt;
+&lt;/Element&gt;
+</pre></div>
+</div>
+<p>Let’s finally use our <code class="docutils literal notranslate"><span class="pre">pythonparts</span></code> package in <code class="docutils literal notranslate"><span class="pre">joint.py</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pythonparts</span> <span class="k">as</span> <span class="nn">pp</span>
+
+
+<span class="k">def</span> <span class="nf">check_allplan_version</span><span class="p">(</span><span class="n">build_ele</span><span class="p">,</span> <span class="n">version</span><span class="p">):</span>
+    <span class="k">return</span> <span class="kc">True</span>
+
+
+<span class="k">def</span> <span class="nf">create_element</span><span class="p">(</span><span class="n">build_ele</span><span class="p">,</span> <span class="n">doc</span><span class="p">):</span>
+    <span class="c1"># Create a Scene object. Works like canvas</span>
+    <span class="n">scene</span>   <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">create_scene</span><span class="p">(</span><span class="n">build_ele</span><span class="p">)</span>
+    <span class="c1"># Create the first Cuboid object that represents column</span>
+    <span class="n">column</span>  <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">create_cuboid</span><span class="p">(</span><span class="n">build_ele</span><span class="o">.</span><span class="n">ColumnWidth</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                                <span class="n">build_ele</span><span class="o">.</span><span class="n">Length</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                                <span class="n">build_ele</span><span class="o">.</span><span class="n">SlabDist</span><span class="o">.</span><span class="n">value</span> <span class="o">+</span>
+                                <span class="n">build_ele</span><span class="o">.</span><span class="n">SlabHeight</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+    <span class="c1"># Create the second Cuboid object, slab</span>
+    <span class="n">slab</span>    <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">create_cuboid</span><span class="p">(</span><span class="n">build_ele</span><span class="o">.</span><span class="n">SlabWidth</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                            <span class="n">build_ele</span><span class="o">.</span><span class="n">Length</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                            <span class="n">build_ele</span><span class="o">.</span><span class="n">SlabHeight</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+    <span class="c1"># By default &#39;place&#39; method would place slab in the</span>
+    <span class="c1"># left bottom front side of column.</span>
+    <span class="n">column</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="n">slab</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">scene</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">scene</span><span class="o">.</span><span class="n">pythonpart</span>
+</pre></div>
+</div>
+</section>
+<section id="flexible-positioning">
+<h2>Flexible positioning<a class="headerlink" href="#flexible-positioning" title="Permalink to this heading">¶</a></h2>
+<p>With <code class="docutils literal notranslate"><span class="pre">pythonparts</span></code> module you can easily control
+positioning of different elements that will anchor
+to the parent element and always stick to it whenever
+parent element moves</p>
+<p>Let’s create <code class="docutils literal notranslate"><span class="pre">slab</span></code>:</p>
+<p>Let’s then anchor it to another cuboid with some idents:</p>
+<p>As you can see, the location with idents changed
+basic global coords for ourr <code class="docutils literal notranslate"><span class="pre">slab</span></code>.
+Let’s try to place out column to scene with idents
+and observe <code class="docutils literal notranslate"><span class="pre">slab</span></code>’s new global coordinates</p>
+<p>After placing <code class="docutils literal notranslate"><span class="pre">column</span></code> on left 150 and front 250 due to start
+of the Scene, we can see that <code class="docutils literal notranslate"><span class="pre">slab</span></code>’s global coords changed
+once again. Because <code class="docutils literal notranslate"><span class="pre">slab</span></code> is anchored to <code class="docutils literal notranslate"><span class="pre">column</span></code>, if we
+move <code class="docutils literal notranslate"><span class="pre">column</span></code>, <code class="docutils literal notranslate"><span class="pre">slab</span></code> will move, too.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.jpg" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">pythonparts</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#basic-usage">Basic usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#flexible-positioning">Flexible positioning</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api-reference.html">API Reference</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ex3.html">Heading 1</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="installation.html" title="previous chapter">Installation</a></li>
+      <li>Next: <a href="api-reference.html" title="next chapter">API Reference</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, yaroliinyk.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="../_sources/usage/getting-started.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

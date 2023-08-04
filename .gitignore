@@ -1,4 +1,4 @@
-# experiments/
+experiments/
 # .gitignore
 
 # Python caches and compiled files
@@ -12,7 +12,9 @@ __pycache__/
 
 # Distribution / packaging
 *.egg-info/
+.eggs/
 build/
+dist/
 
 # Jupyter notebook checkpoints
 .ipynb_checkpoints
@@ -20,5 +22,3 @@ build/
 # VS Code workspace settings
 pythonparts.code-workspace
 
-# Generated HTML and CSS
-experiments/html/
