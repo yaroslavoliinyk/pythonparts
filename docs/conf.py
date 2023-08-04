@@ -18,6 +18,7 @@ release = 'yaroliinyk'
 html_static_path = ['_static']
 html_logo = '_static/logo.jpg'
 html_css_files = ['custom.css']
+html_theme = "sphinxdoc"
 
 
 # -- General configuration ---------------------------------------------------

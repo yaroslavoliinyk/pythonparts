@@ -6,49 +6,74 @@ from numbers import Real
 
 def create_scene(build_ele):
     """
-    The function "create_scene" creates a geometry scene using the input build element.
-    
-    :param build_ele: The parameter "build_ele" is likely an input that represents the elements or
-    objects that will be included in the scene. It could be a list, dictionary, or any other data
-    structure that contains information about the objects to be included in the scene
-    :return: a pp.src.geometry.Scene object.
+    Creates a canvas. All objects should be placed on Scene.
+
+    :param build_ele: Given by Allplan ``BuildingElement`` object
+
+    :return: :class:`Scene <Scene>` object
     """
     return pp.src.geometry.Scene(build_ele)
 
 
-@overload
-def create_cuboid(width: float, length: float, height: float): 
+def create_cuboid(width, length, height):
     """
-    Hello There
-    """
+    Constructs :class:`Cuboid <Cuboid>` object with start global point = ``Point3D(0, 0, 0)``.
 
+    :param width: Width of Cuboid. Goes along X axis in Allplan.
+    :param length: Length of Cuboid. Goes along Y axis in Allplan.
+    :param height: Height of Cuboid. Goes along Z axis in Allplan.
 
-@overload
-def create_cuboid(be_name: str):
+    :return: :class:`Cuboid <Cuboid>` object
+    :rtype: pythonparts.Cuboid
     """
-    We're here
-    """
-
-
-def create_cuboid(param1, param2=0., param3=0.):
-    """
-    The function create_cuboid creates a cuboid object with the given dimensions or returns a string
-    if the first parameter is a string.
-
-    :param param1: The first parameter, param1, represents the width of the cuboid
-    :param param2: param2 is an optional parameter that represents the length of the cuboid. If no value
-                   is provided for param2, it defaults to 0
-    :param param3: The param3 parameter represents the height of the cuboid
-    :return: The function create_cuboid returns a cuboid object from the pp.src.geometry.Cuboid
-             class if the parameters param1, param2, and param3 are all real numbers. If param1 is a
-             string, it returns the string "Cuboid: build_ele". If none of these conditions are met, it raises a
-             NotImplemented
-    """
-    if isinstance(param1, str):
-        return f"Cuboid: build_ele"
-    if isinstance(param1, Real) and isinstance(param2, Real) and isinstance(param3, Real):
-        width, length, height = param1, param2, param3
+    if isinstance(width, Real) and isinstance(length, Real) and isinstance(height, Real):
         return pp.src.geometry.Cuboid(width, length, height)
     
     raise NotImplemented()
 
+
+def create_cuboid_from_pyp(pyp_name):
+    """
+    Constructs :class:`Cuboid <Cuboid>` object fetching 
+    width, length, and height from the according pyp file.
+
+    :param pyp_name: According pyp file has to have three following parameters: 
+    
+                                - *pyp_name + 'Width'*
+                                - *pyp_name + 'Length'*
+                                - *pyp_name + 'Height'*
+
+    :return: :class:`Cuboid <Cuboid>` object
+    :rtype: pythonparts.Cuboid
+
+    Inside pyp file::
+
+        <Parameter>
+            <Name>ColumnWidth</Name>
+            <Text>Column Width</Text>
+            <Value>200.</Value>
+            <ValueType>Length</ValueType>
+        </Parameter>
+        
+        <Parameter>
+            <Name>ColumnLength</Name>
+            <Text>Column Length</Text>
+            <Value>1000.</Value>
+            <ValueType>Length</ValueType>
+        </Parameter>
+        
+        <Parameter>
+            <Name>ColumnHeight</Name>
+            <Text>Column Height</Text>
+            <Value>100.</Value>
+            <ValueType>Length</ValueType>
+        </Parameter>
+
+    Usage:
+
+        >>> import pythonparts as pp
+        >>> c = pp.create_cuboid_from_pyp('Column')
+        >>> c
+        Cuboid(width=200, length=1000, height=100)   
+    """
+    return f"Cuboid: {pyp_name}"

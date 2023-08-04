@@ -12,6 +12,7 @@ __pycache__/
 
 # Distribution / packaging
 *.egg-info/
+.eggs/
 build/
 dist/
 
@@ -21,4 +22,3 @@ dist/
 # VS Code workspace settings
 pythonparts.code-workspace
 
-.eggs/

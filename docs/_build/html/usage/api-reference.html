@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>API Reference &#8212; pythonparts yaroliinyk documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
@@ -39,28 +40,118 @@ the most important right here and provide links to the canonical documentation.<
 <section id="main-interface">
 <h2>Main Interface<a class="headerlink" href="#main-interface" title="Permalink to this heading">¶</a></h2>
 <dl class="py function">
+<dt class="sig sig-object py" id="pythonparts.create_scene">
+<span class="sig-prename descclassname"><span class="pre">pythonparts.</span></span><span class="sig-name descname"><span class="pre">create_scene</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">build_ele</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pythonparts.create_scene" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a canvas. All objects should be placed on Scene.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>build_ele</strong> – Given by Allplan <code class="docutils literal notranslate"><span class="pre">BuildingElement</span></code> object</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Scene</span></code> object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="pythonparts.create_cuboid">
-<span class="sig-prename descclassname"><span class="pre">pythonparts.</span></span><span class="sig-name descname"><span class="pre">create_cuboid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pythonparts.create_cuboid" title="Permalink to this definition">¶</a></dt>
-<dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">pythonparts.</span></span><span class="sig-name descname"><span class="pre">create_cuboid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">be_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span></dt>
-<dd><p>The function create_cuboid creates a cuboid object with the given dimensions or returns a string
-if the first parameter is a string.</p>
+<span class="sig-prename descclassname"><span class="pre">pythonparts.</span></span><span class="sig-name descname"><span class="pre">create_cuboid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">width</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pythonparts.create_cuboid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs <code class="xref py py-class docutils literal notranslate"><span class="pre">Cuboid</span></code> object with start global point = <code class="docutils literal notranslate"><span class="pre">Point3D(0,</span> <span class="pre">0,</span> <span class="pre">0)</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>param1</strong> – The first parameter, param1, represents the width of the cuboid</p></li>
-<li><p><strong>param2</strong> – param2 is an optional parameter that represents the length of the cuboid. If no value
-is provided for param2, it defaults to 0</p></li>
-<li><p><strong>param3</strong> – The param3 parameter represents the height of the cuboid</p></li>
+<li><p><strong>width</strong> – Width of Cuboid. Goes along X axis in Allplan.</p></li>
+<li><p><strong>length</strong> – Length of Cuboid. Goes along Y axis in Allplan.</p></li>
+<li><p><strong>height</strong> – Height of Cuboid. Goes along Z axis in Allplan.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The function create_cuboid returns a cuboid object from the pp.src.geometry.Cuboid
-class if the parameters param1, param2, and param3 are all real numbers. If param1 is a
-string, it returns the string “Cuboid: build_ele”. If none of these conditions are met, it raises a
-NotImplemented</p>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Cuboid</span></code> object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pythonparts.Cuboid</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pythonparts.create_cuboid_from_pyp">
+<span class="sig-prename descclassname"><span class="pre">pythonparts.</span></span><span class="sig-name descname"><span class="pre">create_cuboid_from_pyp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pyp_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pythonparts.create_cuboid_from_pyp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs <code class="xref py py-class docutils literal notranslate"><span class="pre">Cuboid</span></code> object fetching 
+width, length, and height from the according pyp file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pyp_name</strong> – <p>According pyp file has to have three following parameters:</p>
+<ul class="simple">
+<li><p><em>pyp_name + ‘Width’</em></p></li>
+<li><p><em>pyp_name + ‘Length’</em></p></li>
+<li><p><em>pyp_name + ‘Height’</em></p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Cuboid</span></code> object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pythonparts.Cuboid</p>
+</dd>
+</dl>
+<p>Inside pyp file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">Parameter</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">Name</span><span class="o">&gt;</span><span class="n">ColumnWidth</span><span class="o">&lt;/</span><span class="n">Name</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">Text</span><span class="o">&gt;</span><span class="n">Column</span> <span class="n">Width</span><span class="o">&lt;/</span><span class="n">Text</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">Value</span><span class="o">&gt;</span><span class="mf">200.</span><span class="o">&lt;/</span><span class="n">Value</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">ValueType</span><span class="o">&gt;</span><span class="n">Length</span><span class="o">&lt;/</span><span class="n">ValueType</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">Parameter</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">Parameter</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">Name</span><span class="o">&gt;</span><span class="n">ColumnLength</span><span class="o">&lt;/</span><span class="n">Name</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">Text</span><span class="o">&gt;</span><span class="n">Column</span> <span class="n">Length</span><span class="o">&lt;/</span><span class="n">Text</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">Value</span><span class="o">&gt;</span><span class="mf">1000.</span><span class="o">&lt;/</span><span class="n">Value</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">ValueType</span><span class="o">&gt;</span><span class="n">Length</span><span class="o">&lt;/</span><span class="n">ValueType</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">Parameter</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">Parameter</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">Name</span><span class="o">&gt;</span><span class="n">ColumnHeight</span><span class="o">&lt;/</span><span class="n">Name</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">Text</span><span class="o">&gt;</span><span class="n">Column</span> <span class="n">Height</span><span class="o">&lt;/</span><span class="n">Text</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">Value</span><span class="o">&gt;</span><span class="mf">100.</span><span class="o">&lt;/</span><span class="n">Value</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">ValueType</span><span class="o">&gt;</span><span class="n">Length</span><span class="o">&lt;/</span><span class="n">ValueType</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">Parameter</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Usage:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pythonparts</span> <span class="k">as</span> <span class="nn">pp</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">create_cuboid_from_pyp</span><span class="p">(</span><span class="s1">&#39;Column&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span>
+<span class="go">Cuboid(width=200, length=1000, height=100)   </span>
+</pre></div>
+</div>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py class">
+<dt class="sig sig-object py" id="pythonparts.geometry.Cuboid">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pythonparts.geometry.</span></span><span class="sig-name descname"><span class="pre">Cuboid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">width</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">global_start_pnt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">com_prop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pythonparts.geometry.Cuboid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Essentially a Polyhedron3D that’s flexible because of child-parent relations with other <code class="docutils literal notranslate"><span class="pre">Cuboid</span></code> s.
+Can be easily adjusted on a <code class="docutils literal notranslate"><span class="pre">Scene</span></code> and built or used as space/boundary for other objects(like Reinforcement).</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="pythonparts.geometry.Cuboid.com_prop">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">com_prop</span></span><a class="headerlink" href="#pythonparts.geometry.Cuboid.com_prop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returning the basic set <code class="docutils literal notranslate"><span class="pre">CommonProperties</span></code> object of given <code class="docutils literal notranslate"><span class="pre">Cuboid</span></code></p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pythonparts.geometry.Cuboid.polyhedron">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">polyhedron</span></span><a class="headerlink" href="#pythonparts.geometry.Cuboid.polyhedron" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtain <code class="docutils literal notranslate"><span class="pre">AllplanGeo.Polyhedron3D</span></code> object with given parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A Polyhedron object created using the</p>
+</dd>
+</dl>
+<p>AllplanGeo.Polyhedron3D.CreateCuboid method.</p>
+</dd></dl>
+
 </dd></dl>
 
 </section>
@@ -130,7 +221,7 @@ NotImplemented</p>
       &copy;2023, yaroliinyk.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.0.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.2.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
       
       |
