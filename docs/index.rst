@@ -42,6 +42,11 @@ API documentation:
 
    usage/api-reference
 
+.. toctree::
+   :maxdepth: 1
+   :glob:
+
+   usage/ex3
 .. 
    API
    ---

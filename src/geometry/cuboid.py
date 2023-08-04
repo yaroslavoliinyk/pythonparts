@@ -20,13 +20,6 @@ class Cuboid(Space):
 
     @property
     def polyhedron(self):
-        """
-        Obtain ``AllplanGeo.Polyhedron3D`` object with given parameters.
-
-
-        :return: A Polyhedron object created using the
-        AllplanGeo.Polyhedron3D.CreateCuboid method.
-        """
         return AllplanGeo.Polyhedron3D.CreateCuboid(self.global_.start_point, self.global_.end_point)
 
     @property

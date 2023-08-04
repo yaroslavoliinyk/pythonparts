@@ -15,28 +15,34 @@ project = 'pythonparts'
 copyright = '2023, yaroliinyk'
 author = 'yaroliinyk'
 release = 'yaroliinyk'
-html_static_path = ['_static']
+# html_static_path = ['_static']
 html_logo = '_static/logo.jpg'
-html_css_files = ['custom.css']
+# html_css_files = ['custom.css']
 html_theme = "sphinxdoc"
-
+myst_enable_extensions = ["colon_fence",
+                          "deflist",
+                          "dollarmath",
+                          "attrs_block",
+                          "attrs_inline",]
+myst_heading_anchors = 2
+myst_highlight_code_blocks = True
+sphinx_togglebutton = True
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 autodoc_mock_imports = ["public"]
-autodoc_default_options = {
-    'members': True,           # Document members (methods and attributes)
-    'undoc-members': False,    # Exclude members without documentation
-    'private-members': False,  # Exclude private members (those starting with an underscore)
-    'special-members': False,  # Exclude special members (like __init__)
-}
+# autodoc_default_options = {
+#     'members': True,           # Document members (methods and attributes)
+#     'undoc-members': False,    # Exclude members without documentation
+#     'private-members': False,  # Exclude private members (those starting with an underscore)
+#     'special-members': False,  # Exclude special members (like __init__)
+# }
 
-extensions = ['sphinx.ext.autodoc',
-              'sphinx.ext.doctest',]
+extensions = ['myst_parser',
+              'sphinx_design',]
 
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
-
 
 
 # -- Options for HTML output -------------------------------------------------
