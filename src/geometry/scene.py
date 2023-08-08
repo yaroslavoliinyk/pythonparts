@@ -73,3 +73,7 @@ class Scene:
 
     def __repr__(self):
         return f"Scene(build_ele={self.build_ele!r})"
+
+    def __str__(self):
+        return f"Scene(children={[child for child in self.scene_space._children]})"
+

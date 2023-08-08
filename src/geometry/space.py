@@ -178,22 +178,22 @@ class Space(ABC):
         
         :Example:
 
-            Let's first create two cubes. One with sides 200x200x200, another 1000x1000x1000
-            >>> import pythonparts as pp
-            >>> small_cube = pp.create_cuboid(200, 200, 200)
-            >>> big_cube = pp.create_cuboid(1000, 1000, 1000)
+            Let's first create two cubes. One with sides 200x200x200, another 1000x1000x1000:
+                >>> import pythonparts as pp
+                >>> small_cube = pp.create_cuboid(200, 200, 200)
+                >>> big_cube = pp.create_cuboid(1000, 1000, 1000)
 
             And place small cube inside big one with left shift = 300
 
-            >>> big_cube.place(small_cube, left=300)
+                >>> big_cube.place(small_cube, left=300)
 
             After creating scene inside ``create_element()`` and returning pythonpart, we 
             will obtain the following result:
 
-            >>> def create_element(build_ele, doc):
-            >>>     scene  = pp.create_scene(build_ele)
-            >>>     scene.place(big_cube)
-            >>>     return scene.pythonpart
+                >>> def create_element(build_ele, doc):
+                >>>     scene  = pp.create_scene(build_ele)
+                >>>     scene.place(big_cube)
+                >>>     return scene.pythonpart
 
             .. image:: images/place_001.png
                 :alt: Resulting image with shift left=300
@@ -202,7 +202,7 @@ class Space(ABC):
 
             If we place small cube inside very center, we will obtain the following:
 
-            >>> big_cube.place(small_cube, center=True)
+                >>> big_cube.place(small_cube, center=True)
 
             ** Other code is the same **
 
@@ -213,7 +213,7 @@ class Space(ABC):
 
             Placing center and shift right=20 will give us:
 
-            >>> big_cube.place(small_cube, center=Ture, right=20)
+                >>> big_cube.place(small_cube, center=Ture, right=20)
 
             ** Other code is the same **
 
@@ -224,7 +224,7 @@ class Space(ABC):
 
             You can also adjust starting point, placing main object on a scene with parameters:
 
-            >>> scene.place(big_cube, center=True, bottom=0)
+                >>> scene.place(big_cube, center=True, bottom=0)
 
             ** Other code is the same **
 

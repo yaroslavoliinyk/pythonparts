@@ -28,3 +28,6 @@ class Cuboid(Space):
         Returning the basic set ``CommonProperties`` object of given ``Cuboid``
         """
         return self.__com_prop
+    
+    def __str__(self):
+        return f"Cuboid(width={self.widht}, length={self.length}, height={self.height})"
