@@ -9,10 +9,6 @@ class Cuboid(Space):
     """
 
     def __init__(self, width, length, height, global_start_pnt=None, com_prop=None):
-        """
-        Can be defined with ``width``, ``length`` and ``height`` and placed at a given global point (default == ``Point3D(0, 0, 0)`` )
-        Specific ``CommonProperties`` can also be added (default == ``com_prop.GetGlobalProperties()``)
-        """
         super().__init__(width, length, height, global_start_pnt)
         if com_prop is None:
             com_prop = cp.global_properties()
@@ -20,6 +16,10 @@ class Cuboid(Space):
 
     @property
     def polyhedron(self):
+        """
+            :return: ``AllplanGeo.Polyhedron3D`` created with ``AllplanGeo.Polyhedron3D.CreateCuboid``
+        """
+
         return AllplanGeo.Polyhedron3D.CreateCuboid(self.global_.start_point, self.global_.end_point)
 
     @property
