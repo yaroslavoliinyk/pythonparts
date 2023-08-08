@@ -11,6 +11,15 @@ def create_scene(build_ele):
     :param build_ele: Given by Allplan ``BuildingElement`` object
 
     :return: :class:`Scene <Scene>` object
+
+    Usage:
+
+        >>> import pythonparts as pp
+        >>> c = pp.create_cuboid(200, 1000, 100)
+        >>> scene = pp.create_scene('build_ele')
+        >>> scene.place(c)
+        >>> scene
+        Scene(children=[Cuboid(width=200, length=1000, height=100)]) 
     """
     return pp.src.geometry.Scene(build_ele)
 
@@ -25,6 +34,13 @@ def create_cuboid(width, length, height):
 
     :return: :class:`Cuboid <Cuboid>` object
     :rtype: pythonparts.Cuboid
+
+    Usage:
+
+        >>> import pythonparts as pp
+        >>> c = pp.create_cuboid(200, 1000, 100)
+        >>> c
+        Cuboid(width=200, length=1000, height=100) 
     """
     if isinstance(width, Real) and isinstance(length, Real) and isinstance(height, Real):
         return pp.src.geometry.Cuboid(width, length, height)

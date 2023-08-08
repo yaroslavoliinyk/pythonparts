@@ -16,20 +16,21 @@ from ..config import TOLERANCE
 # methods for positioning child spaces within it.
 class Space(ABC):
     """
-        Abstract class for representing objects in *Allplan PythonPart*s.
+    Abstract class for representing objects in *Allplan PythonParts*.
 
-        Contains general logics for interaction with other :py:class:`Space <pythonparts.geometry.Space>` objects.
-        You can :py:func:`place <pythonparts.geometry.Space.place>` child ``Space`` objects with 
-        different :py:class:`Concrete cover <pythonparts.geometry.ConcreteCover>` idents.
+    Contains general logics for interaction with other :py:class:`Space <pythonparts.geometry.Space>` objects.
+    You can :py:func:`place child <pythonparts.geometry.Space.place>`  ``Space`` objects with 
+    different :py:class:`Concrete cover <pythonparts.geometry.ConcreteCover>` idents.
 
-        From any :py:class:`Space <pythonparts.geometry.Space>` object you can make 
-        :py:func:`an AllplanGeo.Polyhedron3D <pythonparts.geometry.Space.polyhedron>` and get 
-        :py:func:`AllplanBaseElements.CommonProperties <pythonparts.geometry.Space.com_prop>`
+    From any :py:class:`Space <pythonparts.geometry.Space>` object you can make 
+    
+    :py:func:`an AllplanGeo.Polyhedron3D <pythonparts.geometry.Space.polyhedron>` and get 
+    
+    :py:func:`AllplanBaseElements.CommonProperties <pythonparts.geometry.Space.com_prop>`
 
-        You can also :py:func:`build <pythonparts.geometry.Space.build>` an ``AllplanBasisElements.ModelElement3D``
-        object to represent it in ``Allplan``.
+    You can also :py:func:`build <pythonparts.geometry.Space.build>` an ``AllplanBasisElements.ModelElement3D``
+    object to represent it in ``Allplan``.
 
-        **See more methods below**
     """
 
     def __init__( 
@@ -47,8 +48,7 @@ class Space(ABC):
         :type length: float value >= 0. 
         :param height: Set a length of an object.
         :type height: float value >= 0.
-        :param global_start_pnt: Set Global Start Point on coordinate axis. 
-        If not set, it will be ``AllplanGeo.Point3D(0, 0, 0)`` 
+        :param global_start_pnt: Set Global Start Point on coordinate axis. If not set, it will be ``AllplanGeo.Point3D(0, 0, 0)`` 
         :type global_start_pnt: ``None`` or ``AllplanGeo.Point3D``
         """
         local    = Coords(AllplanGeo.Point3D(), AllplanGeo.Point3D(width, length, height))
@@ -65,8 +65,10 @@ class Space(ABC):
         self._concov = ConcreteCover.from_sides()
         self._local  = local
         self._global = global_
-        #: Inner attribute that contains list of ``Space``s that were :py:func:`placed <pythonparts.geometry.Space.place>`.
+
         self._children: List[Space] = []
+        """Inner attribute that contains list of ``Space`` that were :py:func:`placed <pythonparts.geometry.Space.place>`."""
+        
         self._visible               = True
         self._union_parent          = True
 
@@ -129,7 +131,7 @@ class Space(ABC):
         Set new Global coordinates for this ``Space`` object and all its :py:func:`children <pythonparts.geometry.Space._children>`
         
         :param parent_global_coords: An instance of the Coords class.
-        It represents the global coordinates of the parent object.
+            It represents the global coordinates of the parent object.
         :type parent_global_coords: Coords
         """
         start_point, end_point = child_global_coords_calc(self._concov, parent_global_coords, self)
@@ -153,14 +155,14 @@ class Space(ABC):
         Position a child space inside a parent space, with options for
         centering and specifying the position of each side.
 
-        :info: If you don't define *center* and *sides*, child global start point will be
-        equal parent global start point.
+        :info: If you don't define *center* and *sides* , child global start point will be
+            equal parent global start point.
 
         :param child_space: Represents the space that will be placed inside the parent space
         :type child_space: "Space"
         :param center: A boolean value indicating whether the child space should be centered within the
-        parent space. If set to True, the left, front, and bottom shifts will be redefined by the
-        center_calc function, defaults to False
+            parent space. If set to True, the left, front, and bottom shifts will be redefined by the
+            center_calc function, defaults to False
         :type center: bool (optional)
         :type sides: 6 different sides that you can add to place child space inside parent:
             - left
@@ -172,7 +174,7 @@ class Space(ABC):
         :type sides: float (optional)
 
         :warning: Opposite sides(*left* and *right*; *front* and *back*; *top* and *bottom*) 
-        are not allowed to have values at same time.
+            are not allowed to have values at same time.
         
         :Example:
 

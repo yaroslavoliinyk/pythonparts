@@ -4,8 +4,8 @@ from ..properties import com_prop as cp
 
 class Cuboid(Space):
     """
-    Essentially a Polyhedron3D that's flexible because of child-parent relations with other ``Cuboid`` s.
-    Can be easily adjusted on a ``Scene`` and built or used as space/boundary for other objects(like Reinforcement).
+        Essentially a Polyhedron3D that's flexible because of child-parent relations with other ``Cuboid`` .
+        Can be easily adjusted on a ``Scene`` and built or used as space/boundary for other objects(like Reinforcement).
     """
 
     def __init__(self, width, length, height, global_start_pnt=None, com_prop=None):

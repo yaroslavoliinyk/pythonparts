@@ -3,11 +3,24 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to pythonparts's documentation!
+Welcome to Pythonparts' documentation!
 =======================================
 
+**Pythonparts** is a Python library `Allplan Python API  <https://pythonparts.allplan.com/2023/getting_started/>`_ 
+that offers a simple interface to build exciting PythonPart scripts for *Allplan*
+
+Check out the :doc:`usage` section for further information, including how to
+:ref:`install <installation>` the project.
+
+.. note::
+
+   This project is under active development.
+
+
+Contents
+--------
+
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
 
-
+   usage
+   api
