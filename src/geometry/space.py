@@ -15,6 +15,9 @@ from ..config import TOLERANCE
 # The `Space` class represents a three-dimensional space with width, length, and height, and provides
 # methods for positioning child spaces within it.
 class Space(ABC):
+    """
+        Abstract class for representing objects in *Allplan PythonPart*s.
+    """
 
     def __init__( 
         self, width, length, height, global_start_pnt=None,

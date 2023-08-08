@@ -1,4 +1,0 @@
-(header-label)=
-# A header
-
-[My reference](#header-label)

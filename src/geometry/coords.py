@@ -7,6 +7,10 @@ from ..utils import equal_points
 
 
 class Coords:
+    """
+        
+    """
+
 
     def __init__(self, start_point: Optional[AllplanGeo.Point3D]=None, end_point: Optional[AllplanGeo.Point3D]=None):
         self.__start_point = start_point
