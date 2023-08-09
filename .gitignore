@@ -13,7 +13,6 @@ __pycache__/
 # Distribution / packaging
 *.egg-info/
 .eggs/
-build/
 dist/
 
 # Jupyter notebook checkpoints
