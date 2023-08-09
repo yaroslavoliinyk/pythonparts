@@ -129,8 +129,6 @@ parent element moves
 
 Let's create ``slab``:
 
-.. doctest:: basic
-
     >>> import pythonparts as pp
     >>> slab  = pp.create_cuboid(200, 1000, 200)
     >>> slab.global_.start_point
@@ -139,8 +137,6 @@ Let's create ``slab``:
     Point3D(200, 1000, 200)
 
 Let's then anchor it to another cuboid with some idents:
-
-.. doctest:: basic
 
     >>> column  = pp.create_cuboid(1000, 1000, 1000)
     >>> column.place(slab, right=300, bottom=120, back=250)
@@ -152,9 +148,7 @@ Let's then anchor it to another cuboid with some idents:
 As you can see, the location with idents changed
 basic global coords for ourr ``slab``. 
 Let's try to place out column to scene with idents 
-and observe ``slab``'s new global coordinates
-
-.. doctest:: basic
+and observe ``slab``'s new global coordinates:
 
     >>> scene  = pp.create_scene('build_ele')
     >>> scene.place(column, left=150, front=250)
