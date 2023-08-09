@@ -3,7 +3,7 @@
 # platform: win-64
 alabaster==0.7.13
 furo==2023.7.26
-sphinx-autodoc-typehints==1.23.3
+sphinx-autodoc-typehints==1.19.5
 babel==2.12.1
 black==23.3.0
 myst-parser==2.0.0
