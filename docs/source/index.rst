@@ -24,3 +24,6 @@ Contents
 
    usage
    api
+
+
+Pythonparts has its documentation hosted on Read the Docs.
