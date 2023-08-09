@@ -7,12 +7,17 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 import sys
 import os
+
+
 sys.path.insert(0, os.path.abspath('../'))
+print('SYYYYS', sys.path)
+sys.path.insert(0, os.path.abspath('../../'))
+
 
 project = 'Pythonparts'
 copyright = '2023, Yaroslav Oliinyk'
 author = 'Yaroslav Oliinyk'
-release = '0.1.0'
+release = '0.1.1'
 autodoc_member_order = 'bysource'
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
