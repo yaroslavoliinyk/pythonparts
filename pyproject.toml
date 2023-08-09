@@ -1,6 +1,7 @@
 [build-system]
 requires = ['setuptools',
-            'wheel',]
+            'wheel',
+            'pythonparts']
 
 [project]
 name = "pythonparts"
