@@ -7,11 +7,58 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 import sys
 import os
+import subprocess
 
-print('SYYYYS', sys.path)
 sys.path.insert(0, os.path.abspath('../../'))
 sys.path.insert(0, os.path.abspath('../'))
 sys.path.insert(0, os.path.abspath('.'))
+
+try:
+    # Run the 'pip list' command and capture the output
+    result = subprocess.run(['pip', 'list'], stdout=subprocess.PIPE, text=True, check=True)
+    output = result.stdout
+
+    # Split the output into lines and ignore the header
+    lines = output.strip().split('\n')[2:]
+
+    # Extract package names from each line
+    packages = [line.split()[0] for line in lines]
+
+    print(packages)
+except subprocess.CalledProcessError as e:
+    print("Error:", e)
+
+
+import pythonparts as pp
+
+print(pp.create_scene('Hello'))
+
+print('SYYYYS', sys.path)
+
+
+import os
+
+def list_folders(directory):
+    try:
+        # Get a list of all entries in the directory
+        entries = os.listdir(directory)
+
+        # Filter out only the directories
+        folders = [entry for entry in entries if os.path.isdir(os.path.join(directory, entry))]
+
+        return folders
+    except OSError as e:
+        print("Error:", e)
+        return []
+
+for path in sys.path:
+    target_directory = path
+    folders = list_folders(target_directory)
+
+    print("List of folders in", target_directory)
+    for folder in folders:
+        print(folder)
+
 
 
 project = 'Pythonparts'
