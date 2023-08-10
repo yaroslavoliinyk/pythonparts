@@ -10,6 +10,8 @@ import os
 
 print('SYYYYS', sys.path)
 sys.path.insert(0, os.path.abspath('../../'))
+sys.path.insert(0, os.path.abspath('../'))
+sys.path.insert(0, os.path.abspath('.'))
 
 
 project = 'Pythonparts'
