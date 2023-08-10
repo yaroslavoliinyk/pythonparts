@@ -29,13 +29,6 @@ except subprocess.CalledProcessError as e:
     print("Error:", e)
 
 
-import pythonparts as pp
-
-print(pp.create_scene('Hello'))
-
-print('SYYYYS', sys.path)
-
-
 import os
 
 def list_folders(directory):
