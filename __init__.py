@@ -12,6 +12,6 @@ if os.name == "nt":
     sys.path.append(path_pp_framework_general_sctips())
 
 
-import NemAll_Python_Geometry as AllplanGeo    # type: ignore
+    import NemAll_Python_Geometry as AllplanGeo    # type: ignore
 from .src import create_scene, create_cuboid_from_pyp, create_cuboid, geometry
 
