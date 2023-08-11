@@ -3,6 +3,8 @@ import pythonparts as pp
 from typing import overload, Tuple, Union, Optional
 from numbers import Real
 
+from .tools import BuildElement
+
 
 def create_scene(build_ele):
     """
@@ -21,6 +23,9 @@ def create_scene(build_ele):
         >>> scene
         Scene(children=[Cuboid(width=200, length=1000, height=100)]) 
     """
+    build_element = BuildElement()
+    build_element = build_ele
+    
     return pp.src.geometry.Scene(build_ele)
 
 
@@ -92,4 +97,11 @@ def create_cuboid_from_pyp(pyp_name):
         >>> c
         Cuboid(width=200, length=1000, height=100)   
     """
-    return f"Cuboid: {pyp_name}"
+    build_element = BuildElement()
+    build_ele = build_element
+    
+    width  = getattr((build_ele), f"{pyp_name}Width").value
+    length = getattr((build_ele), f"{pyp_name}Length").value
+    height = getattr((build_ele), f"{pyp_name}Height").value
+
+    return pp.src.geometry.Cuboid(width, length, height)
