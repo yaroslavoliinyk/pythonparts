@@ -6,7 +6,8 @@ import warnings
 OLDEST_ALLPLAN_VERSION = 2021
 NEWEST_ALLPLAN_VERSION = 2023
 
-if os.name == "nt":
+
+try:
     import winreg
     warnings.filterwarnings("ignore", category=RuntimeWarning)
 
@@ -74,3 +75,5 @@ if os.name == "nt":
         "GeneralScripts" folder within the "pp_framework" directory.
         """
         return path_pp_framework() + r"\GeneralScripts"
+except ModuleNotFoundError:
+    print('unix-base system')
