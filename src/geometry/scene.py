@@ -4,12 +4,15 @@ import NemAll_Python_BasisElements as AllplanBasisElements
 
 from PythonPartUtil import PythonPartUtil
 from CreateElementResult import CreateElementResult
+from PythonPart import View2D3D, PythonPart
 
 from .space import Space, AllplanGeo
 from .cuboid import Cuboid
 from .concrete_cover import ConcreteCover
 from ..reinforcement import Reinforcement
 from ..utils import center_scene_calc
+from ..properties import com_prop as cp
+
 
 
 # The `Scene` class represents a 3D scene and provides methods for adding model elements and
@@ -51,11 +54,9 @@ class Scene:
         the model element list and then creating the Python part using the build element.
         :return: an instance of the PythonPart.
         """
-        pyp_util = PythonPartUtil()
-        pyp_util.add_pythonpart_view_2d3d(self.model_ele_list)
-        pyp_util.add_reinforcement_elements(self.reinf_ele_list)
-
-        return CreateElementResult(pyp_util.create_pythonpart(self.build_ele))
+        
+        ppart = self.PythonPart()
+        return ppart.create(self.build_ele, self.model_ele_list, self.reinf_ele_list, cp.global_properties())
 
 
     def place(self, child_space: Space, center=False, **concov_sides):
@@ -69,6 +70,26 @@ class Scene:
         if center:
             concov.left, concov.front, concov.bottom = center_scene_calc(concov, child_space)
         self.scene_space.place(child_space, left=concov.left, front=concov.front, bottom=concov.bottom)
+
+
+    class PythonPart:
+
+        def create(self, build_ele, model_ele_list, reinf_ele_list, com_prop):
+            """
+            Create Object Pythonpart
+
+            """
+            pythonpart = PythonPart(
+                str(self.__class__.__name__),
+                parameter_list=build_ele.get_params_list(),
+                hash_value=build_ele.get_hash(),
+                python_file=build_ele.pyp_file_name,
+                views=[View2D3D(model_ele_list)],
+                reinforcement=reinf_ele_list,
+                common_props=com_prop,
+            )
+
+            return pythonpart.create()
 
 
     def __repr__(self):
