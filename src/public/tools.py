@@ -2,18 +2,15 @@ import pythonparts as pp
 
 
 
-class BuildElement:
 
-    def __set_name__(self, owner, name):
-        self.storage_name = name
+class Register:
 
-    def __set__(self, instance, value):
+    build_ele = None
+
+    def set(self, build_ele):
         cls = type(self)
-        cls.registered_build_ele = value
+        cls.build_ele = build_ele
 
-    def __get__(self, instance, owner):
+    def get(self):
         cls = type(self)
-        if ('registered_build_ele' in cls.__dict__):
-            return cls.registered_build_ele
-        else:
-            raise AttributeError('Build_ele is not registered!')
+        return cls.build_ele
