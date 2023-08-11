@@ -75,5 +75,5 @@ try:
         "GeneralScripts" folder within the "pp_framework" directory.
         """
         return path_pp_framework() + r"\GeneralScripts"
-except ModuleNotFoundError:
+except Exception:
     print('unix-base system')
