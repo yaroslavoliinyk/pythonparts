@@ -11,7 +11,7 @@ try:
     sys.path.append(path_pp_framework())
     sys.path.append(path_pp_framework_general_sctips())
     import NemAll_Python_Geometry as AllplanGeo    # type: ignore
-except Exception:
+except ModuleNotFoundError:
     print('unix-based system')
 
     
