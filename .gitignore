@@ -15,7 +15,6 @@ docs/build/
 # Distribution / packaging
 *.egg-info/
 .eggs/
-build/
 dist/
 
 # Jupyter notebook checkpoints
