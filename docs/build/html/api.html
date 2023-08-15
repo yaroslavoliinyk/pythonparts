@@ -199,31 +199,32 @@
 <section id="public-interface">
 <h2>Public Interface<a class="headerlink" href="#public-interface" title="Permalink to this heading">#</a></h2>
 <dl class="py function">
-<dt class="sig sig-object py" id="pythonparts.create_scene">
-<span class="sig-prename descclassname"><span class="pre">pythonparts.</span></span><span class="sig-name descname"><span class="pre">create_scene</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">build_ele</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pythonparts.create_scene" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="create_scene">
+<span class="sig-name descname"><span class="pre">create_scene</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">build_ele</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#create_scene" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates a canvas. All objects should be placed on Scene.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>build_ele</strong> – Given by Allplan <code class="docutils literal notranslate"><span class="pre">BuildingElement</span></code> object</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Scene</span></code> object</p>
-</dd>
-</dl>
+<dd class="field-even"><p><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Scene</span></code> object</p>
 <p>Usage:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pythonparts</span> <span class="k">as</span> <span class="nn">pp</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">create_cuboid</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">scene</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">create_scene</span><span class="p">(</span><span class="s1">&#39;build_ele&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">scene</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">scene</span>
-<span class="go">Scene(children=[Cuboid(width=200, length=1000, height=100)]) </span>
+<span class="go">Scene(children=[Cuboid(width=200, length=1000, height=100)])</span>
 </pre></div>
 </div>
+</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="pythonparts.create_cuboid">
-<span class="sig-prename descclassname"><span class="pre">pythonparts.</span></span><span class="sig-name descname"><span class="pre">create_cuboid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">width</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pythonparts.create_cuboid" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="create_cuboid">
+<span class="sig-name descname"><span class="pre">create_cuboid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">width</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#create_cuboid" title="Permalink to this definition">#</a></dt>
 <dd><p>Constructs <code class="xref py py-class docutils literal notranslate"><span class="pre">Cuboid</span></code> object with start global point = <code class="docutils literal notranslate"><span class="pre">Point3D(0,</span> <span class="pre">0,</span> <span class="pre">0)</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -244,15 +245,15 @@
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pythonparts</span> <span class="k">as</span> <span class="nn">pp</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">create_cuboid</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">c</span>
-<span class="go">Cuboid(width=200, length=1000, height=100) </span>
+<span class="go">Cuboid(width=200, length=1000, height=100)</span>
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="pythonparts.create_cuboid_from_pyp">
-<span class="sig-prename descclassname"><span class="pre">pythonparts.</span></span><span class="sig-name descname"><span class="pre">create_cuboid_from_pyp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pyp_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pythonparts.create_cuboid_from_pyp" title="Permalink to this definition">#</a></dt>
-<dd><p>Constructs <code class="xref py py-class docutils literal notranslate"><span class="pre">Cuboid</span></code> object fetching 
+<dt class="sig sig-object py" id="create_cuboid_from_pyp">
+<span class="sig-name descname"><span class="pre">create_cuboid_from_pyp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pyp_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#create_cuboid_from_pyp" title="Permalink to this definition">#</a></dt>
+<dd><p>Constructs <code class="xref py py-class docutils literal notranslate"><span class="pre">Cuboid</span></code> object fetching
 width, length, and height from the according pyp file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -273,24 +274,24 @@ width, length, and height from the according pyp file.</p>
 </dl>
 <p>Inside pyp file:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">Parameter</span><span class="o">&gt;</span>
-    <span class="o">&lt;</span><span class="n">Name</span><span class="o">&gt;</span><span class="n">ColumnWidth</span><span class="o">&lt;/</span><span class="n">Name</span><span class="o">&gt;</span>
-    <span class="o">&lt;</span><span class="n">Text</span><span class="o">&gt;</span><span class="n">Column</span> <span class="n">Width</span><span class="o">&lt;/</span><span class="n">Text</span><span class="o">&gt;</span>
-    <span class="o">&lt;</span><span class="n">Value</span><span class="o">&gt;</span><span class="mf">200.</span><span class="o">&lt;/</span><span class="n">Value</span><span class="o">&gt;</span>
-    <span class="o">&lt;</span><span class="n">ValueType</span><span class="o">&gt;</span><span class="n">Length</span><span class="o">&lt;/</span><span class="n">ValueType</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">Name</span><span class="o">&gt;</span><span class="n">ColumnWidth</span><span class="o">&lt;/</span><span class="n">Name</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">Text</span><span class="o">&gt;</span><span class="n">Column</span> <span class="n">Width</span><span class="o">&lt;/</span><span class="n">Text</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">Value</span><span class="o">&gt;</span><span class="mf">200.</span><span class="o">&lt;/</span><span class="n">Value</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">ValueType</span><span class="o">&gt;</span><span class="n">Length</span><span class="o">&lt;/</span><span class="n">ValueType</span><span class="o">&gt;</span>
 <span class="o">&lt;/</span><span class="n">Parameter</span><span class="o">&gt;</span>
 
 <span class="o">&lt;</span><span class="n">Parameter</span><span class="o">&gt;</span>
-    <span class="o">&lt;</span><span class="n">Name</span><span class="o">&gt;</span><span class="n">ColumnLength</span><span class="o">&lt;/</span><span class="n">Name</span><span class="o">&gt;</span>
-    <span class="o">&lt;</span><span class="n">Text</span><span class="o">&gt;</span><span class="n">Column</span> <span class="n">Length</span><span class="o">&lt;/</span><span class="n">Text</span><span class="o">&gt;</span>
-    <span class="o">&lt;</span><span class="n">Value</span><span class="o">&gt;</span><span class="mf">1000.</span><span class="o">&lt;/</span><span class="n">Value</span><span class="o">&gt;</span>
-    <span class="o">&lt;</span><span class="n">ValueType</span><span class="o">&gt;</span><span class="n">Length</span><span class="o">&lt;/</span><span class="n">ValueType</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">Name</span><span class="o">&gt;</span><span class="n">ColumnLength</span><span class="o">&lt;/</span><span class="n">Name</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">Text</span><span class="o">&gt;</span><span class="n">Column</span> <span class="n">Length</span><span class="o">&lt;/</span><span class="n">Text</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">Value</span><span class="o">&gt;</span><span class="mf">1000.</span><span class="o">&lt;/</span><span class="n">Value</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">ValueType</span><span class="o">&gt;</span><span class="n">Length</span><span class="o">&lt;/</span><span class="n">ValueType</span><span class="o">&gt;</span>
 <span class="o">&lt;/</span><span class="n">Parameter</span><span class="o">&gt;</span>
 
 <span class="o">&lt;</span><span class="n">Parameter</span><span class="o">&gt;</span>
-    <span class="o">&lt;</span><span class="n">Name</span><span class="o">&gt;</span><span class="n">ColumnHeight</span><span class="o">&lt;/</span><span class="n">Name</span><span class="o">&gt;</span>
-    <span class="o">&lt;</span><span class="n">Text</span><span class="o">&gt;</span><span class="n">Column</span> <span class="n">Height</span><span class="o">&lt;/</span><span class="n">Text</span><span class="o">&gt;</span>
-    <span class="o">&lt;</span><span class="n">Value</span><span class="o">&gt;</span><span class="mf">100.</span><span class="o">&lt;/</span><span class="n">Value</span><span class="o">&gt;</span>
-    <span class="o">&lt;</span><span class="n">ValueType</span><span class="o">&gt;</span><span class="n">Length</span><span class="o">&lt;/</span><span class="n">ValueType</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">Name</span><span class="o">&gt;</span><span class="n">ColumnHeight</span><span class="o">&lt;/</span><span class="n">Name</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">Text</span><span class="o">&gt;</span><span class="n">Column</span> <span class="n">Height</span><span class="o">&lt;/</span><span class="n">Text</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">Value</span><span class="o">&gt;</span><span class="mf">100.</span><span class="o">&lt;/</span><span class="n">Value</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">ValueType</span><span class="o">&gt;</span><span class="n">Length</span><span class="o">&lt;/</span><span class="n">ValueType</span><span class="o">&gt;</span>
 <span class="o">&lt;/</span><span class="n">Parameter</span><span class="o">&gt;</span>
 </pre></div>
 </div>
@@ -298,7 +299,7 @@ width, length, and height from the according pyp file.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pythonparts</span> <span class="k">as</span> <span class="nn">pp</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">create_cuboid_from_pyp</span><span class="p">(</span><span class="s1">&#39;Column&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">c</span>
-<span class="go">Cuboid(width=200, length=1000, height=100)   </span>
+<span class="go">Cuboid(width=200, length=1000, height=100)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -563,9 +564,9 @@ It represents the global coordinates of the parent object.</p>
             <ul>
 <li><a class="reference internal" href="#">API</a><ul>
 <li><a class="reference internal" href="#public-interface">Public Interface</a><ul>
-<li><a class="reference internal" href="#pythonparts.create_scene"><code class="docutils literal notranslate"><span class="pre">create_scene()</span></code></a></li>
-<li><a class="reference internal" href="#pythonparts.create_cuboid"><code class="docutils literal notranslate"><span class="pre">create_cuboid()</span></code></a></li>
-<li><a class="reference internal" href="#pythonparts.create_cuboid_from_pyp"><code class="docutils literal notranslate"><span class="pre">create_cuboid_from_pyp()</span></code></a></li>
+<li><a class="reference internal" href="#create_scene"><code class="docutils literal notranslate"><span class="pre">create_scene()</span></code></a></li>
+<li><a class="reference internal" href="#create_cuboid"><code class="docutils literal notranslate"><span class="pre">create_cuboid()</span></code></a></li>
+<li><a class="reference internal" href="#create_cuboid_from_pyp"><code class="docutils literal notranslate"><span class="pre">create_cuboid_from_pyp()</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#classes">Classes</a><ul>

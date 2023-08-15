@@ -1,8 +1,6 @@
 import pythonparts as pp
 
 
-
-
 class Register:
 
     build_ele = None

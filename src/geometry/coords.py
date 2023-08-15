@@ -2,7 +2,6 @@ from typing import Optional
 
 import NemAll_Python_Geometry as AllplanGeo    # type: ignore
 
-from ..exceptions import AttributePermissionError
 from ..utils import equal_points
 
 
