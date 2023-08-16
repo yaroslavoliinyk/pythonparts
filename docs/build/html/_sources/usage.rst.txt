@@ -6,11 +6,38 @@ Usage
 Installation
 ------------
 
-To use Pythonparts, first install it using pip:
+:warning: You need to have **Allplan 2022** or **Allplan 2023** installed on your PC in order to use ``pythonparts``
+
+
+To use `pythonparts` in your local environment, first install it using pip:
 
 .. code-block:: console
 
    (.venv) $ pip install pythonparts
+
+
+If you want ``pythonparts`` to launch objects in **Allplan** itself, follow the next instructions:
+
+- Go to https://pypi.org/project/pythonparts/ and download the latest version of ``pythonparts`` in \*.tar.gz format:
+  
+  .. figure:: images/allplan_install_001.jpg
+    :align: center
+    :alt: Installation on Allplan
+
+- After downloading, extract the files from archive and copy the following folder:
+  
+  .. figure:: images/allplan_install_002.jpg
+    :align: center
+    :alt: Installation on Allplan
+
+- Paste that folder inside Allplan's Python site-packages folder. My path to Python that uses **Allplan 2023** is *C:\Program Files\Allplan\Allplan\2023\Prg\Python* . 
+    The path may vary depending where you installed Allplan:
+
+    .. figure:: images/allplan_install_003.jpg
+       :align: center
+       :alt: Installation on Allplan
+
+That's it! You should now can create PythonPart scripts using ``pythonoarts`` library.
 
 
 Basic setup & usage

@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="API" href="api.html" /><link rel="prev" title="Welcome to Pythonparts’ documentation!" href="index.html" />
 
     <!-- Generated with Sphinx 6.2.1 and Furo 2023.07.26 -->
-        <title>Usage - Pythonparts 0.1.1 documentation</title>
+        <title>Usage - Pythonparts 0.1.6 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=369552022d0b975c8e74270ce6eabe0fb7978f24" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">Pythonparts 0.1.1 documentation</div></a>
+      <a href="index.html"><div class="brand">Pythonparts 0.1.6 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -149,7 +149,7 @@
     <img class="sidebar-logo" src="_static/logo.jpg" alt="Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">Pythonparts 0.1.1 documentation</span>
+  <span class="sidebar-brand-text">Pythonparts 0.1.6 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -198,10 +198,37 @@
 <h1>Usage<a class="headerlink" href="#usage" title="Permalink to this heading">#</a></h1>
 <section id="installation">
 <span id="id1"></span><h2>Installation<a class="headerlink" href="#installation" title="Permalink to this heading">#</a></h2>
-<p>To use Pythonparts, first install it using pip:</p>
+<dl class="field-list simple">
+<dt class="field-odd">warning<span class="colon">:</span></dt>
+<dd class="field-odd"><p>You need to have <strong>Allplan 2022</strong> or <strong>Allplan 2023</strong> installed on your PC in order to use <code class="docutils literal notranslate"><span class="pre">pythonparts</span></code></p>
+</dd>
+</dl>
+<p>To use <cite>pythonparts</cite> in your local environment, first install it using pip:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(.venv)</span> <span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>pythonparts
 </pre></div>
 </div>
+<p>If you want <code class="docutils literal notranslate"><span class="pre">pythonparts</span></code> to launch objects in <strong>Allplan</strong> itself, follow the next instructions:</p>
+<ul>
+<li><p>Go to <a class="reference external" href="https://pypi.org/project/pythonparts/">https://pypi.org/project/pythonparts/</a> and download the latest version of <code class="docutils literal notranslate"><span class="pre">pythonparts</span></code> in *.tar.gz format:</p>
+<figure class="align-center">
+<img alt="Installation on Allplan" src="_images/allplan_install_001.jpg" />
+</figure>
+</li>
+<li><p>After downloading, extract the files from archive and copy the following folder:</p>
+<figure class="align-center">
+<img alt="Installation on Allplan" src="_images/allplan_install_002.jpg" />
+</figure>
+</li>
+<li><dl>
+<dt>Paste that folder inside Allplan’s Python site-packages folder. My path to Python that uses <strong>Allplan 2023</strong> is <em>C:Program FilesAllplanAllplan2023PrgPython</em> .</dt><dd><p>The path may vary depending where you installed Allplan:</p>
+<figure class="align-center">
+<img alt="Installation on Allplan" src="_images/allplan_install_003.jpg" />
+</figure>
+</dd>
+</dl>
+</li>
+</ul>
+<p>That’s it! You should now can create PythonPart scripts using <code class="docutils literal notranslate"><span class="pre">pythonoarts</span></code> library.</p>
 </section>
 <section id="basic-setup-usage">
 <h2>Basic setup &amp; usage<a class="headerlink" href="#basic-setup-usage" title="Permalink to this heading">#</a></h2>
