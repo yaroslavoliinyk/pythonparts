@@ -6,10 +6,12 @@ Usage
 Installation
 ------------
 
-:warning: You need to have **Allplan 2022** or **Allplan 2023** installed on your PC in order to use ``pythonparts``
+.. warning::
+
+    You need to have **Allplan 2022** or **Allplan 2023** installed on your PC in order to use ``pythonparts``
 
 
-To use `pythonparts` in your local environment, first install it using pip:
+To use ``pythonparts`` in your local environment, first install it using pip:
 
 .. code-block:: console
 
@@ -30,8 +32,14 @@ If you want ``pythonparts`` to launch objects in **Allplan** itself, follow the 
     :align: center
     :alt: Installation on Allplan
 
-- Paste that folder inside Allplan's Python site-packages folder. My path to Python that uses **Allplan 2023** is *C:\Program Files\Allplan\Allplan\2023\Prg\Python* . 
-    The path may vary depending where you installed Allplan:
+- Paste that folder inside Allplan's Python site-packages folder. My path to Python that uses **Allplan 2023** is:
+    
+::
+
+    C:\Program Files\Allplan\Allplan\2023\Prg\Python
+    
+    
+The path may vary depending where you installed Allplan:
 
     .. figure:: images/allplan_install_003.jpg
        :align: center

@@ -198,12 +198,11 @@
 <h1>Usage<a class="headerlink" href="#usage" title="Permalink to this heading">#</a></h1>
 <section id="installation">
 <span id="id1"></span><h2>Installation<a class="headerlink" href="#installation" title="Permalink to this heading">#</a></h2>
-<dl class="field-list simple">
-<dt class="field-odd">warning<span class="colon">:</span></dt>
-<dd class="field-odd"><p>You need to have <strong>Allplan 2022</strong> or <strong>Allplan 2023</strong> installed on your PC in order to use <code class="docutils literal notranslate"><span class="pre">pythonparts</span></code></p>
-</dd>
-</dl>
-<p>To use <cite>pythonparts</cite> in your local environment, first install it using pip:</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>You need to have <strong>Allplan 2022</strong> or <strong>Allplan 2023</strong> installed on your PC in order to use <code class="docutils literal notranslate"><span class="pre">pythonparts</span></code></p>
+</div>
+<p>To use <code class="docutils literal notranslate"><span class="pre">pythonparts</span></code> in your local environment, first install it using pip:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(.venv)</span> <span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>pythonparts
 </pre></div>
 </div>
@@ -219,15 +218,17 @@
 <img alt="Installation on Allplan" src="_images/allplan_install_002.jpg" />
 </figure>
 </li>
-<li><dl>
-<dt>Paste that folder inside Allplan’s Python site-packages folder. My path to Python that uses <strong>Allplan 2023</strong> is <em>C:Program FilesAllplanAllplan2023PrgPython</em> .</dt><dd><p>The path may vary depending where you installed Allplan:</p>
-<figure class="align-center">
+<li><p>Paste that folder inside Allplan’s Python site-packages folder. My path to Python that uses <strong>Allplan 2023</strong> is:</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">C</span><span class="p">:</span>\<span class="n">Program</span> <span class="n">Files</span>\<span class="n">Allplan</span>\<span class="n">Allplan</span>\<span class="mi">2023</span>\<span class="n">Prg</span>\<span class="n">Python</span>
+</pre></div>
+</div>
+<p>The path may vary depending where you installed Allplan:</p>
+<blockquote>
+<div><figure class="align-center">
 <img alt="Installation on Allplan" src="_images/allplan_install_003.jpg" />
 </figure>
-</dd>
-</dl>
-</li>
-</ul>
+</div></blockquote>
 <p>That’s it! You should now can create PythonPart scripts using <code class="docutils literal notranslate"><span class="pre">pythonoarts</span></code> library.</p>
 </section>
 <section id="basic-setup-usage">
