@@ -2,6 +2,7 @@ import pytest
 import random
 
 from pythonparts.src import geometry as geo, AttributePermissionError, utils as pp_utils
+from pythonparts import create_cuboid, create_scene
 
 import NemAll_Python_Geometry as AllplanGeo
 import utils
@@ -143,6 +144,12 @@ class TestSpace:
         assert pp_utils.equal_points(parent_space[1].global_.start_point, expected_child_global_start_pnt2)
         assert pp_utils.equal_points(parent_space[1].global_.end_point, expected_child_global_end_pnt2)
 
+    # def test_build(self):
+    #     pass
+
+    # def test_union(self):
+    #     pass
+
 
 class TestConcreteCover:
 
@@ -175,17 +182,58 @@ class TestCuboid:
         assert cuboid.height == 30
 
 
-# class TestScene:
+class TestScene:
 
-    # def test_get_instance(self, clear_scene):
-    #     scene = geo.Scene.get_instance("build_element")
-    #     assert len(scene.model_ele_list) == 0
+    def test_elements_number(self):
+        scene = create_scene('empty_build_ele')
+        column = create_cuboid(10, 10, 1000)
+        slab   = create_cuboid(200, 200, 12)
 
-    # def test_two_scenes_create(self, clear_scene):
-    #     scene1 = geo.Scene()
-    #     with pytest.raises(TypeError):
-    #         scene2 = geo.Scene()
+        column.union(slab, bottom=300)
+        scene.place(column)
+
+        assert len(scene.model_ele_list) == 1
+
+    def test_elements_number2(self):
+        scene = create_scene('empty_build_ele')
+        column = create_cuboid(10, 10, 1000)
+        slab   = create_cuboid(200, 200, 12)
+
+        column.place(slab, bottom=300)
+        scene.place(column)
+
+        assert len(scene.model_ele_list) == 2
+
+    def test_elements_number3(self):
+        scene = create_scene('empty_build_ele')
+        column = create_cuboid(10, 10, 1000)
+        slab   = create_cuboid(200, 200, 12)
+        small_cube = create_cuboid(5, 5, 5)
+        small_slab = create_cuboid(10, 10, 3)
+
+        slab.union(small_cube, right=slab.length-2)
+        slab.place(small_slab, bottom=-2)
+        column.place(slab, bottom=300)
+        scene.place(column)
+
+        assert len(scene.model_ele_list) == 3
+    
+    def test_elements_number4(self):
+        scene = create_scene('empty_build_ele')
+        column = create_cuboid(10, 10, 1000)
+        slab   = create_cuboid(200, 200, 12)
+        small_cube = create_cuboid(5, 5, 5)
+        small_slab = create_cuboid(10, 10, 3)
+
+        slab.union(small_cube, right=slab.length-2)
+        slab.place(small_slab, bottom=-2)
+        column.union(slab, bottom=300)
+        scene.place(column)
+
+        assert len(scene.model_ele_list) == 2
 
 
+ts = TestScene()
+ts.test_elements_number4()
 # ts = TestSpace()
 # ts.test_place1()

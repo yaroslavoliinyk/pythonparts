@@ -5,6 +5,10 @@ import random
 from pythonparts.src import geometry as geo
 import NemAll_Python_Geometry as AllplanGeo
 
+# import sys
+# import os
+# current_folder = os.path.dirname(os.path.abspath(__file__))
+# sys.path.append(current_folder)
 
 pytest.mark.debug_this = pytest.mark.marker('debug_this')    # type: ignore
 

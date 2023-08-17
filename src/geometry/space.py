@@ -8,7 +8,7 @@ import NemAll_Python_BasisElements as AllplanBasisElements    # type: ignore
 from .coords import Coords, AllplanGeo
 from .concrete_cover import ConcreteCover
 from ..utils import center_calc, child_global_coords_calc, equal_points
-from ..exceptions import AttributePermissionError
+from ..exceptions import AttributePermissionError, AllplanGeometryError
 from ..config import TOLERANCE
 
 
@@ -70,7 +70,7 @@ class Space(ABC):
         """Inner attribute that contains list of ``Space`` that were :py:func:`placed <pythonparts.geometry.Space.place>`."""
         
         self._visible               = True
-        self._union_parent          = True
+        self._union_with_parent          = False
 
     @abstractproperty
     def polyhedron(self) -> AllplanGeo.Polyhedron3D: ...
@@ -126,6 +126,14 @@ class Space(ABC):
     def height(self, value):
         raise AttributePermissionError("You cannot set height of Space.")
 
+    @property
+    def union_with_parent(self):
+        return self._union_with_parent
+    
+    @union_with_parent.setter
+    def union_with_parent(self, value):
+        raise AttributePermissionError("You cannot set union of Space with another Space. Use union() function instead")
+
     def update_global_coords(self, parent_global_coords: Coords):
         """
         Set new Global coordinates for this ``Space`` object and all its :py:func:`children <pythonparts.geometry.Space._children>`
@@ -137,18 +145,37 @@ class Space(ABC):
         start_point, end_point = child_global_coords_calc(self._concov, parent_global_coords, self)
         self._global           = Coords(start_point, end_point)
         for child in self._children:
-            child.update_global_coords(self._global)
-
+            child.update_global_coords(self._global)  
+    
     def build(self) -> List[AllplanBasisElements.ModelElement3D]:
         """
         Recursively builds a list of `AllplanBasisElements.ModelElement3D` objects for itselt
         and all its :py:func:`children <pythonparts.geometry.Space._children>`
         :return: a list of AllplanBasisElements.ModelElement3D objects.
         """
-        builded = [AllplanBasisElements.ModelElement3D(self.com_prop, self.polyhedron)]
+
+        polyhedrons       = self.__build_all()
+
+        return [AllplanBasisElements.ModelElement3D(self.com_prop, placed_poly) for placed_poly in polyhedrons]
+
+    def __build_all(self, parent_union_polyhedron=None):
+        polyhedrons = []
+
+        if parent_union_polyhedron is not None and self.union_with_parent:
+            err, parent_union_polyhedron = AllplanGeo.MakeUnion(parent_union_polyhedron, self.polyhedron)
+            if err:
+                raise AllplanGeometryError(f"You cannot make union of {parent_union_polyhedron} and {self.polyhedron}.\n{err}")
+        else:
+            parent_union_polyhedron = self.polyhedron
+
         for child in self._children:
-            builded.extend(child.build())
-        return builded
+            polyhedrons.extend(child.__build_all(parent_union_polyhedron))
+        
+        if not any(child.union_with_parent for child in self._children):
+            polyhedrons.append(parent_union_polyhedron)
+        
+        return polyhedrons
+
 
     def place(self, child_space: "Space", center: bool=False, **concov_sides,):
         """
@@ -242,6 +269,10 @@ class Space(ABC):
         child_space.update_global_coords(self.global_)
         self._children.append(child_space)
 
+    def union(self, child_space: "Space", center: bool=False, **concov_sides,):
+        self.place(child_space, center, **concov_sides)
+        child_space._union_with_parent = True
+
     def __len__(self):
         return len(self._children)
     
@@ -255,7 +286,7 @@ class Space(ABC):
                 and math.isclose(self.width, other.width, rel_tol=TOLERANCE, abs_tol=TOLERANCE) 
                 and math.isclose(self.height, other.height, rel_tol=TOLERANCE, abs_tol=TOLERANCE)
                 and self._visible == other._visible
-                and self._union_parent == other._union_parent
+                and self._union_with_parent == other._union_with_parent
                 and len(self._children) == len(other._children)
                 and all(c1 == c2 for c1, c2 in zip(self._children, other._children)))
 
