@@ -5,6 +5,7 @@ from typing import Optional, List, Dict
 
 import NemAll_Python_BasisElements as AllplanBasisElements    # type: ignore
 
+from .space_state import State
 from .coords import Coords, AllplanGeo
 from .concrete_cover import ConcreteCover
 from ..utils import center_calc, child_global_coords_calc, equal_points
@@ -69,8 +70,8 @@ class Space(ABC):
         self._children: List[Space] = []
         """Inner attribute that contains list of ``Space`` that were :py:func:`placed <pythonparts.geometry.Space.place>`."""
         
-        self._visible               = True
-        self._union_with_parent          = False
+        self._visible        = True
+        self._state          = State.PLACE
 
     @abstractproperty
     def polyhedron(self) -> AllplanGeo.Polyhedron3D: ...
@@ -127,11 +128,11 @@ class Space(ABC):
         raise AttributePermissionError("You cannot set height of Space.")
 
     @property
-    def union_with_parent(self):
-        return self._union_with_parent
+    def state(self):
+        return self._state
     
-    @union_with_parent.setter
-    def union_with_parent(self, value):
+    @state.setter
+    def state(self, value):
         raise AttributePermissionError("You cannot set union of Space with another Space. Use union() function instead")
 
     def update_global_coords(self, parent_global_coords: Coords):
@@ -157,25 +158,6 @@ class Space(ABC):
         polyhedrons       = self.__build_all()
 
         return [AllplanBasisElements.ModelElement3D(self.com_prop, placed_poly) for placed_poly in polyhedrons]
-
-    def __build_all(self, parent_union_polyhedron=None):
-        polyhedrons = []
-
-        if parent_union_polyhedron is not None and self.union_with_parent:
-            err, parent_union_polyhedron = AllplanGeo.MakeUnion(parent_union_polyhedron, self.polyhedron)
-            if err:
-                raise AllplanGeometryError(f"You cannot make union of {parent_union_polyhedron} and {self.polyhedron}.\n{err}")
-        else:
-            parent_union_polyhedron = self.polyhedron
-
-        for child in self._children:
-            polyhedrons.extend(child.__build_all(parent_union_polyhedron))
-        
-        if not any(child.union_with_parent for child in self._children):
-            polyhedrons.append(parent_union_polyhedron)
-        
-        return polyhedrons
-
 
     def place(self, child_space: "Space", center: bool=False, **concov_sides,):
         """
@@ -271,7 +253,33 @@ class Space(ABC):
 
     def union(self, child_space: "Space", center: bool=False, **concov_sides,):
         self.place(child_space, center, **concov_sides)
-        child_space._union_with_parent = True
+        child_space._state = State.UNION
+
+    def subtract(self, child_space: "Space", center: bool=False, **concov_sides,):
+        self.place(child_space, center, **concov_sides)
+        child_space._state = State.SUBTRACT
+
+    def __build_all(self, resulted_polyhedron=None):
+        polyhedrons = []
+
+        if resulted_polyhedron is not None and self.state == State.UNION:
+            err, resulted_polyhedron = AllplanGeo.MakeUnion(resulted_polyhedron, self.polyhedron)
+            if err:
+                raise AllplanGeometryError(f"You cannot make union of {resulted_polyhedron} and {self.polyhedron}.\n{err}")
+        elif resulted_polyhedron is not None and self.state == State.SUBTRACT:
+            err, resulted_polyhedron = AllplanGeo.MakeSubtraction(resulted_polyhedron, self.polyhedron)
+            if err:
+                raise AllplanGeometryError(f"You cannot subtract from {resulted_polyhedron} the following polyhedron {self.polyhedron}.\n{err}")
+        else:
+            resulted_polyhedron = self.polyhedron
+
+        for child in self._children:
+            polyhedrons.extend(child.__build_all(resulted_polyhedron))
+        
+        if not any(child.state in (State.UNION, State.SUBTRACT) for child in self._children):
+            polyhedrons.append(resulted_polyhedron)
+        
+        return polyhedrons
 
     def __len__(self):
         return len(self._children)
@@ -286,7 +294,7 @@ class Space(ABC):
                 and math.isclose(self.width, other.width, rel_tol=TOLERANCE, abs_tol=TOLERANCE) 
                 and math.isclose(self.height, other.height, rel_tol=TOLERANCE, abs_tol=TOLERANCE)
                 and self._visible == other._visible
-                and self._union_with_parent == other._union_with_parent
+                and self._state == other._state
                 and len(self._children) == len(other._children)
                 and all(c1 == c2 for c1, c2 in zip(self._children, other._children)))
 

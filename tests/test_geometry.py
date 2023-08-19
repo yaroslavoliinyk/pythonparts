@@ -231,6 +231,25 @@ class TestScene:
         scene.place(column)
 
         assert len(scene.model_ele_list) == 2
+    
+    
+    def test_elements_union_subtract(self):
+        scene  = create_scene('build_ele')
+        cuboid = create_cuboid(100, 100, 100)
+        mini_cuboid = create_cuboid(10, 10, 300)
+        cuboid.subtract(mini_cuboid)
+        slab = create_cuboid(2000, 1300, 90)
+        slab.place(cuboid, left=400)
+        
+        box = create_cuboid(250, 250, 400)
+        roof = create_cuboid(500, 500, 50)
+
+        box.union(roof, center=True, top=0)
+
+        scene.place(slab, center=True)
+        scene.place(box)
+
+        assert len(scene.model_ele_list) == 3
 
 
 ts = TestScene()
