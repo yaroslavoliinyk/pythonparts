@@ -71,7 +71,7 @@ class Space(ABC):
         """Inner attribute that contains list of ``Space`` that were :py:func:`placed <pythonparts.geometry.Space.place>`."""
         
         self._state          = State.PLACE
-        self._visible        = visible
+        self.visible         = visible
 
     @abstractproperty
     def polyhedron(self) -> AllplanGeo.Polyhedron3D: ...
@@ -135,16 +135,16 @@ class Space(ABC):
     def state(self, value):
         raise AttributePermissionError("You cannot set union of Space with another Space. Use union() function instead")
     
-    @property
-    def visible(self):
-        return self._visible
+    # @property
+    # def visible(self):
+    #     return self.visible
     
-    @visible.setter
-    def visible(self, value):
-        raise AttributePermissionError("You cannot set visiblity. Please set it when you either create or place object")
+    # @visible.setter
+    # def visible(self, value):
+    #     raise AttributePermissionError("You cannot set visiblity. Please set it when you either create or place object")
     # @visible.setter
     # def state(self, value):
-    #     self._visible = value
+    #     self.visible = value
 
     def update_global_coords(self, parent_global_coords: Coords):
         """
@@ -170,7 +170,7 @@ class Space(ABC):
 
         return [AllplanBasisElements.ModelElement3D(self.com_prop, placed_poly) for placed_poly in polyhedrons]
 
-    def place(self, child_space: "Space", center: bool=False, visible=True, **concov_sides,):
+    def place(self, child_space: "Space", center: bool=False, **concov_sides,):
         """
         Position a child space inside a parent space, with options for
         centering and specifying the position of each side.
@@ -201,15 +201,14 @@ class Space(ABC):
             concov.left, concov.front, concov.bottom = center_calc(concov, self.global_, child_space)
         child_space._concov.update(concov.as_dict())
         child_space.update_global_coords(self.global_)
-        child_space._visible = visible
         self._children.append(child_space)
 
-    def union(self, child_space: "Space", center: bool=False, visible=True, **concov_sides,):
-        self.place(child_space, center, visible, **concov_sides)
+    def union(self, child_space: "Space", center: bool=False, **concov_sides,):
+        self.place(child_space, center, **concov_sides)
         child_space._state = State.UNION
 
-    def subtract(self, child_space: "Space", center: bool=False, visible=True, **concov_sides,):
-        self.place(child_space, center, visible, **concov_sides)
+    def subtract(self, child_space: "Space", center: bool=False, **concov_sides,):
+        self.place(child_space, center, **concov_sides)
         child_space._state = State.SUBTRACT
 
     def __build_all(self, resulted_polyhedron=None):
@@ -247,7 +246,7 @@ class Space(ABC):
                 and math.isclose(self.length, other.length, rel_tol=TOLERANCE, abs_tol=TOLERANCE) 
                 and math.isclose(self.width, other.width, rel_tol=TOLERANCE, abs_tol=TOLERANCE) 
                 and math.isclose(self.height, other.height, rel_tol=TOLERANCE, abs_tol=TOLERANCE)
-                and self._visible == other._visible
+                and self.visible == other.visible
                 and self._state == other._state
                 and len(self._children) == len(other._children)
                 and all(c1 == c2 for c1, c2 in zip(self._children, other._children)))

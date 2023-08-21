@@ -8,8 +8,8 @@ class Cuboid(Space):
         Can be easily adjusted on a ``Scene`` and built or used as space/boundary for other objects(like Reinforcement).
     """
 
-    def __init__(self, width, length, height, global_start_pnt=None, com_prop=None, visible=True):
-        super().__init__(width, length, height, global_start_pnt, visible)
+    def __init__(self, width, length, height, global_start_pnt=None, visible=True, com_prop=None):
+        super().__init__(width, length, height, global_start_pnt=global_start_pnt, visible=visible)
         if com_prop is None:
             com_prop = cp.global_properties()
         self.__com_prop = com_prop

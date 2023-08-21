@@ -265,5 +265,5 @@ class TestScene:
     #     assert len(scene.model_ele_list) == 3
 
 
-ts = TestScene()
-ts.test_elements_visible()
+# ts = TestScene()
+# ts.test_elements_visible()
