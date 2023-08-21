@@ -252,7 +252,18 @@ class TestScene:
         assert len(scene.model_ele_list) == 3
 
 
+    # def test_elements_visible(self):
+    #     scene  = create_scene('build_ele')
+       
+    #     box = create_cuboid(250, 250, 400, visible=False)
+    #     roof = create_cuboid(500, 500, 50)
+
+    #     box.place(roof, center=True, top=0)
+
+    #     scene.place(box)
+
+    #     assert len(scene.model_ele_list) == 3
+
+
 ts = TestScene()
-ts.test_elements_number4()
-# ts = TestSpace()
-# ts.test_place1()
+ts.test_elements_visible()

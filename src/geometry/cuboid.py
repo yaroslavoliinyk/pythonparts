@@ -8,8 +8,8 @@ class Cuboid(Space):
         Can be easily adjusted on a ``Scene`` and built or used as space/boundary for other objects(like Reinforcement).
     """
 
-    def __init__(self, width, length, height, global_start_pnt=None, com_prop=None):
-        super().__init__(width, length, height, global_start_pnt)
+    def __init__(self, width, length, height, global_start_pnt=None, com_prop=None, visible=True):
+        super().__init__(width, length, height, global_start_pnt, visible)
         if com_prop is None:
             com_prop = cp.global_properties()
         self.__com_prop = com_prop
@@ -19,7 +19,8 @@ class Cuboid(Space):
         """
             :return: ``AllplanGeo.Polyhedron3D`` created with ``AllplanGeo.Polyhedron3D.CreateCuboid``
         """
-
+        if not self.visible:
+            return AllplanGeo.Polyhedron3D()
         return AllplanGeo.Polyhedron3D.CreateCuboid(self.global_.start_point, self.global_.end_point)
 
     @property

@@ -28,7 +28,7 @@ def create_scene(build_ele):
     return pp.src.geometry.Scene(build_ele)
 
 
-def create_cuboid(width, length, height):
+def create_cuboid(width, length, height, visible=True):
     """
     Constructs :class:`Cuboid <Cuboid>` object with start global point = ``Point3D(0, 0, 0)``.
 
@@ -47,12 +47,12 @@ def create_cuboid(width, length, height):
         Cuboid(width=200, length=1000, height=100) 
     """
     if isinstance(width, Real) and isinstance(length, Real) and isinstance(height, Real):
-        return pp.src.geometry.Cuboid(width, length, height)
+        return pp.src.geometry.Cuboid(width, length, height, visible=visible)
     
     raise NotImplemented()
 
 
-def create_cuboid_from_pyp(pyp_name):
+def create_cuboid_from_pyp(pyp_name, visible=True):
     """
     Constructs :class:`Cuboid <Cuboid>` object fetching 
     width, length, and height from the according pyp file.
@@ -103,4 +103,4 @@ def create_cuboid_from_pyp(pyp_name):
     length = getattr((build_ele), f"{pyp_name}Length").value
     height = getattr((build_ele), f"{pyp_name}Height").value
 
-    return pp.src.geometry.Cuboid(width, length, height)
+    return pp.src.geometry.Cuboid(width, length, height, visible=visible)

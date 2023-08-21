@@ -59,7 +59,7 @@ class Scene:
         return ppart.create(self.build_ele, self.model_ele_list, self.reinf_ele_list, cp.global_properties())
 
 
-    def place(self, child_space: Space, center=False, **concov_sides):
+    def place(self, child_space: Space, center=False, visible=True, **concov_sides):
         """
         See explanation in :py:func:`pythonparts.geometry.Space.place`
         """
@@ -69,7 +69,7 @@ class Scene:
         concov.back  = None
         if center:
             concov.left, concov.front, concov.bottom = center_scene_calc(concov, child_space)
-        self.scene_space.place(child_space, left=concov.left, front=concov.front, bottom=concov.bottom)
+        self.scene_space.place(child_space, visible=visible, left=concov.left, front=concov.front, bottom=concov.bottom)
 
 
     class PythonPart:

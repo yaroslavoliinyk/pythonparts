@@ -35,7 +35,7 @@ class Space(ABC):
     """
 
     def __init__( 
-        self, width, length, height, global_start_pnt=None,
+        self, width, length, height, global_start_pnt=None, visible=True,
     ):
         """
         Assignes *width*, *length* and *height* of child objects :py:class:`pythonparts.geometry.Scene`,
@@ -70,8 +70,8 @@ class Space(ABC):
         self._children: List[Space] = []
         """Inner attribute that contains list of ``Space`` that were :py:func:`placed <pythonparts.geometry.Space.place>`."""
         
-        self._visible        = True
         self._state          = State.PLACE
+        self._visible        = visible
 
     @abstractproperty
     def polyhedron(self) -> AllplanGeo.Polyhedron3D: ...
@@ -134,6 +134,17 @@ class Space(ABC):
     @state.setter
     def state(self, value):
         raise AttributePermissionError("You cannot set union of Space with another Space. Use union() function instead")
+    
+    @property
+    def visible(self):
+        return self._visible
+    
+    @visible.setter
+    def visible(self, value):
+        raise AttributePermissionError("You cannot set visiblity. Please set it when you either create or place object")
+    # @visible.setter
+    # def state(self, value):
+    #     self._visible = value
 
     def update_global_coords(self, parent_global_coords: Coords):
         """
@@ -159,7 +170,7 @@ class Space(ABC):
 
         return [AllplanBasisElements.ModelElement3D(self.com_prop, placed_poly) for placed_poly in polyhedrons]
 
-    def place(self, child_space: "Space", center: bool=False, **concov_sides,):
+    def place(self, child_space: "Space", center: bool=False, visible=True, **concov_sides,):
         """
         Position a child space inside a parent space, with options for
         centering and specifying the position of each side.
@@ -184,79 +195,21 @@ class Space(ABC):
 
         :warning: Opposite sides(*left* and *right*; *front* and *back*; *top* and *bottom*) 
             are not allowed to have values at same time.
-        
-        :Example:
-
-            Let's first create two cubes. One with sides 200x200x200, another 1000x1000x1000:
-                >>> import pythonparts as pp
-                >>> small_cube = pp.create_cuboid(200, 200, 200)
-                >>> big_cube = pp.create_cuboid(1000, 1000, 1000)
-
-            And place small cube inside big one with left shift = 300
-
-                >>> big_cube.place(small_cube, left=300)
-
-            After creating scene inside ``create_element()`` and returning pythonpart, we 
-            will obtain the following result:
-
-                >>> def create_element(build_ele, doc):
-                >>>     scene  = pp.create_scene(build_ele)
-                >>>     scene.place(big_cube)
-                >>>     return scene.pythonpart
-
-            .. image:: images/place_001.png
-                :alt: Resulting image with shift left=300
-
-        :Example:
-
-            If we place small cube inside very center, we will obtain the following:
-
-                >>> big_cube.place(small_cube, center=True)
-
-            ** Other code is the same **
-
-            .. image:: images/place_002.png
-                :alt: Centered cube
-            
-        :Example:
-
-            Placing center and shift right=20 will give us:
-
-                >>> big_cube.place(small_cube, center=Ture, right=20)
-
-            ** Other code is the same **
-
-            .. image:: images/place_003.png
-                :alt: Center + right=20
-
-        :Example:
-
-            You can also adjust starting point, placing main object on a scene with parameters:
-
-                >>> scene.place(big_cube, center=True, bottom=0)
-
-            ** Other code is the same **
-
-            .. image:: images/place_004_1.png
-                :alt: Perspective view scene place settings
-
-            .. image:: images/place_004_2.png
-                :alt: Profile view scene place settings
-            
         """
         concov = ConcreteCover(concov_sides)
         if center:
             concov.left, concov.front, concov.bottom = center_calc(concov, self.global_, child_space)
         child_space._concov.update(concov.as_dict())
         child_space.update_global_coords(self.global_)
+        child_space._visible = visible
         self._children.append(child_space)
 
-    def union(self, child_space: "Space", center: bool=False, **concov_sides,):
-        self.place(child_space, center, **concov_sides)
+    def union(self, child_space: "Space", center: bool=False, visible=True, **concov_sides,):
+        self.place(child_space, center, visible, **concov_sides)
         child_space._state = State.UNION
 
-    def subtract(self, child_space: "Space", center: bool=False, **concov_sides,):
-        self.place(child_space, center, **concov_sides)
+    def subtract(self, child_space: "Space", center: bool=False, visible=True, **concov_sides,):
+        self.place(child_space, center, visible, **concov_sides)
         child_space._state = State.SUBTRACT
 
     def __build_all(self, resulted_polyhedron=None):
@@ -276,8 +229,9 @@ class Space(ABC):
         for child in self._children:
             polyhedrons.extend(child.__build_all(resulted_polyhedron))
         
-        if not any(child.state in (State.UNION, State.SUBTRACT) for child in self._children):
-            polyhedrons.append(resulted_polyhedron)
+        if not resulted_polyhedron == AllplanGeo.Polyhedron3D():        # If the resulted_polyhedron not empty
+            if not any(child.state in (State.UNION, State.SUBTRACT) for child in self._children):
+                polyhedrons.append(resulted_polyhedron)
         
         return polyhedrons
 
