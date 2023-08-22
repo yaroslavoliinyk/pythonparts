@@ -1,4 +1,5 @@
 import math
+import copy
 
 from abc import ABC, abstractmethod, abstractproperty
 from typing import Optional, List, Dict
@@ -8,9 +9,13 @@ import NemAll_Python_BasisElements as AllplanBasisElements    # type: ignore
 from .space_state import State
 from .coords import Coords, AllplanGeo
 from .concrete_cover import ConcreteCover
-from ..utils import center_calc, child_global_coords_calc, equal_points
 from ..exceptions import AttributePermissionError, AllplanGeometryError
 from ..config import TOLERANCE
+from ..utils import (center_calc,
+                    child_global_coords_calc,
+                    equal_points, 
+                    get_rotation_matrix,
+                    transform,)
 
 
 # The `Space` class represents a three-dimensional space with width, length, and height, and provides
@@ -70,8 +75,9 @@ class Space(ABC):
         self._children: List[Space] = []
         """Inner attribute that contains list of ``Space`` that were :py:func:`placed <pythonparts.geometry.Space.place>`."""
         
-        self._state          = State.PLACE
-        self.visible         = visible
+        self._state                                       = State.PLACE
+        self.visible                                      = visible
+        self.rotation_matrices: List[AllplanGeo.Matrix3D] = []
 
     @abstractproperty
     def polyhedron(self) -> AllplanGeo.Polyhedron3D: ...
@@ -165,10 +171,11 @@ class Space(ABC):
         and all its :py:func:`children <pythonparts.geometry.Space._children>`
         :return: a list of AllplanBasisElements.ModelElement3D objects.
         """
+        self._update_rotation_matrices(self.rotation_matrices)
+        model_ele_list       = self.__build_all()
 
-        polyhedrons       = self.__build_all()
-
-        return [AllplanBasisElements.ModelElement3D(self.com_prop, placed_poly) for placed_poly in polyhedrons]
+        # return [AllplanBasisElements.ModelElement3D(self.com_prop, placed_poly) for placed_poly in polyhedrons]
+        return model_ele_list
 
     def place(self, child_space: "Space", center: bool=False, **concov_sides,):
         """
@@ -202,6 +209,7 @@ class Space(ABC):
         child_space._concov.update(concov.as_dict())
         child_space.update_global_coords(self.global_)
         self._children.append(child_space)
+        # child_space._update_rotation_matrices(self.rotation_matrices)
 
     def union(self, child_space: "Space", center: bool=False, **concov_sides,):
         self.place(child_space, center, **concov_sides)
@@ -210,6 +218,43 @@ class Space(ABC):
     def subtract(self, child_space: "Space", center: bool=False, **concov_sides,):
         self.place(child_space, center, **concov_sides)
         child_space._state = State.SUBTRACT
+
+    def rotate(self, degree: float, along_axis: str="x", center: bool=False, **point_props,):
+        """
+        :type sides: 6 different sides that you can add to place child space inside parent:
+            - left
+            - right
+            - front
+            - back
+            - top
+            - bottom
+        :type sides: float (optional)
+        """
+        # We don't actually rotate here. But user doesn't need to know that. 
+        # We just set rotation matrix and the very rotation will happen 
+        # at the point of creating model_ele_list
+        props = ConcreteCover(point_props)
+        if center:
+            props.left, props.front, props.bottom = center_calc(props, self.global_, self)
+        rotation_space = copy.copy(self)
+        rotation_space._concov.update(props.as_dict())
+        rotation_space.update_global_coords(self.global_)
+        
+        local_rotation_matrix = get_rotation_matrix(degree, along_axis, rotation_space.global_.start_point)
+        self.rotation_matrices.append(local_rotation_matrix)
+        # self._update_rotation_matrices([local_rotation_matrix])
+
+    def _update_rotation_matrices(self, rotation_matrices):
+        """
+        The function spreads a parent rotation matrix to all its children by inserting it at the
+        beginning of each child's rotation matrix list and recursively calling itself on each child.
+        
+        :param parent_rotation_matrix: The parent_rotation_matrix is a 3x3 matrix representing the
+        rotation transformation applied to the parent object
+        """
+        for child in self._children:
+            child.rotation_matrices[:0] = rotation_matrices
+            child._update_rotation_matrices(child.rotation_matrices)
 
     def __build_all(self, resulted_polyhedron=None):
         polyhedrons = []
@@ -230,9 +275,31 @@ class Space(ABC):
         
         if not resulted_polyhedron == AllplanGeo.Polyhedron3D():        # If the resulted_polyhedron not empty
             if not any(child.state in (State.UNION, State.SUBTRACT) for child in self._children):
-                polyhedrons.append(resulted_polyhedron)
+                model  = AllplanBasisElements.ModelElement3D(self.com_prop, transform(resulted_polyhedron, self.rotation_matrices))
+                polyhedrons.append(model)
         
         return polyhedrons
+
+    def __copy__(self):
+        # Create a new instance of the Space class with the same attributes
+        copied_instance = self.__class__(
+            width=self.width,
+            length=self.length,
+            height=self.height,
+            global_start_pnt=self.global_.start_point if self._global != Coords.from_empty() else None,
+            visible=self.visible
+        )
+        
+        # Copy any additional attributes as needed
+        copied_instance._concov = copy.copy(self._concov)
+        copied_instance._children = copy.copy(self._children)
+        copied_instance.rotation_matrices = copy.copy(self.rotation_matrices)
+        
+        # You might need to update the global coordinates of the copied instance
+        copied_instance.update_global_coords(copied_instance._global)
+        
+        return copied_instance
+
 
     def __len__(self):
         return len(self._children)

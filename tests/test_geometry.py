@@ -252,18 +252,40 @@ class TestScene:
         assert len(scene.model_ele_list) == 3
 
 
-    # def test_elements_visible(self):
-    #     scene  = create_scene('build_ele')
+    def test_elements_visible(self):
+        scene  = create_scene('build_ele')
        
-    #     box = create_cuboid(250, 250, 400, visible=False)
-    #     roof = create_cuboid(500, 500, 50)
+        box = create_cuboid(250, 250, 400, visible=False)
+        roof = create_cuboid(500, 500, 50)
 
-    #     box.place(roof, center=True, top=0)
+        box.place(roof, center=True, top=0)
 
-    #     scene.place(box)
+        scene.place(box)
 
-    #     assert len(scene.model_ele_list) == 3
+        assert len(scene.model_ele_list) == 1
+
+    def test_rotate_spaces(self):
+        scene = create_scene('build_ele')
+
+        box = create_cuboid(100, 100, 100)
+        box.rotate(25)
+        scene.place(box)
+
+        assert len(scene.model_ele_list) == 1
+    
+    def test_rotate_spaces2(self):
+        scene  = create_scene('build_ele')
+        cuboid = create_cuboid(100, 100, 100)
+        slab = create_cuboid(400, 100, 10)
+        cuboid.rotate(25, along_axis="y")
+        slab.rotate(35, along_axis="x")
+        
+        cuboid.place(slab, top=0)
+
+        scene.place(cuboid)
 
 
-# ts = TestScene()
-# ts.test_elements_visible()
+        assert len(scene.model_ele_list) == 2
+
+ts = TestScene()
+ts.test_rotate_spaces2()

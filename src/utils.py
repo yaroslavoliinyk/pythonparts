@@ -1,10 +1,12 @@
 import math
+import re
 
-from typing import Optional
+from typing import Optional, List
 
 import NemAll_Python_Geometry as AllplanGeo    # type: ignore
 
 from .config import TOLERANCE
+from .exceptions import IncorrectAxisValueError
 
 
 def child_global_coords_calc(concov, global_, child_space):
@@ -120,6 +122,47 @@ def equal_points(p1: Optional[AllplanGeo.Point3D], p2: Optional[AllplanGeo.Point
             and math.isclose(p1.Z, p2.Z, rel_tol=TOLERANCE, abs_tol=TOLERANCE)
     )
 
+
+def get_rotation_matrix(degree, along_axis, rotation_point):
+    axis_line = __get_axis_line(along_axis, rotation_point)
+    rotation_matrix = AllplanGeo.Matrix3D()
+    rotation_matrix.Rotation(axis_line,
+                             to_radians(degree))
+    return rotation_matrix
+
+
+def transform(polyhedron: AllplanGeo.Polyhedron3D, rotation_matrices: List[AllplanGeo.Matrix3D]):
+    for rm in rotation_matrices:
+        polyhedron = AllplanGeo.Transform(polyhedron, rm)
+    return polyhedron
+
+def to_radians(angle):
+    rot_angle = AllplanGeo.Angle()
+    rot_angle.SetDeg(angle)
+
+    return rot_angle
+
+
+def __get_axis_line(along_axis, rotation_point: AllplanGeo.Point3D):
+    pattern = r"^[oO]?[xyzXYZ]$"
+    if not re.match(pattern, along_axis):
+        raise IncorrectAxisValueError(along_axis)
+    axis = along_axis[-1].lower()
+
+    if axis == "x":
+        return AllplanGeo.Line3D(
+            rotation_point, rotation_point + AllplanGeo.Vector3D(1, 0, 0)
+        )
+    elif axis == "y":
+        return AllplanGeo.Line3D(
+            rotation_point, rotation_point + AllplanGeo.Vector3D(0, 1, 0)
+        )
+    elif axis == "z":
+        AllplanGeo.Line3D(
+            rotation_point, rotation_point + AllplanGeo.Vector3D(0, 0, 1)
+        )
+    else:
+        raise IncorrectAxisValueError("Unknown Error axis")
 
 def __coords_calc_axis(cc_start, cc_end, parent_global_start_point, parent_global_end_point, child_len):
     """
