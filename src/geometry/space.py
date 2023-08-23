@@ -259,7 +259,12 @@ class Space:
         
         if not resulted_polyhedron == AllplanGeo.Polyhedron3D():        # If the resulted_polyhedron not empty
             if not any(child.state in (State.UNION, State.SUBTRACT) for child in self._children):
-                for tf in self.transformations:
+                if self.transformations:
+                    tfs = self.transformations[::-1]
+                else:
+                    tfs = self.transformations
+                
+                for tf in tfs:
                     resulted_polyhedron = tf.transform(resulted_polyhedron)
                 # model  = AllplanBasisElements.ModelElement3D(self.com_prop, transform(resulted_polyhedron, self.rotation_matrices))
                 model  = AllplanBasisElements.ModelElement3D(self.com_prop, resulted_polyhedron)
