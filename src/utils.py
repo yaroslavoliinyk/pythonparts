@@ -131,6 +131,13 @@ def get_rotation_matrix(degree, along_axis, rotation_point):
     return rotation_matrix
 
 
+def get_reflection_matrix(along_axis1, along_axis2, reflection_point):
+    plane = __get_reflection_plane(along_axis1, along_axis2, reflection_point)
+    reflection_matrix = AllplanGeo.Matrix3D()
+    reflection_matrix.Reflection(plane)
+
+    return reflection_matrix
+
 def transform(polyhedron: AllplanGeo.Polyhedron3D, rotation_matrices: List[AllplanGeo.Matrix3D]):
     for rm in rotation_matrices:
         polyhedron = AllplanGeo.Transform(polyhedron, rm)
@@ -144,10 +151,7 @@ def to_radians(angle):
 
 
 def __get_axis_line(along_axis, rotation_point: AllplanGeo.Point3D):
-    pattern = r"^[oO]?[xyzXYZ]$"
-    if not re.match(pattern, along_axis):
-        raise IncorrectAxisValueError(along_axis)
-    axis = along_axis[-1].lower()
+    axis = __check_correct_axis(along_axis)
 
     if axis == "x":
         return AllplanGeo.Line3D(
@@ -163,6 +167,30 @@ def __get_axis_line(along_axis, rotation_point: AllplanGeo.Point3D):
         )
     else:
         raise IncorrectAxisValueError("Unknown Error axis")
+
+
+def __get_reflection_plane(along_axis1, along_axis2, reflection_point):
+    axis1 = __check_correct_axis(along_axis1)
+    axis2 = __check_correct_axis(along_axis2)
+    if axis1 == axis2:
+        raise IncorrectAxisValueError(f"You should enter two different axis. You entered: along_axis1={along_axis1}, along_axis2={along_axis2}")
+    normal_vector = AllplanGeo.Vector3D(1, 1, 1)
+    if "x" in axis1 + axis2:
+        normal_vector.X = 0
+    if "y" in axis1 + axis2:
+        normal_vector.Y = 0
+    if "z" in axis1 + axis2:
+        normal_vector.Z = 0
+    
+    plane = AllplanGeo.Plane3D(reflection_point, normal_vector)
+    return plane 
+
+def __check_correct_axis(axis):
+    pattern = r"^[oO]?[xyzXYZ]$"
+    if not re.match(pattern, axis):
+        raise IncorrectAxisValueError(f"Axis value = {axis} is incorrect. Please, state correct axis: x, y, z(or Ox, Oy, Oz)")
+    return axis[-1].lower()
+
 
 def __coords_calc_axis(cc_start, cc_end, parent_global_start_point, parent_global_end_point, child_len):
     """

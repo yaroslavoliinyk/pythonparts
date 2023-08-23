@@ -272,12 +272,12 @@ class TestScene:
         scene.place(box)
 
         assert len(scene.model_ele_list) == 1
-    
+   
     def test_rotate_spaces2(self):
         scene  = create_scene('build_ele')
         cuboid = create_cuboid(100, 100, 100)
         slab = create_cuboid(400, 100, 10)
-        cuboid.rotate(25, along_axis="y")
+        # cuboid.rotate(25, along_axis="y")
         slab.rotate(35, along_axis="x")
         
         cuboid.place(slab, top=0)
@@ -286,6 +286,15 @@ class TestScene:
 
 
         assert len(scene.model_ele_list) == 2
+
+    def test_reflect_spaces(self):
+        scene = create_scene('build_ele')
+
+        box = create_cuboid(100, 100, 100)
+        box.reflect(along_axis1="x", along_axis2="y")
+        scene.place(box)
+
+        assert len(scene.model_ele_list) == 1
 
 ts = TestScene()
 ts.test_rotate_spaces2()

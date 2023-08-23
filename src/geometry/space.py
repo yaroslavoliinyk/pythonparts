@@ -15,6 +15,7 @@ from ..utils import (center_calc,
                     child_global_coords_calc,
                     equal_points, 
                     get_rotation_matrix,
+                    get_reflection_matrix,
                     transform,)
 
 
@@ -38,6 +39,14 @@ class Space(ABC):
     object to represent it in ``Allplan``.
 
     """
+    @classmethod
+    def from_space_no_children(cls, other_space: "Space"):
+        gspnt = AllplanGeo.Point3D(other_space.global_.start_point)
+        space = cls(other_space.width, other_space.length, other_space.height, global_start_pnt=gspnt, visible=other_space.visible)
+        space._state = other_space.state
+        # ? space.com_prop = other_space.com_prop
+        return space
+
 
     def __init__( 
         self, width, length, height, global_start_pnt=None, visible=True,
@@ -209,7 +218,6 @@ class Space(ABC):
         child_space._concov.update(concov.as_dict())
         child_space.update_global_coords(self.global_)
         self._children.append(child_space)
-        # child_space._update_rotation_matrices(self.rotation_matrices)
 
     def union(self, child_space: "Space", center: bool=False, **concov_sides,):
         self.place(child_space, center, **concov_sides)
@@ -236,13 +244,23 @@ class Space(ABC):
         props = ConcreteCover(point_props)
         if center:
             props.left, props.front, props.bottom = center_calc(props, self.global_, self)
-        rotation_space = copy.copy(self)
+        rotation_space = self.__class__.from_space_no_children(self)
         rotation_space._concov.update(props.as_dict())
         rotation_space.update_global_coords(self.global_)
         
         local_rotation_matrix = get_rotation_matrix(degree, along_axis, rotation_space.global_.start_point)
         self.rotation_matrices.append(local_rotation_matrix)
-        # self._update_rotation_matrices([local_rotation_matrix])
+    
+    def reflect(self, along_axis1: str="x", along_axis2: str="y", center: bool=False, **point_props,):
+        props = ConcreteCover(point_props)
+        if center:
+            props.left, props.front, props.bottom = center_calc(props, self.global_, self)
+        reflection_space = self.__class__.from_space_no_children(self)
+        reflection_space._concov.update(props.as_dict())
+        reflection_space.update_global_coords(self.global_)
+        
+        local_rotation_matrix = get_reflection_matrix(along_axis1, along_axis2, reflection_space.global_.start_point)
+        self.rotation_matrices.append(local_rotation_matrix)
 
     def _update_rotation_matrices(self, rotation_matrices):
         """
@@ -280,25 +298,25 @@ class Space(ABC):
         
         return polyhedrons
 
-    def __copy__(self):
-        # Create a new instance of the Space class with the same attributes
-        copied_instance = self.__class__(
-            width=self.width,
-            length=self.length,
-            height=self.height,
-            global_start_pnt=self.global_.start_point if self._global != Coords.from_empty() else None,
-            visible=self.visible
-        )
+    # def __copy__(self):
+    #     # Create a new instance of the Space class with the same attributes
+    #     copied_instance = self.__class__(
+    #         width=self.width,
+    #         length=self.length,
+    #         height=self.height,
+    #         global_start_pnt=self.global_.start_point if self._global != Coords.from_empty() else None,
+    #         visible=self.visible
+    #     )
         
-        # Copy any additional attributes as needed
-        copied_instance._concov = copy.copy(self._concov)
-        copied_instance._children = copy.copy(self._children)
-        copied_instance.rotation_matrices = copy.copy(self.rotation_matrices)
+    #     # Copy any additional attributes as needed
+    #     copied_instance._concov = copy.copy(self._concov)
+    #     copied_instance._children = copy.copy(self._children)
+    #     copied_instance.rotation_matrices = copy.copy(self.rotation_matrices)
         
-        # You might need to update the global coordinates of the copied instance
-        copied_instance.update_global_coords(copied_instance._global)
+    #     # You might need to update the global coordinates of the copied instance
+    #     copied_instance.update_global_coords(copied_instance._global)
         
-        return copied_instance
+    #     return copied_instance
 
 
     def __len__(self):
