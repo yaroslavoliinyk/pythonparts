@@ -329,7 +329,7 @@ class Rotation:
                 rotation_point, rotation_point + AllplanGeo.Vector3D(0, 1, 0)
             )
         elif self.axis == "z":
-            AllplanGeo.Line3D(
+            return AllplanGeo.Line3D(
                 rotation_point, rotation_point + AllplanGeo.Vector3D(0, 0, 1)
             )
         else:

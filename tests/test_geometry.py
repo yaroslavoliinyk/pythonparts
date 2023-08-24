@@ -277,7 +277,7 @@ class TestScene:
         scene  = create_scene('build_ele')
         cuboid = create_cuboid(100, 100, 100)
         slab = create_cuboid(400, 100, 10)
-        # cuboid.rotate(25, along_axis="y")
+        cuboid.rotate(25, along_axis="z")
         slab.rotate(35, along_axis="x")
         
         cuboid.place(slab, top=0)
