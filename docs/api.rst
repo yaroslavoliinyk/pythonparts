@@ -153,14 +153,6 @@ Classes
       :return: Global coordinates of this ``Space`` object.
       :rtype: :py:class:`pythonparts.geometry.coords.Coords`
 
-   .. function:: update_global_coords(self, parent_global_coords: Coords)
-
-      Set new Global coordinates for this ``Space`` object and all its :py:func:`children <pythonparts.geometry.Space._children>`
-        
-      :param parent_global_coords: An instance of the Coords class.
-         It represents the global coordinates of the parent object.
-      :type parent_global_coords: Coords
-   
    .. function:: build(self) -> List[AllplanBasisElements.ModelElement3D]
 
       Recursively builds a list of `AllplanBasisElements.ModelElement3D` objects for itselt

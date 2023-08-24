@@ -23,7 +23,6 @@ class ConcreteCover:
         self.update(sides_dict)
 
     @classmethod
-
     def from_sides(cls, **sides):
         """
         The above function is a class method that creates an instance of the class using the provided

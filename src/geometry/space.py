@@ -40,6 +40,7 @@ class Space:
     object to represent it in ``Allplan``.
 
     """
+    
     @classmethod
     def from_space_no_children(cls, other_space: "Space"):
         gspnt = AllplanGeo.Point3D(other_space.global_.start_point)
@@ -89,7 +90,6 @@ class Space:
         self.visible                                      = visible
         self.transformations: List[Union[Rotation, Reflection]] = []
 
-    
     def polyhedron(self) -> AllplanGeo.Polyhedron3D: 
         raise NotImplementedError()
     
@@ -152,20 +152,6 @@ class Space:
     def state(self, value):
         raise AttributePermissionError("You cannot set union of Space with another Space. Use union() function instead")
     
-
-    def update_global_coords(self, parent_global_coords: Coords):
-        """
-        Set new Global coordinates for this ``Space`` object and all its :py:func:`children <pythonparts.geometry.Space._children>`
-        
-        :param parent_global_coords: An instance of the Coords class.
-            It represents the global coordinates of the parent object.
-        :type parent_global_coords: Coords
-        """
-        start_point, end_point = child_global_coords_calc(self._concov, parent_global_coords, self)
-        self._global           = Coords(start_point, end_point)
-        for child in self._children:
-            child.update_global_coords(self._global)  
-    
     def build(self) -> List[AllplanBasisElements.ModelElement3D]:
         """
         Recursively builds a list of `AllplanBasisElements.ModelElement3D` objects for itselt
@@ -208,7 +194,7 @@ class Space:
         if center:
             concov.left, concov.front, concov.bottom = center_calc(concov, self.global_, child_space)
         child_space._concov.update(concov.as_dict())
-        child_space.update_global_coords(self.global_)
+        child_space._update_child_global_coords(self.global_)
         self._children.append(child_space)
 
     def union(self, child_space: "Space", center: bool=False, **concov_sides,):
@@ -228,6 +214,19 @@ class Space:
     def reflect(self, along_axis1: str="x", along_axis2: str="y", center: bool=False, **point_props,):
         self.transformations.append(Reflection(self, along_axis1, along_axis2, center, **point_props))
         
+    def _update_child_global_coords(self, parent_global_coords: Coords):
+        """
+        Set new Global coordinates for this ``Space`` object and all its :py:func:`children <pythonparts.geometry.Space._children>`
+        
+        :param parent_global_coords: An instance of the Coords class.
+            It represents the global coordinates of the parent object.
+        :type parent_global_coords: Coords
+        """
+        start_point, end_point = child_global_coords_calc(self._concov, parent_global_coords, self)
+        self._global           = Coords(start_point, end_point)
+        for child in self._children:
+            child._update_child_global_coords(self._global)  
+
     def __update_child_transformations(self, parent_transformations):
         """
         The function spreads a parent rotation matrix to all its children by inserting it at the
@@ -257,20 +256,20 @@ class Space:
         for child in self._children:
             polyhedrons.extend(child.__build_all(resulted_polyhedron))
         
-        if not resulted_polyhedron == AllplanGeo.Polyhedron3D():        # If the resulted_polyhedron not empty
-            if not any(child.state in (State.UNION, State.SUBTRACT) for child in self._children):
-                if self.transformations:
-                    tfs = self.transformations[::-1]
-                else:
-                    tfs = self.transformations
-                
-                for tf in tfs:
+        if not resulted_polyhedron == AllplanGeo.Polyhedron3D():                                     # If the resulted_polyhedron not empty
+            if not any(child.state in (State.UNION, State.SUBTRACT) for child in self._children):    # If we don't need more unions or subtractions
+                tfs_reversed = [] if not self.transformations else self.transformations[::-1]
+                # if self.transformations:
+                #     tfs = self.transformations[::-1]
+                # else:
+                #     tfs = self.transformations
+                for tf in tfs_reversed:
                     resulted_polyhedron = tf.transform(resulted_polyhedron)
-                # model  = AllplanBasisElements.ModelElement3D(self.com_prop, transform(resulted_polyhedron, self.rotation_matrices))
                 model  = AllplanBasisElements.ModelElement3D(self.com_prop, resulted_polyhedron)
                 polyhedrons.append(model)
         
         return polyhedrons
+
 
     def __len__(self):
         return len(self._children)
@@ -307,7 +306,7 @@ class Rotation:
             self.props.left, self.props.front, self.props.bottom = center_calc(self.props, self.space.global_, self.space)
         rotation_space = Space.from_space_no_children(self.space)
         rotation_space._concov.update(self.props.as_dict())
-        rotation_space.update_global_coords(self.space.global_)
+        rotation_space._update_child_global_coords(self.space.global_)
         
         matrix = self.__get_matrix(rotation_space.global_.start_point)
         return AllplanGeo.Transform(polyhedron, matrix)
@@ -350,7 +349,7 @@ class Reflection:
             self.props.left, self.props.front, self.props.bottom = center_calc(self.props, self.space.global_, self.space)
         reflection_space = Space.from_space_no_children(self.space)
         reflection_space._concov.update(self.props.as_dict())
-        reflection_space.update_global_coords(self.space.global_)
+        reflection_space._update_child_global_coords(self.space.global_)
         
         matrix = self.__get_matrix(reflection_space.global_.start_point)
         return AllplanGeo.Transform(polyhedron, matrix)
