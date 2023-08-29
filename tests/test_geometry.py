@@ -181,6 +181,17 @@ class TestCuboid:
         assert cuboid.length == 20
         assert cuboid.height == 30
 
+    def test_cut1(self):
+        scene = create_scene('empty_build_ele')
+        column = create_cuboid(10, 10, 1000)
+        slab   = create_cuboid(200, 200, 12)
+
+        column.place(slab, bottom=300)
+        column.cut_cuboid_diagonally(along_axis="y")
+        scene.place(column)
+
+        assert len(scene.model_ele_list) == 2
+
 
 class TestScene:
 

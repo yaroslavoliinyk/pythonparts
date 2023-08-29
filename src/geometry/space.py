@@ -17,7 +17,8 @@ from ..utils import (center_calc,
                     child_global_coords_calc,
                     equal_points, 
                     check_correct_axis,
-                    to_radians,)
+                    to_radians,
+                    unit_vector,)
 
 
 # The `Space` class represents a three-dimensional space with width, length, and height, and provides
@@ -319,21 +320,7 @@ class Rotation:
         return rotation_matrix
     
     def __get_axis_line(self, rotation_point: AllplanGeo.Point3D):
-        if self.axis == "x":
-            return AllplanGeo.Line3D(
-                rotation_point, rotation_point + AllplanGeo.Vector3D(1, 0, 0)
-            )
-        elif self.axis == "y":
-            return AllplanGeo.Line3D(
-                rotation_point, rotation_point + AllplanGeo.Vector3D(0, 1, 0)
-            )
-        elif self.axis == "z":
-            return AllplanGeo.Line3D(
-                rotation_point, rotation_point + AllplanGeo.Vector3D(0, 0, 1)
-            )
-        else:
-            raise IncorrectAxisValueError("Unknown Error axis")
-
+        return AllplanGeo.Line3D(rotation_point, rotation_point + unit_vector(along_axis=self.axis))
 
 class Reflection:
 
@@ -363,7 +350,7 @@ class Reflection:
 
     def __get_reflection_plane(self, reflection_point):
         if self.axis1 == self.axis2:
-            raise IncorrectAxisValueError(f"You should enter two different axis. You entered: along_axis1={along_axis1}, along_axis2={along_axis2}")
+            raise IncorrectAxisValueError(f"You should enter two different axis. You entered: along_axis1={self.axis1}, along_axis2={self.axis2}")
         normal_vector = AllplanGeo.Vector3D(1, 1, 1)
         if "x" in self.axis1 + self.axis2:
             normal_vector.X = 0

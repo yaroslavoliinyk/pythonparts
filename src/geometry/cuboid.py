@@ -1,5 +1,7 @@
 from .space import Space, AllplanGeo
 from ..properties import com_prop as cp
+from ..utils import (check_correct_axis,
+                     get_diagonal_plane,)
 
 
 class Cuboid(Space):
@@ -10,10 +12,14 @@ class Cuboid(Space):
 
     def __init__(self, width, length, height, global_start_pnt=None, visible=True, com_prop=None):
         super().__init__(width, length, height, global_start_pnt=global_start_pnt, visible=visible)
+        self.cut_along_axis = None
+        self.cut_by_main_diagonal = True
+        self.below_diagonal = True
         if com_prop is None:
             com_prop = cp.global_properties()
         self.__com_prop = com_prop
 
+    
     @property
     def polyhedron(self):
         """
@@ -21,7 +27,23 @@ class Cuboid(Space):
         """
         if not self.visible:
             return AllplanGeo.Polyhedron3D()
-        return AllplanGeo.Polyhedron3D.CreateCuboid(self.global_.start_point, self.global_.end_point)
+        cuboid = AllplanGeo.Polyhedron3D.CreateCuboid(self.global_.start_point, self.global_.end_point)
+        
+        if self.cut_along_axis is not None:
+            (is_cut,
+            above_plane_polyhedron, 
+            below_plane_polyhedron) = \
+                AllplanGeo.CutPolyhedronWithPlane(cuboid, 
+                                                  get_diagonal_plane(self.global_, 
+                                                                     self.cut_along_axis, 
+                                                                     self.cut_by_main_diagonal
+                                                                     )
+                                                )
+            if not is_cut:
+                raise ValueError("Could not cut Polyhedron. Check cut_diagonally() parameters or contact developer.")
+            return below_plane_polyhedron if self.below_diagonal else above_plane_polyhedron
+        
+        return cuboid  
 
     @property
     def com_prop(self):
@@ -29,6 +51,15 @@ class Cuboid(Space):
         Returning the basic set ``CommonProperties`` object of given ``Cuboid``
         """
         return self.__com_prop
-    
+
+    def cut_cuboid_diagonally(self, along_axis: str, main_diagonal: bool=True, below_diagonal: bool=True):
+        """
+            :along_axis: Along which axis to cut: Ox, Oy, Oz
+            :diagonal: Either 0 or 1. If 0, Cut by the main diagonal. If 1 - cut by the other diagonal. 
+        """
+        self.cut_along_axis = check_correct_axis(along_axis)
+        self.cut_by_main_diagonal   = main_diagonal
+        self.below_diagonal = below_diagonal
+
     def __str__(self):
         return f"Cuboid(width={self.widht}, length={self.length}, height={self.height})"

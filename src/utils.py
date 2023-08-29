@@ -9,6 +9,17 @@ from .config import TOLERANCE
 from .exceptions import IncorrectAxisValueError
 
 
+def unit_vector(*, along_axis):
+    axis = check_correct_axis(along_axis)
+    if axis == "x":
+        return AllplanGeo.Vector3D(1, 0, 0)
+    if axis == "y":
+        return AllplanGeo.Vector3D(0, 1, 0)
+    if axis == "z":
+        return AllplanGeo.Vector3D(0, 0, 1)
+    raise AttributeError("Unknown axis error")
+
+
 def child_global_coords_calc(concov, global_, child_space):
     """
     The function calculates the global coordinates of a child space based on the given parameters.
@@ -135,6 +146,17 @@ def check_correct_axis(axis):
     if not re.match(pattern, axis):
         raise IncorrectAxisValueError(f"Axis value = {axis} is incorrect. Please, state correct axis: x, y, z(or Ox, Oy, Oz)")
     return axis[-1].lower()
+
+
+def get_diagonal_plane(global_coords, along_axis, main_diagonal):
+    if main_diagonal:
+        start_point = global_coords.start_point
+        end_point   = global_coords.end_point
+    else:
+        start_point = AllplanGeo.Point3D(global_coords.end_point.X, global_coords.start_point.Y, global_coords.start_point.Z)
+        end_point   = AllplanGeo.Point3D(global_coords.start_point.X, global_coords.end_point.Y, global_coords.end_point.Z)
+    plane = AllplanGeo.Plane3D(start_point, start_point + unit_vector(along_axis=along_axis), end_point)
+    return plane
 
 
 def __coords_calc_axis(cc_start, cc_end, parent_global_start_point, parent_global_end_point, child_len):
