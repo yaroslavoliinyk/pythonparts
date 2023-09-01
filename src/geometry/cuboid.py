@@ -44,6 +44,17 @@ class Cuboid(Space):
             return below_plane_polyhedron if self.below_diagonal else above_plane_polyhedron
         
         return cuboid  
+    
+    @property
+    def polyhedron_transformed(self):
+        """
+            :return: ``AllplanGeo.Polyhedron3D`` created with ``AllplanGeo.Polyhedron3D.CreateCuboid``
+        """
+        polyhedron = self.polyhedron
+        tfs_reversed = [] if not self.transformations else self.transformations[::-1]
+        for tf in tfs_reversed:
+            polyhedron = tf.transform(polyhedron)
+        return polyhedron
 
     @property
     def com_prop(self):

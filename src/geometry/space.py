@@ -98,6 +98,9 @@ class Space:
     def polyhedron(self) -> AllplanGeo.Polyhedron3D: 
         raise NotImplementedError()
     
+    def polyhedron_transformed(self) -> AllplanGeo.Polyhedron3D: 
+        raise NotImplementedError()
+    
     def com_prop(self):
         raise NotImplementedError()
 
@@ -269,24 +272,24 @@ class Space:
         polyhedrons = []
 
         if resulted_polyhedron is not None and self.state == State.UNION:
-            err, resulted_polyhedron = AllplanGeo.MakeUnion(resulted_polyhedron, self.polyhedron)
+            err, resulted_polyhedron = AllplanGeo.MakeUnion(resulted_polyhedron, self.polyhedron_transformed)
             if err:
-                raise AllplanGeometryError(f"You cannot make union of {resulted_polyhedron} and {self.polyhedron}.\n{err}")
+                raise AllplanGeometryError(f"You cannot make union of {resulted_polyhedron} and {self.polyhedron_transformed}.\n{err}")
         elif resulted_polyhedron is not None and self.state == State.SUBTRACT:
-            err, resulted_polyhedron = AllplanGeo.MakeSubtraction(resulted_polyhedron, self.polyhedron)
+            err, resulted_polyhedron = AllplanGeo.MakeSubtraction(resulted_polyhedron, self.polyhedron_transformed)
             if err:
-                raise AllplanGeometryError(f"You cannot subtract from {resulted_polyhedron} the following polyhedron {self.polyhedron}.\n{err}")
+                raise AllplanGeometryError(f"You cannot subtract from {resulted_polyhedron} the following polyhedron {self.polyhedron_transformed}.\n{err}")
         else:
-            resulted_polyhedron = self.polyhedron
+            resulted_polyhedron = self.polyhedron_transformed
 
         for child in self._children:
             polyhedrons.extend(child.__build_all(resulted_polyhedron))
         
         if not resulted_polyhedron == AllplanGeo.Polyhedron3D():                                     # If the resulted_polyhedron not empty
             if not any(child.state in (State.UNION, State.SUBTRACT) for child in self._children):    # If we don't need more unions or subtractions
-                tfs_reversed = [] if not self.transformations else self.transformations[::-1]
-                for tf in tfs_reversed:
-                    resulted_polyhedron = tf.transform(resulted_polyhedron)
+                # tfs_reversed = [] if not self.transformations else self.transformations[::-1]
+                # for tf in tfs_reversed:
+                #     resulted_polyhedron = tf.transform(resulted_polyhedron)
                 model  = AllplanBasisElements.ModelElement3D(self.com_prop, resulted_polyhedron)
                 polyhedrons.append(model)
         
