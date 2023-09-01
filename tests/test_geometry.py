@@ -153,10 +153,6 @@ class TestSpace:
 
 class TestConcreteCover:
 
-    def test_init(self):
-        with pytest.raises(TypeError):
-            cc = geo.ConcreteCover()
-
     def test_from_kwargs(self):
         cc = geo.ConcreteCover.from_sides(left=200, top=-100)
         

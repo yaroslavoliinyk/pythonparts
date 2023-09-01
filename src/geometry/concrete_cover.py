@@ -10,7 +10,7 @@ class ConcreteCover:
     __match_args__ = ('left', 'right', 'top', 'bottom', 'front', 'back')
 
 
-    def __init__(self, sides_dict):
+    def __init__(self, sides_dict=None):
         """
         The function initializes an object with a dictionary of sides and their values.
         
@@ -20,7 +20,8 @@ class ConcreteCover:
         """
         cls = type(self)
         self._sides = defaultdict.fromkeys(cls.__match_args__, None)
-        self.update(sides_dict)
+        if sides_dict is not None:
+            self.update(sides_dict)
 
     @classmethod
     def from_sides(cls, **sides):
@@ -33,6 +34,7 @@ class ConcreteCover:
         :return: The method is returning an instance of the class.
         """
         return cls(sides)
+
 
     def update(self, sides_dict):
         """
@@ -51,6 +53,7 @@ class ConcreteCover:
         :return: The method `as_dict` is returning the value of the variable `_sides`.
         """
         return self._sides
+
 
     def __setattr__(self, __name: str, __value: Any) -> None:
         """

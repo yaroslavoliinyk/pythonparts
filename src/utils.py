@@ -20,6 +20,28 @@ def unit_vector(*, along_axis):
     raise AttributeError("Unknown axis error")
 
 
+def find_point_on_space(con_cov, parent_space):
+    x = parent_space.global_.start_point.X
+    if con_cov.left is not None:
+        x += con_cov.left
+    elif con_cov.right is not None:
+        x = parent_space.global_.end_point.X - con_cov.right
+        
+    y = parent_space.global_.start_point.Y
+    if con_cov.front is not None:
+        y += con_cov.front 
+    elif con_cov.back is not None:
+        y = parent_space.global_.end_point.Y - con_cov.back
+
+    z = parent_space.global_.start_point.Z
+    if con_cov.bottom is not None:
+        z += con_cov.bottom
+    elif con_cov.top is not None:
+        z = parent_space.global_.end_point.Z - con_cov.top
+
+    return AllplanGeo.Point3D(x, y, z)
+
+
 def child_global_coords_calc(concov, global_, child_space):
     """
     The function calculates the global coordinates of a child space based on the given parameters.

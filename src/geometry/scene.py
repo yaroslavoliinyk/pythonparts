@@ -58,6 +58,13 @@ class Scene:
         ppart = self.PythonPart()
         return ppart.create(self.build_ele, self.model_ele_list, self.reinf_ele_list, cp.global_properties())
 
+    @property
+    def handles(self):
+        handles = []
+        for model in self.scene_space._children:
+            handles.extend(model.get_handles(self.build_ele))
+        return handles
+
 
     def place(self, child_space: Space, center=False, visible=True, **concov_sides):
         """

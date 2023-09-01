@@ -104,3 +104,7 @@ def create_cuboid_from_pyp(pyp_name, visible=True):
     height = getattr((build_ele), f"{pyp_name}Height").value
 
     return pp.src.geometry.Cuboid(width, length, height, visible=visible)
+
+
+def move_handle(build_ele, handle_prop, input_pnt, doc):
+    pass

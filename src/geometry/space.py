@@ -6,9 +6,12 @@ from typing import Union, Optional, List, Dict
 
 import NemAll_Python_BasisElements as AllplanBasisElements    # type: ignore
 
+from HandleProperties import HandleProperties                  # type: ignore
+
 from .space_state import State
 from .coords import Coords, AllplanGeo
 from .concrete_cover import ConcreteCover
+from ..handles import Handle
 from ..exceptions import (AttributePermissionError, 
                           AllplanGeometryError,
                           IncorrectAxisValueError,)
@@ -90,6 +93,7 @@ class Space:
         self._state                                       = State.PLACE
         self.visible                                      = visible
         self.transformations: List[Union[Rotation, Reflection]] = []
+        self.handles                                      = []
 
     def polyhedron(self) -> AllplanGeo.Polyhedron3D: 
         raise NotImplementedError()
@@ -165,6 +169,13 @@ class Space:
         # return [AllplanBasisElements.ModelElement3D(self.com_prop, placed_poly) for placed_poly in polyhedrons]
         return model_ele_list
 
+    def get_handles(self, build_ele) -> List[HandleProperties]:
+        handles_allplan: List[HandleProperties] = [handle.create(build_ele) for handle in self.handles]
+
+        for model in self._children:
+            handles_allplan.extend(model.get_handles(build_ele))
+        return handles_allplan
+
     def place(self, child_space: "Space", center: bool=False, **concov_sides,):
         """
         Position a child space inside a parent space, with options for
@@ -214,7 +225,12 @@ class Space:
     
     def reflect(self, along_axis1: str="x", along_axis2: str="y", center: bool=False, **point_props,):
         self.transformations.append(Reflection(self, along_axis1, along_axis2, center, **point_props))
-        
+
+    def add_handle(self, param_name) -> Handle:
+        handle = Handle(self, param_name)
+        self.handles.append(handle)
+        return handle
+
     def _update_child_global_coords(self, parent_global_coords: Coords):
         """
         Set new Global coordinates for this ``Space`` object and all its :py:func:`children <pythonparts.geometry.Space._children>`
