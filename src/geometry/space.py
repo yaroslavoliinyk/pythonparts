@@ -157,24 +157,33 @@ class Space:
     def state(self, value):
         raise AttributePermissionError("You cannot set union of Space with another Space. Use union() function instead")
     
+    # @check_update_transformations
     def build(self) -> List[AllplanBasisElements.ModelElement3D]:
         """
         Recursively builds a list of `AllplanBasisElements.ModelElement3D` objects for itselt
         and all its :py:func:`children <pythonparts.geometry.Space._children>`
         :return: a list of AllplanBasisElements.ModelElement3D objects.
         """
-        self.__update_child_transformations(self.transformations)
+        self._update_child_transformations(self.transformations)
         model_ele_list       = self.__build_all()
 
         # return [AllplanBasisElements.ModelElement3D(self.com_prop, placed_poly) for placed_poly in polyhedrons]
         return model_ele_list
 
+    # @check_update_transformations
     def get_handles(self, build_ele) -> List[HandleProperties]:
         handles_allplan: List[HandleProperties] = [handle.create(build_ele) for handle in self.handles]
-
+        handles_transformed: List[HandleProperties] = []
+        tfs_reversed = [] if not self.transformations else self.transformations[::-1]
+        
+        for handle_prop in handles_allplan:
+            for tf in tfs_reversed:
+                handle_prop.transform(tf.get_matrix())
+            handles_transformed.append(handle_prop)
+        
         for model in self._children:
-            handles_allplan.extend(model.get_handles(build_ele))
-        return handles_allplan
+            handles_transformed.extend(model.get_handles(build_ele))
+        return handles_transformed
 
     def place(self, child_space: "Space", center: bool=False, **concov_sides,):
         """
@@ -244,7 +253,7 @@ class Space:
         for child in self._children:
             child._update_child_global_coords(self._global)  
 
-    def __update_child_transformations(self, parent_transformations):
+    def _update_child_transformations(self, parent_transformations):
         """
         The function spreads a parent rotation matrix to all its children by inserting it at the
         beginning of each child's rotation matrix list and recursively calling itself on each child.
@@ -254,7 +263,7 @@ class Space:
         """
         for child in self._children:
             child.transformations[:0] = parent_transformations
-            child.__update_child_transformations(child.transformations)
+            child._update_child_transformations(child.transformations)
 
     def __build_all(self, resulted_polyhedron=None):
         polyhedrons = []
@@ -276,10 +285,6 @@ class Space:
         if not resulted_polyhedron == AllplanGeo.Polyhedron3D():                                     # If the resulted_polyhedron not empty
             if not any(child.state in (State.UNION, State.SUBTRACT) for child in self._children):    # If we don't need more unions or subtractions
                 tfs_reversed = [] if not self.transformations else self.transformations[::-1]
-                # if self.transformations:
-                #     tfs = self.transformations[::-1]
-                # else:
-                #     tfs = self.transformations
                 for tf in tfs_reversed:
                     resulted_polyhedron = tf.transform(resulted_polyhedron)
                 model  = AllplanBasisElements.ModelElement3D(self.com_prop, resulted_polyhedron)
@@ -293,6 +298,14 @@ class Space:
     
     def __getitem__(self, index):
         return self._children[index]
+
+    def __hash__(self):
+        hashable_attributes = frozenset([
+            self.local, self.global_, self.length, self.width, self.height,
+            self.visible, self._state, *self._children
+        ])
+        return hash(hashable_attributes)
+
 
     def __eq__(self, other):
         return (self.local == other.local
@@ -319,16 +332,20 @@ class Rotation:
         self.props = ConcreteCover(point_props)
 
     def transform(self, polyhedron):
+        return AllplanGeo.Transform(polyhedron, self.get_matrix())
+    
+    def get_matrix(self):
         if self.center:
             self.props.left, self.props.front, self.props.bottom = center_calc(self.props, self.space.global_, self.space)
         rotation_space = Space.from_space_no_children(self.space)
         rotation_space._concov.update(self.props.as_dict())
         rotation_space._update_child_global_coords(self.space.global_)
         
-        matrix = self.__get_matrix(rotation_space.global_.start_point)
-        return AllplanGeo.Transform(polyhedron, matrix)
-    
-    def __get_matrix(self, rotation_point):
+        matrix = self.__get_matrix_by_point(rotation_space.global_.start_point)
+        return matrix
+
+
+    def __get_matrix_by_point(self, rotation_point):
         axis_line = self.__get_axis_line(rotation_point)
         rotation_matrix = AllplanGeo.Matrix3D()
         rotation_matrix.Rotation(axis_line,
@@ -348,16 +365,19 @@ class Reflection:
         self.props = ConcreteCover(point_props)
 
     def transform(self, polyhedron):
+        return AllplanGeo.Transform(polyhedron, self.get_matrix())
+    
+    def get_matrix(self):
         if self.center:
             self.props.left, self.props.front, self.props.bottom = center_calc(self.props, self.space.global_, self.space)
         reflection_space = Space.from_space_no_children(self.space)
         reflection_space._concov.update(self.props.as_dict())
         reflection_space._update_child_global_coords(self.space.global_)
         
-        matrix = self.__get_matrix(reflection_space.global_.start_point)
-        return AllplanGeo.Transform(polyhedron, matrix)
-    
-    def __get_matrix(self, reflection_point):
+        matrix = self.__get_matrix_by_point(reflection_space.global_.start_point)
+        return matrix
+
+    def __get_matrix_by_point(self, reflection_point):
         plane = self.__get_reflection_plane(reflection_point)
         reflection_matrix = AllplanGeo.Matrix3D()
         reflection_matrix.Reflection(plane)

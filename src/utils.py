@@ -9,6 +9,17 @@ from .config import TOLERANCE
 from .exceptions import IncorrectAxisValueError
 
 
+# def check_update_transformations(method):
+#     already_checked_transformations = set()
+#     def wrapper(*args, **kwargs):
+#         main_space = args[0]    # supposed self method
+#         if main_space not in already_checked_transformations:
+#             main_space._update_child_transformations(main_space.transformations)
+#             already_checked_transformations.add(main_space)
+#         return method(*args, **kwargs)
+#     return wrapper
+
+
 def unit_vector(*, along_axis):
     axis = check_correct_axis(along_axis)
     if axis == "x":

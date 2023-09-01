@@ -49,6 +49,13 @@ class Coords:
         self.move_start_point(vec)
         self.move_end_point(vec)
 
+    def __hash__(self):
+        # Create a tuple of string representations of non-hashable attributes
+        hashable_attributes = (str(self.start_point), str(self.end_point))
+        # Join the string representations into a single string and hash it
+        return hash(' '.join(hashable_attributes))
+
+
     def __eq__(self, other_coords) -> bool:
         return equal_points(self.start_point, other_coords.start_point) and equal_points(self.end_point, other_coords.end_point)
 
