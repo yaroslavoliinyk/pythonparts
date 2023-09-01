@@ -106,5 +106,11 @@ def create_cuboid_from_pyp(pyp_name, visible=True):
     return pp.src.geometry.Cuboid(width, length, height, visible=visible)
 
 
-def move_handle(build_ele, handle_prop, input_pnt, doc):
-    pass
+def move_handle(build_ele, handle_prop, input_pnt, doc, create):
+    register = Register()
+    register.set(build_ele)
+    delta = handle_prop.ref_point.GetDistance(input_pnt) - handle_prop.unchanged_constant
+    parameter_property = getattr(build_ele, handle_prop.change_param_name)
+    parameter_property.value = delta
+
+    return create(build_ele, doc)

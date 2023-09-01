@@ -14,6 +14,7 @@ if os.name == "nt":
 from .src import (create_scene, 
                   create_cuboid_from_pyp, 
                   create_cuboid, 
+                  move_handle,
                   geometry,
                   to_radians, 
                   equal_points,)

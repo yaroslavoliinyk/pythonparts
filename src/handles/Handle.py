@@ -58,7 +58,8 @@ class Handle:
             [(self.__handle_name, HandleDirection.point_dir, True)],
             HandleDirection.point_dir,
         )
-        handle_property.change_param = self.param_name
+        handle_property.change_param_name = self.param_name
+        handle_property.unchanged_constant = self.end_point.GetDistance(self.start_point) - getattr(build_ele, self.param_name).value
         return handle_property
 
 
