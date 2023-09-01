@@ -174,8 +174,8 @@ class Space:
         return model_ele_list
 
     # @check_update_transformations
-    def get_handles(self, build_ele) -> List[HandleProperties]:
-        handles_allplan: List[HandleProperties] = [handle.create(build_ele) for handle in self.handles]
+    def get_handles(self, scene) -> List[HandleProperties]:
+        handles_allplan: List[HandleProperties] = [handle.create(scene) for handle in self.handles]
         handles_transformed: List[HandleProperties] = []
         tfs_reversed = [] if not self.transformations else self.transformations[::-1]
         
@@ -185,7 +185,7 @@ class Space:
             handles_transformed.append(handle_prop)
         
         for model in self._children:
-            handles_transformed.extend(model.get_handles(build_ele))
+            handles_transformed.extend(model.get_handles(scene))
         return handles_transformed
 
     def place(self, child_space: "Space", center: bool=False, **concov_sides,):
@@ -218,7 +218,7 @@ class Space:
         if center:
             concov.left, concov.front, concov.bottom = center_calc(concov, self.global_, child_space)
         child_space._concov.update(concov.as_dict())
-        child_space._update_child_global_coords(self.global_)
+        child_space.update_child_global_coords(self.global_)
         self._children.append(child_space)
 
     def union(self, child_space: "Space", center: bool=False, **concov_sides,):
@@ -243,7 +243,7 @@ class Space:
         self.handles.append(handle)
         return handle
 
-    def _update_child_global_coords(self, parent_global_coords: Coords):
+    def update_child_global_coords(self, parent_global_coords: Coords):
         """
         Set new Global coordinates for this ``Space`` object and all its :py:func:`children <pythonparts.geometry.Space._children>`
         
@@ -254,7 +254,7 @@ class Space:
         start_point, end_point = child_global_coords_calc(self._concov, parent_global_coords, self)
         self._global           = Coords(start_point, end_point)
         for child in self._children:
-            child._update_child_global_coords(self._global)  
+            child.update_child_global_coords(self._global)  
 
     def _update_child_transformations(self, parent_transformations):
         """
@@ -294,7 +294,6 @@ class Space:
                 polyhedrons.append(model)
         
         return polyhedrons
-
 
     def __len__(self):
         return len(self._children)
@@ -342,7 +341,7 @@ class Rotation:
             self.props.left, self.props.front, self.props.bottom = center_calc(self.props, self.space.global_, self.space)
         rotation_space = Space.from_space_no_children(self.space)
         rotation_space._concov.update(self.props.as_dict())
-        rotation_space._update_child_global_coords(self.space.global_)
+        rotation_space.update_child_global_coords(self.space.global_)
         
         matrix = self.__get_matrix_by_point(rotation_space.global_.start_point)
         return matrix
@@ -375,7 +374,7 @@ class Reflection:
             self.props.left, self.props.front, self.props.bottom = center_calc(self.props, self.space.global_, self.space)
         reflection_space = Space.from_space_no_children(self.space)
         reflection_space._concov.update(self.props.as_dict())
-        reflection_space._update_child_global_coords(self.space.global_)
+        reflection_space.update_child_global_coords(self.space.global_)
         
         matrix = self.__get_matrix_by_point(reflection_space.global_.start_point)
         return matrix

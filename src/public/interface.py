@@ -2,7 +2,10 @@ import pythonparts as pp
 
 from numbers import Real
 
+import NemAll_Python_Geometry as AllplanGeo     # type: ignore
+
 from .tools import Register
+from ..utils import equal_points
 
 
 def create_scene(build_ele):
@@ -23,9 +26,16 @@ def create_scene(build_ele):
         Scene(children=[Cuboid(width=200, length=1000, height=100)]) 
     """
     register = Register()
-    register.set(build_ele)
+    register.set_build_ele(build_ele)
+    scene = pp.src.geometry.Scene(build_ele)
+    try:
+        scene_start_point = getattr(build_ele, "scene_start_point")
+        scene.global_.move_start_point(AllplanGeo.Vector3D(scene_start_point))
+    except AttributeError:
+        print("No handle move that influences input point of scene")
+    register.set_scene(scene)
     
-    return pp.src.geometry.Scene(build_ele)
+    return scene
 
 
 def create_cuboid(width, length, height, visible=True):
@@ -97,7 +107,7 @@ def create_cuboid_from_pyp(pyp_name, visible=True):
         Cuboid(width=200, length=1000, height=100)   
     """
     register = Register()
-    build_ele = register.get()
+    build_ele = register.get_build_ele()
     
     width  = getattr((build_ele), f"{pyp_name}Width").value
     length = getattr((build_ele), f"{pyp_name}Length").value
@@ -108,9 +118,15 @@ def create_cuboid_from_pyp(pyp_name, visible=True):
 
 def move_handle(build_ele, handle_prop, input_pnt, doc, create):
     register = Register()
-    register.set(build_ele)
+    register.set_build_ele(build_ele)
+    scene = register.get_scene()
+
     delta = handle_prop.ref_point.GetDistance(input_pnt) - handle_prop.unchanged_constant
     parameter_property = getattr(build_ele, handle_prop.change_param_name)
     parameter_property.value = delta
+
+    if handle_prop.move_scene == True:
+        scene.global_.move_start_point(AllplanGeo.Vector3D(scene.global_.start_point, input_pnt))
+        build_ele.scene_start_point = scene.global_.start_point
 
     return create(build_ele, doc)

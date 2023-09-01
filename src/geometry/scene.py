@@ -8,6 +8,7 @@ from PythonPart import View2D3D, PythonPart
 
 from .space import Space, AllplanGeo
 from .cuboid import Cuboid
+from .coords import Coords
 from .concrete_cover import ConcreteCover
 from ..reinforcement import Reinforcement
 from ..utils import center_scene_calc
@@ -62,9 +63,16 @@ class Scene:
     def handles(self):
         handles = []
         for model in self.scene_space._children:
-            handles.extend(model.get_handles(self.build_ele))
+            handles.extend(model.get_handles(self))
         return handles
 
+    @property
+    def global_(self):
+        return self.scene_space.global_
+
+    # def update_child_global_coords(self, parent_global_coords: Coords):
+    #     print("Updating!", parent_global_coords)
+    #     self.scene_space.update_child_global_coords(parent_global_coords)
 
     def place(self, child_space: Space, center=False, visible=True, **concov_sides):
         """
@@ -77,6 +85,7 @@ class Scene:
         if center:
             concov.left, concov.front, concov.bottom = center_scene_calc(concov, child_space)
         self.scene_space.place(child_space, visible=visible, left=concov.left, front=concov.front, bottom=concov.bottom)
+        # self.update_child_global_coords(self.scene_space.global_)
 
 
     class PythonPart:

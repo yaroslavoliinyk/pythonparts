@@ -8,7 +8,8 @@ from ParameterProperty import ParameterProperty # type: ignore
 
 from ..geometry.coords import Coords
 from ..geometry.concrete_cover import ConcreteCover
-from ..utils import find_point_on_space
+from ..utils import (find_point_on_space,
+                     equal_points,)
 
 
 
@@ -44,12 +45,12 @@ class Handle:
         return self
 
 
-    def create(self, build_ele):
-        param_property: ParameterProperty = getattr(build_ele, self.param_name)
+    def create(self, scene):
+        param_property: ParameterProperty = getattr(scene.build_ele, self.param_name)
         handle_param_property = param_property.deep_copy()
         handle_param_property.name = self.__handle_name
         handle_param_property.value = self.end_point.GetDistance(self.start_point)
-        setattr(build_ele, self.__handle_name, handle_param_property)
+        setattr(scene.build_ele, self.__handle_name, handle_param_property)
 
         handle_property = HandleProperties(
             self.__handle_name,
@@ -59,7 +60,14 @@ class Handle:
             HandleDirection.point_dir,
         )
         handle_property.change_param_name = self.param_name
-        handle_property.unchanged_constant = self.end_point.GetDistance(self.start_point) - getattr(build_ele, self.param_name).value
+        handle_property.unchanged_constant = self.end_point.GetDistance(self.start_point) - getattr(scene.build_ele, self.param_name).value
+        
+        if equal_points(scene.global_.start_point, handle_property.handle_point):
+            handle_property.move_scene = True
+        else:
+            handle_property.move_scene = False
+        handle_property.scene_start_point = scene.global_.start_point
+        
         return handle_property
 
 
