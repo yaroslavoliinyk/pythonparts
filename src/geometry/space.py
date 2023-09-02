@@ -174,7 +174,7 @@ class Space:
         return model_ele_list
 
     # @check_update_transformations
-    def get_handles(self, scene) -> List[HandleProperties]:
+    def build_handles(self, scene) -> List[HandleProperties]:
         handles_allplan: List[HandleProperties] = [handle.create(scene) for handle in self.handles]
         handles_transformed: List[HandleProperties] = []
         tfs_reversed = [] if not self.transformations else self.transformations[::-1]
@@ -185,7 +185,7 @@ class Space:
             handles_transformed.append(handle_prop)
         
         for model in self._children:
-            handles_transformed.extend(model.get_handles(scene))
+            handles_transformed.extend(model.build_handles(scene))
         return handles_transformed
 
     def place(self, child_space: "Space", center: bool=False, **concov_sides,):
@@ -272,9 +272,11 @@ class Space:
         polyhedrons = []
 
         if resulted_polyhedron is not None and self.state == State.UNION:
+            vertices_parent = resulted_polyhedron.GetVertices()
+            vertices_child  = self.polyhedron_transformed.GetVertices()
             err, resulted_polyhedron = AllplanGeo.MakeUnion(resulted_polyhedron, self.polyhedron_transformed)
             if err:
-                raise AllplanGeometryError(f"You cannot make union of {resulted_polyhedron} and {self.polyhedron_transformed}.\n{err}")
+                raise AllplanGeometryError(f"You cannot make union of {vertices_parent} and {vertices_child}.\n{err}")
         elif resulted_polyhedron is not None and self.state == State.SUBTRACT:
             err, resulted_polyhedron = AllplanGeo.MakeSubtraction(resulted_polyhedron, self.polyhedron_transformed)
             if err:
@@ -307,7 +309,6 @@ class Space:
             self.visible, self._state, *self._children
         ])
         return hash(hashable_attributes)
-
 
     def __eq__(self, other):
         return (self.local == other.local
@@ -357,6 +358,7 @@ class Rotation:
     def __get_axis_line(self, rotation_point: AllplanGeo.Point3D):
         return AllplanGeo.Line3D(rotation_point, rotation_point + unit_vector(along_axis=self.axis))
 
+
 class Reflection:
 
     def __init__(self, space_transformed: Space, along_axis1: str, along_axis2: str, center: bool, **point_props):
@@ -367,24 +369,30 @@ class Reflection:
         self.props = ConcreteCover(point_props)
 
     def transform(self, polyhedron):
-        return AllplanGeo.Transform(polyhedron, self.get_matrix())
-    
-    def get_matrix(self):
         if self.center:
             self.props.left, self.props.front, self.props.bottom = center_calc(self.props, self.space.global_, self.space)
         reflection_space = Space.from_space_no_children(self.space)
         reflection_space._concov.update(self.props.as_dict())
         reflection_space.update_child_global_coords(self.space.global_)
+
+        return AllplanGeo.Mirror(polyhedron, self.__get_reflection_plane(reflection_space.global_.start_point))
+    
+    # def get_matrix(self):
+    #     if self.center:
+    #         self.props.left, self.props.front, self.props.bottom = center_calc(self.props, self.space.global_, self.space)
+    #     reflection_space = Space.from_space_no_children(self.space)
+    #     reflection_space._concov.update(self.props.as_dict())
+    #     reflection_space.update_child_global_coords(self.space.global_)
         
-        matrix = self.__get_matrix_by_point(reflection_space.global_.start_point)
-        return matrix
+    #     matrix = self.__get_matrix_by_point(reflection_space.global_.start_point)
+    #     return matrix
 
-    def __get_matrix_by_point(self, reflection_point):
-        plane = self.__get_reflection_plane(reflection_point)
-        reflection_matrix = AllplanGeo.Matrix3D()
-        reflection_matrix.Reflection(plane)
+    # def __get_matrix_by_point(self, reflection_point):
+    #     plane = self.__get_reflection_plane(reflection_point)
+    #     reflection_matrix = AllplanGeo.Matrix3D()
+    #     reflection_matrix.Reflection(plane)
 
-        return reflection_matrix
+    #     return reflection_matrix
 
     def __get_reflection_plane(self, reflection_point):
         if self.axis1 == self.axis2:

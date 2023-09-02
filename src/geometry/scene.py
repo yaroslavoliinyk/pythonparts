@@ -63,7 +63,7 @@ class Scene:
     def handles(self):
         handles = []
         for model in self.scene_space._children:
-            handles.extend(model.get_handles(self))
+            handles.extend(model.build_handles(self))
         return handles
 
     @property

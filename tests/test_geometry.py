@@ -302,6 +302,27 @@ class TestScene:
         scene.place(box)
 
         assert len(scene.model_ele_list) == 1
+    
+    def test_reflect_spaces2(self):
+        """
+            Just checking for no errors execution.
+        """
+        scene = create_scene('build_ele')
 
-ts = TestScene()
-ts.test_rotate_spaces2()
+        column = create_cuboid(width=20, 
+                                length=200, 
+                                height=100,
+        )
+        slab = create_cuboid(width=250, 
+                                length=200, 
+                                height=25,
+        )
+        # column.rotate(45)
+        column.reflect()
+        column.union(slab, top=0)
+        scene.place(column)
+        assert len(scene.model_ele_list) == 1
+
+
+# ts = TestScene()
+# ts.test_reflect_spaces2()
