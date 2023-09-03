@@ -121,8 +121,11 @@ def move_handle(build_ele, handle_prop, input_pnt, doc, create):
     register.set_build_ele(build_ele)
     scene = register.get_scene()
 
-    delta = handle_prop.ref_point.GetDistance(input_pnt) - handle_prop.unchanged_constant
-    parameter_property = getattr(build_ele, handle_prop.change_param_name)
+    # data_param_property = getattr(build_ele, pp.src.handles.Handle.get_param_data_name(handle_prop.name, handle_prop.param_name))
+    handle_param_property = getattr(build_ele, handle_prop.parameter_data[0].param_prop_name)
+
+    delta = handle_prop.ref_point.GetDistance(input_pnt) - float(handle_param_property.constant)
+    parameter_property = getattr(build_ele, handle_param_property.param_name)
     parameter_property.value = delta
 
     if handle_prop.move_scene == True:
@@ -130,3 +133,11 @@ def move_handle(build_ele, handle_prop, input_pnt, doc, create):
         build_ele.scene_start_point = scene.global_.start_point
 
     return create(build_ele, doc)
+
+
+def modify_element_property(build_ele, name, value):
+    if name.startswith(pp.src.handles.Handle.name):
+        handle_param_property = getattr(build_ele, name)
+        param_prop  = getattr(build_ele, handle_param_property.param_name)
+        param_prop.value = value - float(handle_param_property.constant)
+        return True

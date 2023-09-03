@@ -15,7 +15,12 @@ from ..utils import (find_point_on_space,
 
 class Handle:
 
+    name = "PP_Handle"
     id = 0
+
+    @classmethod
+    def get_param_data_name(cls, handle_name, param_name):
+        return f"{handle_name}_{param_name}"
 
     def __init__(self, space, param_name: str):
         self.parent_space = space
@@ -23,8 +28,10 @@ class Handle:
         self.start_concov = ConcreteCover()
         self.end_concov = ConcreteCover()
         self.__id = self.__class__.id
-        self.__handle_name = f"PP_Handle{self.__id}"
+        self.__handle_name = f"{self.name}{self.__id}"
+        self.__param_data_name = self.get_param_data_name(self.__handle_name, self.param_name)
         self.__class__.id += 1
+
 
 
     @property
@@ -47,11 +54,21 @@ class Handle:
 
     def create(self, scene):
         param_property: ParameterProperty = getattr(scene.build_ele, self.param_name)
-        handle_param_property = param_property.deep_copy()
+        constant = self.end_point.GetDistance(self.start_point) - getattr(scene.build_ele, self.param_name).value
+        
+        handle_param_property = param_property.deep_copy()                      # Creation of special Paramater Property for handle values
         handle_param_property.name = self.__handle_name
         handle_param_property.value = self.end_point.GetDistance(self.start_point)
+        handle_param_property.param_name = self.param_name
+        handle_param_property.constant   = constant
         setattr(scene.build_ele, self.__handle_name, handle_param_property)
 
+
+        # data_param_property = param_property.deep_copy()                        # A Parameter that stores data 
+        # data_param_property.name = self.__param_data_name                       # information about constant difference between 
+        # data_param_property.value = constant                                    # handle length and paramater value
+        # setattr(scene.build_ele, self.__param_data_name, data_param_property)
+        
         handle_property = HandleProperties(
             self.__handle_name,
             self.end_point,
@@ -59,9 +76,8 @@ class Handle:
             [(self.__handle_name, HandleDirection.point_dir, True)],
             HandleDirection.point_dir,
         )
-        handle_property.change_param_name = self.param_name
-        handle_property.unchanged_constant = self.end_point.GetDistance(self.start_point) - getattr(scene.build_ele, self.param_name).value
         
+
         if equal_points(scene.global_.start_point, handle_property.handle_point):
             handle_property.move_scene = True
         else:
@@ -69,15 +85,3 @@ class Handle:
         handle_property.scene_start_point = scene.global_.start_point
         
         return handle_property
-
-
-    # def __call__(self):
-    #     return HandleProperties(
-    #             self.__class__.id,
-    #             self.handle_point,
-    #             self.ref_point,
-    #             [(self.param_name, HandleDirection.point_dir, True)],
-    #             HandleDirection.point_dir,
-    #             True,
-    #     )
-
