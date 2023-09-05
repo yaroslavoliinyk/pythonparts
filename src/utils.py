@@ -18,7 +18,17 @@ from .exceptions import IncorrectAxisValueError
 #             already_checked_transformations.add(main_space)
 #         return method(*args, **kwargs)
 #     return wrapper
-
+def move_scene_along_axis(start_point, end_point, scene_start_point):
+    vector_direction = AllplanGeo.Vector3D(start_point, end_point)
+    if vector_direction.X != 0 and math.isclose(end_point.X, scene_start_point.X, abs_tol=TOLERANCE, rel_tol=TOLERANCE):
+        return "x"
+    elif vector_direction.Y != 0 and math.isclose(end_point.Y, scene_start_point.Y, abs_tol=TOLERANCE, rel_tol=TOLERANCE):
+        return "y"
+    elif vector_direction.Z != 0 and math.isclose(end_point.Z, scene_start_point.Z, abs_tol=TOLERANCE, rel_tol=TOLERANCE):
+        return "z"
+    else:
+        return None
+    
 
 def unit_vector(*, along_axis):
     axis = check_correct_axis(along_axis)

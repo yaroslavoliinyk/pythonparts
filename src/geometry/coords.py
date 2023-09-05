@@ -2,7 +2,9 @@ from typing import Optional
 
 import NemAll_Python_Geometry as AllplanGeo    # type: ignore
 
-from ..utils import equal_points
+from ..utils import (equal_points,
+                     check_correct_axis,
+                     unit_vector,)
 
 
 class Coords:
@@ -39,6 +41,14 @@ class Coords:
         if not isinstance(vec, AllplanGeo.Vector3D):
             raise TypeError(f"Wrong type: {vec}.\n You can move point only with AllplanGeo.Vector3D")
         self.start_point = self.start_point + vec
+
+    def move_start_point_along_axis(self, move_vector: AllplanGeo.Vector3D, axis: str="x"):
+        axis = check_correct_axis(axis)
+        axis_vector = unit_vector(along_axis=axis)
+        move_vector.X *= axis_vector.X
+        move_vector.Y *= axis_vector.Y
+        move_vector.Z *= axis_vector.Z
+        self.move_start_point(move_vector)
 
     def move_end_point(self, vec: AllplanGeo.Vector3D):
         if not isinstance(vec, AllplanGeo.Vector3D):

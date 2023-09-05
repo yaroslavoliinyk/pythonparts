@@ -18,6 +18,7 @@ from .src import (create_scene,
                   geometry,
                   to_radians, 
                   equal_points,
-                  modify_element_property,)
+                  modify_element_property,
+                  initialize_control_properties,)
 
 

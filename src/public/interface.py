@@ -121,15 +121,15 @@ def move_handle(build_ele, handle_prop, input_pnt, doc, create):
     register.set_build_ele(build_ele)
     scene = register.get_scene()
 
-    # data_param_property = getattr(build_ele, pp.src.handles.Handle.get_param_data_name(handle_prop.name, handle_prop.param_name))
     handle_param_property = getattr(build_ele, handle_prop.parameter_data[0].param_prop_name)
 
     delta = handle_prop.ref_point.GetDistance(input_pnt) - float(handle_param_property.constant)
     parameter_property = getattr(build_ele, handle_param_property.param_name)
     parameter_property.value = delta
 
-    if handle_prop.move_scene == True:
-        scene.global_.move_start_point(AllplanGeo.Vector3D(scene.global_.start_point, input_pnt))
+    if handle_prop.move_scene is not None:
+        scene.global_.move_start_point_along_axis(AllplanGeo.Vector3D(scene.global_.start_point, input_pnt), 
+                                                  axis=handle_prop.move_scene)
         build_ele.scene_start_point = scene.global_.start_point
 
     return create(build_ele, doc)
@@ -141,3 +141,12 @@ def modify_element_property(build_ele, name, value):
         param_prop  = getattr(build_ele, handle_param_property.param_name)
         param_prop.value = value - float(handle_param_property.constant)
         return True
+
+
+def initialize_control_properties(build_ele, ctrl_prop_util, doc,) -> None:
+    for handle_param_name in filter(lambda prop_name: prop_name.startswith(pp.src.handles.Handle.name), dir(build_ele)):
+        handle_param_property = getattr(build_ele, handle_param_name)
+        if hasattr(handle_param_property, "min_value"):
+            ctrl_prop_util.set_min_value(handle_param_property.param_name, handle_param_property.min_value)
+        if hasattr(handle_param_property, "max_value"):
+            ctrl_prop_util.set_min_value(handle_param_property.param_name, handle_param_property.max_value)
