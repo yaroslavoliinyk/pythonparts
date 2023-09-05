@@ -9,15 +9,12 @@ from .config import TOLERANCE
 from .exceptions import IncorrectAxisValueError
 
 
-# def check_update_transformations(method):
-#     already_checked_transformations = set()
-#     def wrapper(*args, **kwargs):
-#         main_space = args[0]    # supposed self method
-#         if main_space not in already_checked_transformations:
-#             main_space._update_child_transformations(main_space.transformations)
-#             already_checked_transformations.add(main_space)
-#         return method(*args, **kwargs)
-#     return wrapper
+
+def same_direction(vector1: AllplanGeo.Vector3D, vector2: AllplanGeo.Vector3D):
+    dot_product = vector1.DotProduct(vector2)
+    return dot_product >= 0
+
+
 def move_scene_along_axis(start_point, end_point, scene_start_point):
     vector_direction = AllplanGeo.Vector3D(start_point, end_point)
     if vector_direction.X != 0 and math.isclose(end_point.X, scene_start_point.X, abs_tol=TOLERANCE, rel_tol=TOLERANCE):

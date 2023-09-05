@@ -5,7 +5,7 @@ from numbers import Real
 import NemAll_Python_Geometry as AllplanGeo     # type: ignore
 
 from .tools import Register
-from ..utils import equal_points
+from ..utils import same_direction
 
 
 def create_scene(build_ele):
@@ -117,12 +117,16 @@ def create_cuboid_from_pyp(pyp_name, visible=True):
 
 
 def move_handle(build_ele, handle_prop, input_pnt, doc, create):
+    if not same_direction(AllplanGeo.Vector3D(handle_prop.ref_point, handle_prop.handle_point),
+                          AllplanGeo.Vector3D(handle_prop.ref_point, input_pnt)):
+        return create(build_ele, doc)
+    
     register = Register()
     register.set_build_ele(build_ele)
     scene = register.get_scene()
 
     handle_param_property = getattr(build_ele, handle_prop.parameter_data[0].param_prop_name)
-
+    
     delta = handle_prop.ref_point.GetDistance(input_pnt) - float(handle_param_property.constant)
     parameter_property = getattr(build_ele, handle_param_property.param_name)
     parameter_property.value = delta
@@ -134,19 +138,3 @@ def move_handle(build_ele, handle_prop, input_pnt, doc, create):
 
     return create(build_ele, doc)
 
-
-def modify_element_property(build_ele, name, value):
-    if name.startswith(pp.src.handles.Handle.name):
-        handle_param_property = getattr(build_ele, name)
-        param_prop  = getattr(build_ele, handle_param_property.param_name)
-        param_prop.value = value - float(handle_param_property.constant)
-        return True
-
-
-def initialize_control_properties(build_ele, ctrl_prop_util, doc,) -> None:
-    for handle_param_name in filter(lambda prop_name: prop_name.startswith(pp.src.handles.Handle.name), dir(build_ele)):
-        handle_param_property = getattr(build_ele, handle_param_name)
-        if hasattr(handle_param_property, "min_value"):
-            ctrl_prop_util.set_min_value(handle_param_property.param_name, handle_param_property.min_value)
-        if hasattr(handle_param_property, "max_value"):
-            ctrl_prop_util.set_min_value(handle_param_property.param_name, handle_param_property.max_value)
