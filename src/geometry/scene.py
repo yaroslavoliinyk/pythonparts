@@ -43,9 +43,8 @@ class Scene:
         :return: a list of reinforcement elements.
         """
         reinf_ele_list = []
-        for reinf in self.scene_space._children:
-            if isinstance(reinf, Reinforcement):
-                reinf_ele_list.extend(reinf.build())
+        for model in self.scene_space._children:
+            reinf_ele_list.extend(model.build_reinforcement())
         return reinf_ele_list
 
     @property

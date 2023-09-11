@@ -1,3 +1,5 @@
+import math
+
 import NemAll_Python_Geometry as AllplanGeo
 import NemAll_Python_Reinforcement as AllplanReinf
 import StdReinfShapeBuilder.LinearBarPlacementBuilder as LinearBarBuilder
@@ -6,8 +8,10 @@ from StdReinfShapeBuilder.ReinforcementShapeProperties import (
     ReinforcementShapeProperties,
 )
 
-from ..exceptions import AllplanGeometryError
-from ..utils import find_point_on_space
+from ..geometry.concrete_cover import ConcreteCover
+from ..exceptions import AllplanGeometryError, AttributePermissionError
+from ..utils import (find_point_on_space,
+                     check_correct_axis,)
 
 
 
@@ -18,6 +22,10 @@ class Reinforcement:
 
 class Longbars(Reinforcement):
     
+    FRONT_HOOK_CONST = "add_front_hook"
+    BACK_HOOK_CONST  = "add_back_hook"
+    id = 0
+
     def __init__(self, 
                  space, 
                  along_axis, 
@@ -27,11 +35,13 @@ class Longbars(Reinforcement):
         self.parent_space = space
         if not split_by_count and not split_by_spacing:                                             # ! Error prone, because not sure that this'll work 
             raise AllplanGeometryError("Longbars should be split either by count or by spacing")    # ! in combination with space.add_reinforcement implementation
-        self.along_axis = along_axis
+        self.start_concov = ConcreteCover()
+        self.end_concov = ConcreteCover()
+        self.along_axis = check_correct_axis(along_axis)
         self.split_by_count = split_by_count
         self.split_by_spacing = split_by_spacing
         self.properties = properties
-
+        self.__class__.id += 1
 
     @property
     def start_point(self):
@@ -43,14 +53,21 @@ class Longbars(Reinforcement):
 
     @property
     def length(self):
-        raise NotImplementedError()
+        if self.along_axis == "x":
+            return math.fabs(self.end_point.X - self.start_point.X)
+        if self.along_axis == "y":
+            return math.fabs(self.end_point.Y - self.start_point.Y)
+        if self.along_axis == "z":
+            return math.fabs(self.end_point.Z - self.start_point.Z)
+        
 
     
-
     def start(self, **concov) -> "Longbars":
+        self.start_concov.update(concov)
         return self
     
     def end(self, **concov) -> "Longbars":
+        self.end_concov.update(concov)
         return self
 
     def fetch_shape(self, shape_properties):
@@ -79,7 +96,7 @@ class Longbars(Reinforcement):
         )
         longbar_shape = self.fetch_shape(shape_properties)
         return LinearBarBuilder.create_linear_bar_placement_from_by_dist_count(
-                1,
+                self.__class__.id,
                 longbar_shape,
                 self.start_point,
                 self.end_point,
@@ -88,12 +105,19 @@ class Longbars(Reinforcement):
                 count,
             )
 
-    
     def __add_front_hook(self):
-        pass
+        return self.FRONT_HOOK_CONST in self.properties.keys() and self.properties[self.FRONT_HOOK_CONST]
 
     def __add_back_hook(self):
-        pass
+        return self.BACK_HOOK_CONST in self.properties.keys() and self.properties(self.BACK_HOOK_CONST)
 
     def __assign_spacing_count(self):
-        raise NotImplementedError
+        if self.split_by_spacing and self.split_by_count:
+            return self.properties["spacing"], self.properties["count"]
+        if self.split_by_spacing:
+            count = int((self.length - self.properties["diameter"]) / self.properties["spacing"]) + 1
+            return self.properties["spacing"], count
+        if self.split_by_count:
+            spacing = (self.length - self.properties["diameter"]) / (self.properties["count"] - 1) if self.properties["count"] != 1 else self.length
+            return spacing, self.properties["count"]
+        raise AttributePermissionError("Unnown error. Contact Developer. Should not have reached this point.")
