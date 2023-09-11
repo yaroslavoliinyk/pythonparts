@@ -12,6 +12,7 @@ from .space_state import State
 from .coords import Coords, AllplanGeo
 from .concrete_cover import ConcreteCover
 from ..handles import Handle
+from ..reinforcement import Longbars
 from ..exceptions import (AttributePermissionError, 
                           AllplanGeometryError,
                           IncorrectAxisValueError,)
@@ -94,6 +95,8 @@ class Space:
         self.visible                                      = visible
         self.transformations: List[Union[Rotation, Reflection]] = []
         self.handles                                      = []
+        self.longbars                                     = []
+
 
     def polyhedron(self) -> AllplanGeo.Polyhedron3D: 
         raise NotImplementedError()
@@ -237,6 +240,11 @@ class Space:
     
     def reflect(self, along_axis1: str="x", along_axis2: str="y", center: bool=False, **point_props,):
         self.transformations.append(Reflection(self, along_axis1, along_axis2, center, **point_props))
+
+    def add_longbars(self, along_axis="x", **longbars_kwargs):
+        longbars = Longbars(self, along_axis, **longbars_kwargs)
+        self.longbars.append(longbars)
+        return longbars
 
     def add_handle(self, param_name) -> Handle:
         handle = Handle(self, param_name)
