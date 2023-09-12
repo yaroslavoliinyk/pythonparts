@@ -73,4 +73,4 @@ class Cuboid(Space):
         self.below_diagonal = below_diagonal
 
     def __str__(self):
-        return f"Cuboid(width={self.widht}, length={self.length}, height={self.height})"
+        return f"Cuboid(width={self.width}, length={self.length}, height={self.height})"

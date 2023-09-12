@@ -33,8 +33,8 @@ class Longbars(Reinforcement):
                  split_by_spacing=False,
                  **properties):
         self.parent_space = space
-        if not split_by_count and not split_by_spacing:                                             # ! Error prone, because not sure that this'll work 
-            raise AllplanGeometryError("Longbars should be split either by count or by spacing")    # ! in combination with space.add_reinforcement implementation
+        if not split_by_count and not split_by_spacing:                                             
+            raise AllplanGeometryError("Longbars should be split either by count or by spacing")
         self.start_concov = ConcreteCover()
         self.end_concov = ConcreteCover()
         self.along_axis = check_correct_axis(along_axis)
@@ -52,6 +52,21 @@ class Longbars(Reinforcement):
         return find_point_on_space(self.end_concov, self.parent_space)
 
     @property
+    def end_placement_point(self):
+        if self.along_axis == "x":
+            return AllplanGeo.Point3D(self.start_point.X, 
+                                      self.end_point.Y, 
+                                      self.end_point.Z)
+        if self.along_axis == "y":
+            return AllplanGeo.Point3D(self.end_point.X, 
+                                      self.start_point.Y, 
+                                      self.end_point.Z)
+        if self.along_axis == "z":
+            return AllplanGeo.Point3D(self.end_point.X, 
+                                    self.end_point.Y, 
+                                    self.start_point.Z)
+        
+    @property
     def length(self):
         if self.along_axis == "x":
             return math.fabs(self.end_point.X - self.start_point.X)
@@ -61,7 +76,11 @@ class Longbars(Reinforcement):
             return math.fabs(self.end_point.Z - self.start_point.Z)
         
 
+    @property
+    def width(self):
+        return self.start_point.GetDistance(self.end_placement_point)
     
+
     def start(self, **concov) -> "Longbars":
         self.start_concov.update(concov)
         return self
@@ -78,11 +97,11 @@ class Longbars(Reinforcement):
         if self.__add_front_hook():
             shape_builder.SetHookStart(self.properties["front_hook_length"],
                                        90.0,
-                                       AllplanReinf.HooType.eAngle)
+                                       AllplanReinf.HookType.eAngle)
         if self.__add_back_hook():
             shape_builder.SetHookEnd(self.properties["front_hook_length"],
                                        90.0,
-                                       AllplanReinf.HooType.eAngle)
+                                       AllplanReinf.HookType.eAngle)
         return shape_builder.CreateShape(shape_properties)
 
     def create(self):
@@ -99,7 +118,7 @@ class Longbars(Reinforcement):
                 self.__class__.id,
                 longbar_shape,
                 self.start_point,
-                self.end_point,
+                self.end_placement_point,
                 0,
                 spacing,
                 count,
@@ -109,15 +128,15 @@ class Longbars(Reinforcement):
         return self.FRONT_HOOK_CONST in self.properties.keys() and self.properties[self.FRONT_HOOK_CONST]
 
     def __add_back_hook(self):
-        return self.BACK_HOOK_CONST in self.properties.keys() and self.properties(self.BACK_HOOK_CONST)
+        return self.BACK_HOOK_CONST in self.properties.keys() and self.properties[self.BACK_HOOK_CONST]
 
     def __assign_spacing_count(self):
         if self.split_by_spacing and self.split_by_count:
             return self.properties["spacing"], self.properties["count"]
         if self.split_by_spacing:
-            count = int((self.length - self.properties["diameter"]) / self.properties["spacing"]) + 1
+            count = int((self.width - self.properties["diameter"]) / self.properties["spacing"]) + 1
             return self.properties["spacing"], count
         if self.split_by_count:
-            spacing = (self.length - self.properties["diameter"]) / (self.properties["count"] - 1) if self.properties["count"] != 1 else self.length
+            spacing = (self.width - self.properties["diameter"]) / (self.properties["count"] - 1) if self.properties["count"] != 1 else self.width
             return spacing, self.properties["count"]
         raise AttributePermissionError("Unnown error. Contact Developer. Should not have reached this point.")
