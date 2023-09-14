@@ -6,6 +6,7 @@ import NemAll_Python_Geometry as AllplanGeo     # type: ignore
 
 from .tools import Register
 from ..utils import same_direction
+from ..handles import Handle
 
 
 def create_scene(build_ele):
@@ -138,3 +139,19 @@ def move_handle(build_ele, handle_prop, input_pnt, doc, create):
 
     return create(build_ele, doc)
 
+
+def modify_element_property(build_ele, name, value):
+    if name.startswith(pp.src.handles.Handle.name):
+        handle_param_property = getattr(build_ele, name)
+        param_prop  = getattr(build_ele, handle_param_property.param_name)
+        param_prop.value = value - float(handle_param_property.constant)
+        return True
+
+
+def initialize_control_properties(build_ele, ctrl_prop_util, doc,) -> None:
+    for handle_param_name in filter(lambda prop_name: prop_name.startswith(pp.src.handles.Handle.name), dir(build_ele)):
+        handle_param_property = getattr(build_ele, handle_param_name)
+        if hasattr(handle_param_property, "min_value"):
+            ctrl_prop_util.set_min_value(handle_param_property.param_name, handle_param_property.min_value)
+        if hasattr(handle_param_property, "max_value"):
+            ctrl_prop_util.set_min_value(handle_param_property.param_name, handle_param_property.max_value)
