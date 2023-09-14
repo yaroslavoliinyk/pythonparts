@@ -348,7 +348,7 @@ class TestLongbars:
                             bending_roller=4.0,
                             diameter=8.0,
                             split_by_count=True,
-                            split_by_spacing=False,
+                            # split_by_spacing=False,
                             count=10,
                             add_back_hook=True,
                             back_hook_length=100,
@@ -360,8 +360,42 @@ class TestLongbars:
         scene.place(column)
         # pp, handles = scene.pythonpart, scene.handles
         assert True
-
-
-tl = TestLongbars()
-tl.test_add_longbars()
     
+    
+    def test_add_longbars2(self):
+        scene = create_scene(build_ele="build_ele")
+
+        column = create_cuboid(width=400, 
+                                length=2000, 
+                                height=800,
+        )
+        slab = create_cuboid(width=1000, 
+                                length=2000, 
+                                height=200,
+        )
+
+        column.union(slab, top=0)
+        # invoke identificator when min/max value is set
+     
+        column.add_longbars(along_axis="y",
+                            concrete_grade=4,
+                            steel_grade=4,
+                            bending_roller=4.0,
+                            diameter=8.0,
+                            split_by_count=True,
+                            # split_by_spacing=False,
+                            count=10,
+                            add_back_hook=True,
+                            back_hook_length=100,
+                            add_front_hook=True,
+                            front_hook_length=50).\
+        start(right=0, front=15.).\
+        end(top=0, right=0, back=10.)
+
+        scene.place(column)
+        # pp, handles = scene.pythonpart, scene.handles
+        assert True
+
+
+# ts = TestLongbars()
+# ts.test_add_longbars2()

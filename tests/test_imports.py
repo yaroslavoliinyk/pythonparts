@@ -61,15 +61,15 @@ def test_import_local_exception():
     assert True
 
 
-def test_import_utils_center_calc():
-    try:
-        import pythonparts as pp
-        print(pp.src.utils.center_calc)
-    except ModuleNotFoundError:
-        assert False, "No such method: utils.center_calc"
-    except ImportError:
-        assert False, "Failed to import utils.center_calc from pythonparts"
-    assert True
+# def test_import_utils_center_calc():
+#     try:
+#         import pythonparts as pp
+#         print(pp.src.utils.center_calc)
+#     except ModuleNotFoundError:
+#         assert False, "No such method: utils.center_calc"
+#     except ImportError:
+#         assert False, "Failed to import utils.center_calc from pythonparts"
+#     assert True
 
 
 def test_public_interface():
@@ -78,8 +78,8 @@ def test_public_interface():
         print(pp.create_cuboid)
         print(pp.create_scene)
     except ModuleNotFoundError:
-        assert False, "No such method: utils.center_calc"
+        assert False, "No such method: utils.create_cuboid"
     except ImportError:
-        assert False, "Failed to import utils.center_calc from pythonparts"
+        assert False, "Failed to import utils.create_scene from pythonparts"
     assert True
 

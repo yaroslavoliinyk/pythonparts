@@ -17,8 +17,7 @@ from ..exceptions import (AttributePermissionError,
                           AllplanGeometryError,
                           IncorrectAxisValueError,)
 from ..config import TOLERANCE
-from ..utils import (center_calc,
-                    child_global_coords_calc,
+from ..utils import (child_global_coords_calc,
                     equal_points, 
                     check_correct_axis,
                     to_radians,
@@ -233,7 +232,10 @@ class Space:
         """
         concov = ConcreteCover(concov_sides)
         if center:
-            concov.left, concov.front, concov.bottom = center_calc(concov, self.global_, child_space)
+            concov.x_sides.center(self.local, child_space.local)
+            concov.y_sides.center(self.local, child_space.local)
+            concov.z_sides.center(self.local, child_space.local)
+            # concov.left, concov.front, concov.bottom = center_calc(concov, self.global_, child_space)
         child_space._concov.update(concov.as_dict())
         child_space.update_child_global_coords(self.global_)
         self._children.append(child_space)
@@ -358,8 +360,8 @@ class Rotation:
         return AllplanGeo.Transform(polyhedron, self.get_matrix())
     
     def get_matrix(self):
-        if self.center:
-            self.props.left, self.props.front, self.props.bottom = center_calc(self.props, self.space.global_, self.space)
+        # if self.center:
+        #     self.props.left, self.props.front, self.props.bottom = center_calc(self.props, self.space.global_, self.space)
         rotation_space = Space.from_space_no_children(self.space)
         rotation_space._concov.update(self.props.as_dict())
         rotation_space.update_child_global_coords(self.space.global_)
@@ -389,8 +391,8 @@ class Reflection:
         self.props = ConcreteCover(point_props)
 
     def transform(self, polyhedron):
-        if self.center:
-            self.props.left, self.props.front, self.props.bottom = center_calc(self.props, self.space.global_, self.space)
+        # if self.center:
+        #     self.props.left, self.props.front, self.props.bottom = center_calc(self.props, self.space.global_, self.space)
         reflection_space = Space.from_space_no_children(self.space)
         reflection_space._concov.update(self.props.as_dict())
         reflection_space.update_child_global_coords(self.space.global_)
@@ -398,8 +400,8 @@ class Reflection:
         return AllplanGeo.Mirror(polyhedron, self.__get_reflection_plane(reflection_space.global_.start_point))
     
     def get_matrix(self):
-        if self.center:
-            self.props.left, self.props.front, self.props.bottom = center_calc(self.props, self.space.global_, self.space)
+        # if self.center:
+        #     self.props.left, self.props.front, self.props.bottom = center_calc(self.props, self.space.global_, self.space)
         reflection_space = Space.from_space_no_children(self.space)
         reflection_space._concov.update(self.props.as_dict())
         reflection_space.update_child_global_coords(self.space.global_)

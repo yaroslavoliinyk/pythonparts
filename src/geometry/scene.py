@@ -11,7 +11,7 @@ from .cuboid import Cuboid
 from .coords import Coords
 from .concrete_cover import ConcreteCover
 from ..reinforcement import Reinforcement
-from ..utils import center_scene_calc
+# from ..utils import center_scene_calc
 from ..properties import com_prop as cp
 
 
@@ -82,7 +82,10 @@ class Scene:
         concov.top   = None
         concov.back  = None
         if center:
-            concov.left, concov.front, concov.bottom = center_scene_calc(concov, child_space)
+            concov.x_sides.center(Coords(AllplanGeo.Point3D(), AllplanGeo.Point3D()), child_space.local)
+            concov.y_sides.center(Coords(AllplanGeo.Point3D(), AllplanGeo.Point3D()), child_space.local)
+            concov.z_sides.center(Coords(AllplanGeo.Point3D(), AllplanGeo.Point3D()), child_space.local)
+            # concov.left, concov.front, concov.bottom = center_scene_calc(concov, child_space)
         self.scene_space.place(child_space, visible=visible, left=concov.left, front=concov.front, bottom=concov.bottom)
         # self.update_child_global_coords(self.scene_space.global_)
 

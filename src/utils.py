@@ -98,54 +98,54 @@ def child_global_coords_calc(concov, global_, child_space):
     return child_global_start_pnt, child_global_end_pnt
 
 
-def center_calc(concov, global_, child_space):
-    """
-    The function calculates the center position of a child space within a given global space along the
-    X, Y, and Z axes.
+# def center_calc(concov, global_, child_space):
+#     """
+#     The function calculates the center position of a child space within a given global space along the
+#     X, Y, and Z axes.
     
-    :param concov: The parameter "concov" seems to represent a bounding box or a region of interest. It
-    has properties like "left", "right", "front", "back", "bottom", and "top" which define the
-    boundaries of the region in different dimensions
-    :param global_: The `global_` parameter represents the global coordinate system. It has a
-    `start_point` and an `end_point` which define the range of the coordinate system along each axis (X,
-    Y, and Z)
-    :param child_space: The `child_space` parameter represents the dimensions of a child space or
-    object. It has three properties: `width`, `length`, and `height`, which represent the width, length,
-    and height of the child space respectively
-    """
-    yield __center_calc_axis(concov.left, 
-                             concov.right, 
-                             global_.start_point.X, 
-                             global_.end_point.X,
-                             child_space.width)
+#     :param concov: The parameter "concov" seems to represent a bounding box or a region of interest. It
+#     has properties like "left", "right", "front", "back", "bottom", and "top" which define the
+#     boundaries of the region in different dimensions
+#     :param global_: The `global_` parameter represents the global coordinate system. It has a
+#     `start_point` and an `end_point` which define the range of the coordinate system along each axis (X,
+#     Y, and Z)
+#     :param child_space: The `child_space` parameter represents the dimensions of a child space or
+#     object. It has three properties: `width`, `length`, and `height`, which represent the width, length,
+#     and height of the child space respectively
+#     """
+#     yield __center_calc_axis(concov.left, 
+#                              concov.right, 
+#                              global_.start_point.X, 
+#                              global_.end_point.X,
+#                              child_space.width)
     
-    yield __center_calc_axis(concov.front, 
-                             concov.back, 
-                             global_.start_point.Y, 
-                             global_.end_point.Y,
-                             child_space.length)
+#     yield __center_calc_axis(concov.front, 
+#                              concov.back, 
+#                              global_.start_point.Y, 
+#                              global_.end_point.Y,
+#                              child_space.length)
 
-    yield __center_calc_axis(concov.bottom,
-                             concov.top, 
-                             global_.start_point.Z, 
-                             global_.end_point.Z,
-                             child_space.height)
+#     yield __center_calc_axis(concov.bottom,
+#                              concov.top, 
+#                              global_.start_point.Z, 
+#                              global_.end_point.Z,
+#                              child_space.height)
 
 
-def center_scene_calc(concov, child_space):
-    """
-    The function calculates the center position of a scene based on the dimensions of a child space.
+# def center_scene_calc(concov, child_space):
+#     """
+#     The function calculates the center position of a scene based on the dimensions of a child space.
     
-    :param concov: The parameter "concov" is likely an object that represents the coverage or extent of
-    a container or space. It may have properties such as "left", "front", and "bottom" that indicate the
-    boundaries of the container in different dimensions
-    :param child_space: The `child_space` parameter represents the dimensions of a child space or area.
-    It has three attributes: `width`, `length`, and `height`, which represent the width, length, and
-    height of the child space, respectively
-    """
-    yield -child_space.width/2. if concov.left is None else None
-    yield -child_space.length/2. if concov.front is None else None
-    yield -child_space.height/2. if concov.bottom is None else None
+#     :param concov: The parameter "concov" is likely an object that represents the coverage or extent of
+#     a container or space. It may have properties such as "left", "front", and "bottom" that indicate the
+#     boundaries of the container in different dimensions
+#     :param child_space: The `child_space` parameter represents the dimensions of a child space or area.
+#     It has three attributes: `width`, `length`, and `height`, which represent the width, length, and
+#     height of the child space, respectively
+#     """
+#     yield -child_space.width/2. if concov.left is None else None
+#     yield -child_space.length/2. if concov.front is None else None
+#     yield -child_space.height/2. if concov.bottom is None else None
 
 
 def equal_points(p1: Optional[AllplanGeo.Point3D], p2: Optional[AllplanGeo.Point3D]):
@@ -229,23 +229,23 @@ def __coords_calc_axis(cc_start, cc_end, parent_global_start_point, parent_globa
     return child_global_start_point, child_global_end_point
 
 
-def __center_calc_axis(cc_start, cc_end, parent_global_start_point, parent_global_end_point, child_len):
-    """
-    The function calculates the center position of a child object along a given axis within the parent
-    object.
+# def __center_calc_axis(cc_start, cc_end, parent_global_start_point, parent_global_end_point, child_len):
+#     """
+#     The function calculates the center position of a child object along a given axis within the parent
+#     object.
     
-    :param cc_start: The starting point of the child component on the current axis
-    :param cc_end: The cc_end parameter is the end point of the child component
-    :param parent_global_start_point: The starting point of the parent object in the global coordinate
-    system
-    :param parent_global_end_point: The end point of the parent object in the global coordinate system
-    :param child_len: The length of the child object
-    :return: the value of `cc_start` if it is not `None` or `cc_end` is not `None`. Otherwise, it is
-    calculating the shift needed to center the child object between the parent's global start and end
-    points and returning that value.
-    """
-    if not (cc_start is None and cc_end is None):
-        return cc_start
-    parent_len = abs(parent_global_end_point - parent_global_start_point)
-    shift = (parent_len - child_len) / 2.
-    return shift
+#     :param cc_start: The starting point of the child component on the current axis
+#     :param cc_end: The cc_end parameter is the end point of the child component
+#     :param parent_global_start_point: The starting point of the parent object in the global coordinate
+#     system
+#     :param parent_global_end_point: The end point of the parent object in the global coordinate system
+#     :param child_len: The length of the child object
+#     :return: the value of `cc_start` if it is not `None` or `cc_end` is not `None`. Otherwise, it is
+#     calculating the shift needed to center the child object between the parent's global start and end
+#     points and returning that value.
+#     """
+#     if not (cc_start is None and cc_end is None):
+#         return cc_start
+#     parent_len = abs(parent_global_end_point - parent_global_start_point)
+#     shift = (parent_len - child_len) / 2.
+#     return shift
