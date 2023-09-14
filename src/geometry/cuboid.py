@@ -72,5 +72,8 @@ class Cuboid(Space):
         self.cut_by_main_diagonal   = main_diagonal
         self.below_diagonal = below_diagonal
 
+    def get_face(self, side_name):
+        return self.polyhedron.GetFace(0)
+
     def __str__(self):
         return f"Cuboid(width={self.width}, length={self.length}, height={self.height})"
