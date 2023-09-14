@@ -7,5 +7,6 @@ from .public import (create_cuboid,
                      create_scene, 
                      move_handle,
                      modify_element_property,
-                     initialize_control_properties,)
+                     initialize_control_properties,
+                     create_stirrup_shape,)
 from .utils import to_radians, equal_points

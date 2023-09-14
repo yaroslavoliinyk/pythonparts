@@ -19,6 +19,7 @@ from .src import (create_scene,
                   to_radians, 
                   equal_points,
                   modify_element_property,
-                  initialize_control_properties,)
+                  initialize_control_properties,
+                  create_stirrup_shape,)
 
 

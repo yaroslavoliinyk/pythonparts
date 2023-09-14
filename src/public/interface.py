@@ -7,6 +7,7 @@ import NemAll_Python_Geometry as AllplanGeo     # type: ignore
 from .tools import Register
 from ..utils import same_direction
 from ..handles import Handle
+from ..reinforcement import Stirrups
 
 
 def create_scene(build_ele):
@@ -138,6 +139,10 @@ def move_handle(build_ele, handle_prop, input_pnt, doc, create):
         build_ele.scene_start_point = scene.global_.start_point
 
     return create(build_ele, doc)
+
+
+def create_stirrup_shape():
+    return Stirrups.Shape()
 
 
 def modify_element_property(build_ele, name, value):
