@@ -40,6 +40,8 @@ class Longbars(Reinforcement):
         self.start_concov = ConcreteCover()
         self.end_concov = ConcreteCover()
         self.along_axis = check_correct_axis(along_axis)
+        if self.along_axis == "z":
+            raise ValueError("Allplan does not allow creation of Longbars along axis Z!")
         self.split_by_count = split_by_count
         self.split_by_spacing = split_by_spacing
         self.properties = properties
@@ -90,8 +92,10 @@ class Longbars(Reinforcement):
 
     def fetch_shape(self, shape_properties):
         shape_builder = AllplanReinf.ReinforcementShapeBuilder()
+        # shape_builder.AddPoint(AllplanGeo.Point3D(), 0, self.properties["bending_roller"])
+        # shape_builder.AddPoint(self.end_point - self.end_placement_point, 0, self.properties["bending_roller"])
         shape_builder.AddPoints(
-            [(AllplanGeo.Point2D(), 0), (AllplanGeo.Point2D(0, self.length), 0), (0)]
+            [(AllplanGeo.Point3D(), 0), (self.end_point - self.end_placement_point, 0), (0)]
         )
         if self.__add_front_hook():
             shape_builder.SetHookStart(self.properties["front_hook_length"],
@@ -115,7 +119,7 @@ class Longbars(Reinforcement):
             AllplanReinf.BendingShapeType.LongitudinalBar,
         )
         longbar_shape = self.fetch_shape(shape_properties)
-        return LinearBarBuilder.create_linear_bar_placement_from_by_dist_count(
+        rebars = LinearBarBuilder.create_linear_bar_placement_from_by_dist_count(
                 self.__class__.id,
                 longbar_shape,
                 self.start_point,
@@ -124,6 +128,8 @@ class Longbars(Reinforcement):
                 spacing,
                 count,
             )
+        return rebars
+    
 
     def __getattr__(self, name):
         if name in self.properties.keys():
