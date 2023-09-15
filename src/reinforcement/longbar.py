@@ -37,6 +37,21 @@ class Longbars(Reinforcement):
         if self.along_axis == "z":
             raise ValueError("Allplan does not allow creation of Longbars along axis Z!")
         
+    @property
+    def end_placement_point(self):
+        if self.along_axis == "x":
+            return AllplanGeo.Point3D(self.start_point.X, 
+                                      self.end_point.Y, 
+                                      self.end_point.Z)
+        if self.along_axis == "y":
+            return AllplanGeo.Point3D(self.end_point.X, 
+                                      self.start_point.Y, 
+                                      self.end_point.Z)
+        if self.along_axis == "z":
+            return AllplanGeo.Point3D(self.end_point.X, 
+                                    self.end_point.Y, 
+                                    self.start_point.Z)
+
 
     def fetch_shape(self, shape_properties):
         shape_builder = AllplanReinf.ReinforcementShapeBuilder()

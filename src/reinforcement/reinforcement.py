@@ -52,19 +52,8 @@ class Reinforcement(ABC):
         return find_point_on_space(self.end_concov, self.parent_space)
 
     @property
-    def end_placement_point(self):
-        if self.along_axis == "x":
-            return AllplanGeo.Point3D(self.start_point.X, 
-                                      self.end_point.Y, 
-                                      self.end_point.Z)
-        if self.along_axis == "y":
-            return AllplanGeo.Point3D(self.end_point.X, 
-                                      self.start_point.Y, 
-                                      self.end_point.Z)
-        if self.along_axis == "z":
-            return AllplanGeo.Point3D(self.end_point.X, 
-                                    self.end_point.Y, 
-                                    self.start_point.Z)
+    @abstractmethod
+    def end_placement_point(self): ...
 
     @property
     def length(self):

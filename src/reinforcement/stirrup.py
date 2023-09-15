@@ -4,6 +4,7 @@ from typing import List
 import NemAll_Python_Geometry as AllplanGeo
 import NemAll_Python_Reinforcement as AllplanReinf
 
+from StdReinfShapeBuilder.RotationAngles import RotationAngles
 from StdReinfShapeBuilder.ReinforcementShapeProperties import (
     ReinforcementShapeProperties,
 )
@@ -38,12 +39,34 @@ class Stirrups(Reinforcement):
                          **properties)
         self.stirrup_shape = stirrup_shape
 
+    @property
+    def end_placement_point(self):
+        if self.along_axis == "x":
+            return AllplanGeo.Point3D(self.end_point.X, 
+                                      self.start_point.Y, 
+                                      self.start_point.Z)
+        if self.along_axis == "y":
+            return AllplanGeo.Point3D(self.start_point.X, 
+                                      self.end_point.Y, 
+                                      self.start_point.Z)
+        if self.along_axis == "z":
+            return AllplanGeo.Point3D(self.start_point.X, 
+                                    self.start_point.Y, 
+                                    self.end_point.Z)
+
+
     def fetch_shape(self, shape_properties):
         shape_builder = AllplanReinf.ReinforcementShapeBuilder()
+        # for point in self.stirrup_shape.points:
+        #     shape_builder.AddPoint(point, 0.0, shape_properties.bending_roller)
         shape_builder.AddPoints(
-            [(point, zero) for point, zero in zip(self.stirrup_shape, itertools.repeat(0, len(self.stirrup_shape)))]
+            [(point, zero) for point, zero in zip(self.stirrup_shape.points, itertools.repeat(0, len(self.stirrup_shape.points)))]
         )
-        return shape_builder.CreateShape(shape_properties)
+        shape = shape_builder.CreateShape(shape_properties)
+        if self.along_axis == "y":
+            shape.Rotate(RotationAngles(90, 0, 0))
+        # if self.along_axis == ""
+        return shape
 
     def create(self):
         spacing, count = self._assign_spacing_count()
