@@ -37,6 +37,11 @@ class Stirrups(Reinforcement):
                          split_by_spacing=split_by_spacing,
                          intersect_center=intersect_center,
                          **properties)
+        # stirrup_space = self.space.from_dimentions_global_point(self.space.width - self.properties["diameter"]/2., 
+        #                                                 self.space.length - self.properties["diameter"]/2., 
+        #                                                 self.space.height - self.properties["diameter"]/2., 
+        #                                                 self.space.global_start_point)
+        # self.space = stirrup_space
         self.stirrup_shape = stirrup_shape
 
     @property
@@ -57,15 +62,21 @@ class Stirrups(Reinforcement):
 
     def fetch_shape(self, shape_properties):
         shape_builder = AllplanReinf.ReinforcementShapeBuilder()
-        # for point in self.stirrup_shape.points:
-        #     shape_builder.AddPoint(point, 0.0, shape_properties.bending_roller)
+        if self.along_axis == "y":
+            for point in self.stirrup_shape.points:
+                if point.X > 0.:
+                    point.X -= self.properties["diameter"]/2.
+                if point.Y == 0.:
+                    point.Y += self.properties["diameter"]/2.
+                if point.X == 0.:
+                    point.X += self.properties["diameter"]/2.
         shape_builder.AddPoints(
-            [(point, zero) for point, zero in zip(self.stirrup_shape.points, itertools.repeat(0, len(self.stirrup_shape.points)))]
+            [(point, shift) for point, shift in zip(self.stirrup_shape.points, itertools.repeat(0., len(self.stirrup_shape.points)))]
         )
         shape = shape_builder.CreateShape(shape_properties)
         if self.along_axis == "y":
             shape.Rotate(RotationAngles(90, 0, 0))
-        # if self.along_axis == ""
+        # TODO: if self.along_axis == "x"
         return shape
 
     def create(self):

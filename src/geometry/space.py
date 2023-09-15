@@ -53,6 +53,9 @@ class Space:
         # ? space.com_prop = other_space.com_prop
         return space
 
+    @classmethod
+    def from_dimentions_global_point(cls, width, length, height, global_pnt):
+        return cls(width, length, height, global_pnt)
 
     def __init__( 
         self, width, length, height, global_start_pnt=None, visible=True,
