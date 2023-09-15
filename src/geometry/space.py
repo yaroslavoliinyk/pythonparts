@@ -12,7 +12,7 @@ from .space_state import State
 from .coords import Coords, AllplanGeo
 from .concrete_cover import ConcreteCover
 from ..handles import Handle
-from ..reinforcement import Longbars
+from ..reinforcement import Longbars, Stirrups
 from ..exceptions import (AttributePermissionError, 
                           AllplanGeometryError,
                           IncorrectAxisValueError,)
@@ -95,6 +95,7 @@ class Space:
         self.transformations: List[Union[Rotation, Reflection]] = []
         self.handles                                      = []
         self.longbars                                     = []
+        self.stirrups                                     = []
 
 
     def polyhedron(self) -> AllplanGeo.Polyhedron3D: 
@@ -192,6 +193,8 @@ class Space:
 
     def build_reinforcement(self):
         reinforcement_allplan = [longbar.create() for longbar in self.longbars]
+        reinforcement_allplan.extend([stirrup.create() for stirrup in self.stirrups])
+        
         reinforcement_transformed = []
         tfs_reversed = [] if not self.transformations else self.transformations[::-1]
 
@@ -262,6 +265,11 @@ class Space:
         self.longbars.append(longbars)
         return longbars
 
+    def add_stirrups(self, stirrup_shape: Stirrups.Shape, along_axis="x", **stirrups_kwargs) -> Stirrups:
+        stirrups = Stirrups(self, stirrup_shape, check_correct_axis(along_axis), **stirrups_kwargs)
+        self.stirrups.append(stirrups)
+        return stirrups
+    
     def add_handle(self, param_name) -> Handle:
         handle = Handle(self, param_name)
         self.handles.append(handle)

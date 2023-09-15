@@ -26,12 +26,18 @@ class Reinforcement(ABC):
     def __init__(self, 
                  space,
                  along_axis,
+                 split_by_count,
+                 split_by_spacing,
                  intersect_center=INTERSECT_CENTER,
                  **properties,):
+        if not split_by_count and not split_by_spacing:                                             
+            raise AllplanGeometryError("Reinforcement should be split either by count or by spacing")
         self.parent_space = space
         self.start_concov = ConcreteCover()
         self.end_concov = ConcreteCover()
         self.along_axis = check_correct_axis(along_axis)
+        self.split_by_count = split_by_count
+        self.split_by_spacing = split_by_spacing
         self.properties = properties
         self.__class__.id += 1
         self.intersect_center = intersect_center
@@ -44,6 +50,21 @@ class Reinforcement(ABC):
     @property
     def end_point(self):
         return find_point_on_space(self.end_concov, self.parent_space)
+
+    @property
+    def end_placement_point(self):
+        if self.along_axis == "x":
+            return AllplanGeo.Point3D(self.start_point.X, 
+                                      self.end_point.Y, 
+                                      self.end_point.Z)
+        if self.along_axis == "y":
+            return AllplanGeo.Point3D(self.end_point.X, 
+                                      self.start_point.Y, 
+                                      self.end_point.Z)
+        if self.along_axis == "z":
+            return AllplanGeo.Point3D(self.end_point.X, 
+                                    self.end_point.Y, 
+                                    self.start_point.Z)
 
     @property
     def length(self):
@@ -68,6 +89,16 @@ class Reinforcement(ABC):
         self.end_concov.update(concov)
         return self
 
+    
+    def get_shape_properties(self, shape_type: AllplanReinf.BendingShapeType):
+        return ReinforcementShapeProperties.rebar(
+            self.properties["diameter"],
+            self.properties["bending_roller"],
+            self.properties["steel_grade"],
+            self.properties["concrete_grade"],
+            shape_type,
+        )
+
     def _add_front_hook(self):
         return self.FRONT_HOOK_CONST in self.properties.keys() and self.properties[self.FRONT_HOOK_CONST]
 
@@ -91,105 +122,7 @@ class Reinforcement(ABC):
                 return side
         raise AllplanGeometryError("No aligned side in Longbars!")
 
-    def __getattr__(self, name):
-        if name in self.properties.keys():
-            return self.properties[name]
-        return self.name
-
-
-
-class Longbars(Reinforcement):
-    
-    def __init__(self, 
-                 space, 
-                 along_axis, 
-                 split_by_count=False,
-                 split_by_spacing=False,
-                 intersect_center=Reinforcement.INTERSECT_CENTER,
-                 **properties):
-        super().__init__(space, 
-                         along_axis, 
-                         intersect_center=intersect_center,
-                         **properties)
-        
-        if not split_by_count and not split_by_spacing:                                             
-            raise AllplanGeometryError("Longbars should be split either by count or by spacing")
-        if self.along_axis == "z":
-            raise ValueError("Allplan does not allow creation of Longbars along axis Z!")
-        self.split_by_count = split_by_count
-        self.split_by_spacing = split_by_spacing
-        
-        
-        # self.parent_space = space
-        
-        # self.start_concov = ConcreteCover()
-        # self.end_concov = ConcreteCover()
-        # self.along_axis = check_correct_axis(along_axis)
-        
-        # self.properties = properties
-        # self.__class__.id += 1
-        # self.intersect_center = intersect_center
-        
-
-    @property
-    def end_placement_point(self):
-        if self.along_axis == "x":
-            return AllplanGeo.Point3D(self.start_point.X, 
-                                      self.end_point.Y, 
-                                      self.end_point.Z)
-        if self.along_axis == "y":
-            return AllplanGeo.Point3D(self.end_point.X, 
-                                      self.start_point.Y, 
-                                      self.end_point.Z)
-        if self.along_axis == "z":
-            return AllplanGeo.Point3D(self.end_point.X, 
-                                    self.end_point.Y, 
-                                    self.start_point.Z)
-        
- 
-
-    def fetch_shape(self, shape_properties):
-        shape_builder = AllplanReinf.ReinforcementShapeBuilder()
-        # shape_builder.AddPoint(AllplanGeo.Point3D(), 0, self.properties["bending_roller"])
-        # shape_builder.AddPoint(self.end_point - self.end_placement_point, 0, self.properties["bending_roller"])
-        shape_builder.AddPoints(
-            [(AllplanGeo.Point3D(), 0), (self.end_point - self.end_placement_point, 0), (0)]
-        )
-        if self._add_front_hook():
-            shape_builder.SetHookStart(self.properties["front_hook_length"],
-                                       90.0,
-                                       AllplanReinf.HookType.eAngle)
-        if self._add_back_hook():
-            shape_builder.SetHookEnd(self.properties["front_hook_length"],
-                                       90.0,
-                                       AllplanReinf.HookType.eAngle)
-        return shape_builder.CreateShape(shape_properties)
-
-    def create(self):
-        if not self.intersect_center:
-            self._shift_concrete_covers_to_edge()
-        spacing, count = self.__assign_spacing_count()
-        shape_properties = ReinforcementShapeProperties.rebar(
-            self.properties["diameter"],
-            self.properties["bending_roller"],
-            self.properties["steel_grade"],
-            self.properties["concrete_grade"],
-            AllplanReinf.BendingShapeType.LongitudinalBar,
-        )
-        longbar_shape = self.fetch_shape(shape_properties)
-        rebars = LinearBarBuilder.create_linear_bar_placement_from_by_dist_count(
-                self.__class__.id,
-                longbar_shape,
-                self.start_point,
-                self.end_placement_point,
-                0,
-                spacing,
-                count,
-            )
-        return rebars
-    
-
-    def __assign_spacing_count(self):
+    def _assign_spacing_count(self):
         if self.split_by_spacing and self.split_by_count:
             return self.properties["spacing"], self.properties["count"]
         if self.split_by_spacing:
@@ -200,3 +133,11 @@ class Longbars(Reinforcement):
             return spacing, self.properties["count"]
         raise AttributePermissionError("Unnown error. Contact Developer. Should not have reached this point.")
     
+
+    def __getattr__(self, name):
+        if name in self.properties.keys():
+            return self.properties[name]
+        return self.name
+
+
+
