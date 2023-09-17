@@ -262,7 +262,7 @@ class Space:
     
     def reflect(self, along_axis1: str="x", along_axis2: str="y", center: bool=False, **point_props,):
         self.transformations.append(Reflection(self, along_axis1, along_axis2, center, **point_props))
-
+   
     def add_longbars(self, along_axis="x", **longbars_kwargs) -> Longbars:
         longbars = Longbars(self, check_correct_axis(along_axis), **longbars_kwargs)
         self.longbars.append(longbars)
