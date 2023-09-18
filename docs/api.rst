@@ -90,21 +90,18 @@ Public Interface
 .. function:: move_handle(build_ele, handle_prop, input_pnt, doc, create)
 
    Automatically enables logics for all you Handles
+   Refer to :func:`add_handle <Cuboid.add_handle>` method.
 
-   :param width: Width of Cuboid. Goes along X axis in Allplan.
-   :param length: Length of Cuboid. Goes along Y axis in Allplan.
-   :param height: Height of Cuboid. Goes along Z axis in Allplan.
+.. function:: modify_element_property(build_ele, name, value)
 
-   :return: :py:class:`~pythonparts.geometry.Cuboid` object
-   :rtype: pythonparts.Cuboid
+   Enables to change parameter property lengths for handles
+   Refer to :func:`add_handle <Cuboid.add_handle>` method.
 
-   Usage:
 
-      >>> import pythonparts as pp
-      >>> c = pp.create_cuboid(200, 1000, 100)
-      >>> c
-      Cuboid(width=200, length=1000, height=100) 
+.. function:: create_stirrup_shape()
 
+   Creates shape for a Stirrup
+   Refer to :func:`add_stirrups <Cuboid.add_stirrups>` method.
 
 
 Classes
@@ -290,13 +287,14 @@ Classes
    
    .. function:: union(self, child_space: "Space", center: bool=False, **concov_sides,)
 
-      Works same as :func:`place <pythonparts.geometry.Cuboid.place>` method.
+      Works same as :func:`place <Cuboid.place>` method.
       But instead of just placing an object, it ``Makes union`` with the given object.
 
       :Example:
          >>> import pythonparts as pp
          >>>
          >>> def create_element(build_ele, doc):
+         >>>   scene = pp.create_scene(build_ele=build_ele)
          >>>   column = pp.create_cuboid(width=140, 
          >>>                           length=3000, 
          >>>                           height=2300,)
@@ -318,6 +316,7 @@ Classes
          >>> import pythonparts as pp
          >>>
          >>> def create_element(build_ele, doc):
+         >>>   scene = pp.create_scene(build_ele=build_ele)
          >>>   column = pp.create_cuboid(width=200, 
          >>>                           length=300, 
          >>>                           height=420,)
@@ -349,6 +348,7 @@ Classes
          >>> import pythonparts as pp
          >>>
          >>> def create_element(build_ele, doc):
+         >>>   scene = pp.create_scene(build_ele=build_ele)
          >>>   column = pp.create_cuboid(width=140, 
          >>>                           length=3000, 
          >>>                           height=2300,)
@@ -376,3 +376,269 @@ Classes
    .. function:: reflect(self, along_axis1="x", along_axis2="y", center=False, **point_props,)
 
       Reflects the object and all child objects on some ``degree`` along plane, which defines by ``axis1`` and ``axis2``.
+      
+      :Example:
+         >>> import pythonparts as pp
+         >>>
+         >>> def create_element(build_ele, doc):
+         >>>   scene = pp.create_scene(build_ele=build_ele)
+         >>>   column = pp.create_cuboid(width=140, 
+         >>>                           length=3000, 
+         >>>                           height=2300,)
+         >>>   slab = pp.create_cuboid(width=1200, 
+         >>>                        length=3000, 
+         >>>                        height=300,)
+         >>>   column.union(slab, top=0)
+         >>>   column.reflect(along_axis1="y", along_axis2="z")
+         >>>   scene.place(column)
+         >>>   return scene.pythonpart, []
+
+      .. image:: images/reflect_001.png
+            :alt: Result of reflection
+
+      .. tip::
+
+         Pay attention on the difference when you reflect only ``child`` part
+
+      :Example:
+
+         ** Other code is the same **
+      
+         >>> slab.reflect(along_axis1="y", along_axis2="z")
+
+      .. image:: images/reflect_002.png
+            :alt: Result of rotation
+
+   .. function:: add_handle(self, param_name).start(**concov_sides).end(**concov_sides)
+
+      Allows you to put hadnle on your PythonPart
+
+      :param param_name: Changes defined parameter name in build_ele
+      :type param_name: str
+      
+      :return: `Handle` object
+      :rtype: pythonparts.geometry.Handle
+
+      
+      .. tip::
+
+         In the Example below we assign **start** with top=0 and **end** with nothing,
+         because we remember that if nothing assigned, the default is left=0; bottom=0; front=0.
+         In case of **start**: left=0; top=0; front=0.
+      
+      :Example:
+         >>> import pythonparts as pp
+         >>>
+         >>> def create_element(build_ele, doc):
+         >>>   scene = pp.create_scene(build_ele=build_ele)
+         >>>   column = pp.create_cuboid(width=build_ele.ColumnWidth.value, 
+         >>>                     length=build_ele.ColumnLength.value, 
+         >>>                     height=build_ele.SlabDist.value + build_ele.SlabHeight.value,)
+         >>>   slab = pp.create_cuboid(width=build_ele.SlabWidth.value, 
+         >>>                   length=build_ele.ColumnLength.value, 
+         >>>                   height=build_ele.SlabHeight.value,)
+         >>>   column.union(slab, top=0)
+         >>>   column.add_handle('SlabDist').start(top=0).end()
+         >>>   scene.place(column)
+         >>>   return scene.pythonpart, scene.handles
+
+         >>> def move_handle(build_ele, handle_prop, input_pnt, doc):
+         >>>   return pp.move_handle(build_ele, handle_prop, input_pnt, doc, create_element)
+
+         >>> def modify_element_property(build_ele, name, value):
+         >>>   pp.modify_element_property(build_ele, name, value)
+
+         .. note:: 
+
+               Adding ``pp.move_handle`` and ``pp.modify_element_property`` are obligatory in order for hadnles to work properly.
+
+         .. image:: images/handle_001.png
+            :alt: Add handle 1
+
+      :Example:
+
+         ** Other code is the same **
+      
+         >>> column.add_handle('SlabDist').start(right=0).end(right=0, top=slab.height)
+
+         .. image:: images/handle_002.png
+            :alt: Add handle 2
+      
+      :Example:
+
+         ** Other code is the same **
+      
+         >>> column.add_handle('ColumnLength').start(back=0, top=0).end(top=0)
+
+         .. image:: images/handle_003.png
+            :alt: Add handle 3
+      
+      :Example:
+
+         ** Other code is the same **
+      
+         >>> slab.add_handle('SlabWidth').start(left=column.width).end(right=0)
+
+         .. image:: images/handle_004.png
+            :alt: Add handle 4
+
+   .. function:: add_longbars(self, along_axis="x", **longbars_arguments).start(**concov_sides).end(**concov_sides)
+
+      Adds longbars along specified ``axis``. You should obligatory assign the following arguments to create longbars:
+         - **concrete_grade**
+         - **steel_grade**
+         - **bending_roller**
+         - **diameter**
+         - Either **split_by_count** and **count**
+         - Or **split_by_spacing** and **spacing**
+
+      .. warning::
+
+         You cannot add longbars along Z-axis for now. Allplan prohibits doing so.
+         The solution to the issue will be solved in the following versions.
+      
+      :Example:
+         >>> import pythonparts as pp
+         >>>
+         >>> def create_element(build_ele, doc):
+         >>>   scene = pp.create_scene(build_ele=build_ele)
+         >>>   column = pp.create_cuboid(width=build_ele.ColumnWidth.value, 
+         >>>                     length=build_ele.ColumnLength.value, 
+         >>>                     height=build_ele.SlabDist.value + build_ele.SlabHeight.value,)
+         >>>   slab = pp.create_cuboid(width=build_ele.SlabWidth.value, 
+         >>>                   length=build_ele.ColumnLength.value, 
+         >>>                   height=build_ele.SlabHeight.value,)
+         >>>   column.union(slab, top=0)
+
+         >>> slab.add_longbars(along_axis="y",
+         >>>              concrete_grade=build_ele.ColumnReinfConcreteGrade.value,
+         >>>              steel_grade=build_ele.ColumnReinfSteelGrade.value,
+         >>>              bending_roller=build_ele.ColumnReinfBendingRoller.value,
+         >>>              diameter=build_ele.ColumnHorLongbarsBotDiameter.value,
+         >>>              split_by_count=True,
+         >>>              split_by_spacing=False,
+         >>>              count=build_ele.ColumnHorLongbarsBotCount.value,).\
+         >>>  start().end(bottom=0, right=0, back=0)
+         >>>  scene.place(column)
+         >>>  return scene.pythonpart, scene.handles
+
+         .. image:: images/longbars_001.png
+            :alt: Longbars 1
+
+         .. image:: images/longbars_001_2.png
+            :alt: Longbars 2
+      
+      :Example:
+
+         ** Other code is the same **
+      
+         >>> column.add_longbars(along_axis="y",
+         >>>               concrete_grade=build_ele.ColumnReinfConcreteGrade.value,
+         >>>               steel_grade=build_ele.ColumnReinfSteelGrade.value,
+         >>>               bending_roller=build_ele.ColumnReinfBendingRoller.value,
+         >>>               diameter=build_ele.ColumnHorLongbarsBotDiameter.value,
+         >>>               split_by_count=True,
+         >>>               split_by_spacing=False,
+         >>>               count=build_ele.ColumnHorLongbarsBotCount.value + 5,).\
+         >>>      start(right=0, front=build_ele.ColumnHorLongbarsBotConcreteCoverFront.value).\
+         >>>      end(right=0, top=0, back=build_ele.ColumnHorLongbarsBotConcreteCoverBack.value)
+         
+         .. image:: images/longbars_002.png
+            :alt: Longbars 1
+
+         .. image:: images/longbars_002_2.png
+            :alt: Longbars 2
+      
+      :Example:
+
+         ** Other code is the same **
+      
+         >>> column.add_longbars(along_axis="x",
+         >>>               concrete_grade=build_ele.ColumnReinfConcreteGrade.value,
+         >>>               steel_grade=build_ele.ColumnReinfSteelGrade.value,
+         >>>               bending_roller=build_ele.ColumnReinfBendingRoller.value,
+         >>>               diameter=build_ele.ColumnHorLongbarsBotDiameter.value,
+         >>>               split_by_count=True,
+         >>>               split_by_spacing=False,
+         >>>               count=build_ele.ColumnHorLongbarsBotCount.value + 5,).\
+         >>>        start(bottom=0).\
+         >>>        end(top=0, right=0)
+         
+         .. image:: images/longbars_003.png
+            :alt: Longbars 1
+
+         .. image:: images/longbars_003_2.png
+            :alt: Longbars 2
+      
+
+      .. function:: add_stirrups(stirrup_shape: Stirrups.Shape, along_axis="x", **stirrups_arguments).start(**concov_sides).end(**concov_sides)
+
+         Adds stirrups with specific ``Stirrups.Shape`` along certain ``axis``. Other arguments you need to include
+         are same as in ``Cuboid.add_longbars``.
+
+         To create stirrups, we first need to generate a ``Shape`` for them:
+
+         :Example:
+
+            >>> stirrup_shape = pp.create_stirrup_shape()
+            >>> stirrup_shape.add_point(AllplanGeo.Point2D(0, column.height))
+            >>> stirrup_shape.add_point(AllplanGeo.Point2D(0, 0))
+            >>> stirrup_shape.add_point(AllplanGeo.Point2D(column.width, 0))
+            >>> stirrup_shape.add_point(AllplanGeo.Point2D(column.width, column.height))
+
+         After creating shape, everything is ready to add stirrups:
+
+         :Example:
+
+            >>> column.add_stirrups(stirrup_shape,
+            >>>               along_axis="y",
+            >>>               concrete_grade=4,
+            >>>               steel_grade=4,
+            >>>               bending_roller=4.0,
+            >>>               diameter=8.0,
+            >>>               split_by_count=True,
+            >>>               # split_by_spacing=False,
+            >>>               count=10,).\
+            >>>      start().\
+            >>>      end(back=10.)
+
+            .. image:: images/stirrups_001.png
+               :alt: Stirrups 1
+
+            .. image:: images/stirrups_001_2.png
+               :alt: Stirrups 2
+
+
+.. class:: Handle
+
+   Created after :func:`add_handle <Cuboid.add_handle>` method.
+
+   .. property:: start_point -> AllplanGeo.Point3D
+
+      :return: Start point of handle
+
+   .. property:: end_point -> AllplanGeo.Point3D
+
+      :return: End point of handle
+   
+   .. function:: create(scene: Scene)
+      
+      Creates Allplan compatible ``HandleProperties`` object
+      
+      :return: HandleProperties.HandleProperties
+
+
+.. class:: Stirrups.Shape
+   
+   A class for holding Stirrup's list of AllplanGeo.Point2D objects
+
+   .. property:: points -> List[AllplanGeo.Point2D]
+      
+      Returns all added points. Used in ``Stirrups`` class.
+
+      :return: List[AllplanGeo.Point2D]
+
+   .. function:: add_point(point: AllplanGeo.Point2D)
+      
+      Adds a point to list of points
+      

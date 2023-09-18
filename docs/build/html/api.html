@@ -307,29 +307,15 @@ width, length, and height from the according pyp file.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="move_handle">
 <span class="sig-name descname"><span class="pre">move_handle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">build_ele</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handle_prop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_pnt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#move_handle" title="Permalink to this definition">#</a></dt>
-<dd><p>Automatically enables logics for all you Handles</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>width</strong> – Width of Cuboid. Goes along X axis in Allplan.</p></li>
-<li><p><strong>length</strong> – Length of Cuboid. Goes along Y axis in Allplan.</p></li>
-<li><p><strong>height</strong> – Height of Cuboid. Goes along Z axis in Allplan.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Cuboid</span></code> object</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>pythonparts.Cuboid</p>
-</dd>
-</dl>
-<p>Usage:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pythonparts</span> <span class="k">as</span> <span class="nn">pp</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">create_cuboid</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span>
-<span class="go">Cuboid(width=200, length=1000, height=100)</span>
-</pre></div>
-</div>
+<dd><p>Automatically enables logics for all you Handles
+Refer to <a class="reference internal" href="#Cuboid.add_handle" title="Cuboid.add_handle"><code class="xref py py-func docutils literal notranslate"><span class="pre">add_handle</span></code></a> method.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="create_stirrup_shape">
+<span class="sig-name descname"><span class="pre">create_stirrup_shape</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#create_stirrup_shape" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates shape for a Stirrup
+Refer to <a class="reference internal" href="#Cuboid.add_stirrups" title="Cuboid.add_stirrups"><code class="xref py py-func docutils literal notranslate"><span class="pre">add_stirrups</span></code></a> method.</p>
 </dd></dl>
 
 </section>
@@ -595,13 +581,14 @@ will obtain the following result:</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="Cuboid.union">
 <span class="sig-name descname"><span class="pre">union</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">child_space</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'Space'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">center</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">concov_sides</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Cuboid.union" title="Permalink to this definition">#</a></dt>
-<dd><p>Works same as <code class="xref py py-func docutils literal notranslate"><span class="pre">place</span></code> method.
+<dd><p>Works same as <a class="reference internal" href="#Cuboid.place" title="Cuboid.place"><code class="xref py py-func docutils literal notranslate"><span class="pre">place</span></code></a> method.
 But instead of just placing an object, it <code class="docutils literal notranslate"><span class="pre">Makes</span> <span class="pre">union</span></code> with the given object.</p>
 <dl class="field-list">
 <dt class="field-odd">Example<span class="colon">:</span></dt>
 <dd class="field-odd"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pythonparts</span> <span class="k">as</span> <span class="nn">pp</span>
 <span class="gp">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">create_element</span><span class="p">(</span><span class="n">build_ele</span><span class="p">,</span> <span class="n">doc</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>  <span class="n">scene</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">create_scene</span><span class="p">(</span><span class="n">build_ele</span><span class="o">=</span><span class="n">build_ele</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span>  <span class="n">column</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">create_cuboid</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">140</span><span class="p">,</span>
 <span class="gp">&gt;&gt;&gt; </span>                          <span class="n">length</span><span class="o">=</span><span class="mi">3000</span><span class="p">,</span>
 <span class="gp">&gt;&gt;&gt; </span>                          <span class="n">height</span><span class="o">=</span><span class="mi">2300</span><span class="p">,)</span>
@@ -627,6 +614,7 @@ But instead of just placing an object, it <code class="docutils literal notransl
 <dd class="field-odd"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pythonparts</span> <span class="k">as</span> <span class="nn">pp</span>
 <span class="gp">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">create_element</span><span class="p">(</span><span class="n">build_ele</span><span class="p">,</span> <span class="n">doc</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>  <span class="n">scene</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">create_scene</span><span class="p">(</span><span class="n">build_ele</span><span class="o">=</span><span class="n">build_ele</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span>  <span class="n">column</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">create_cuboid</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
 <span class="gp">&gt;&gt;&gt; </span>                          <span class="n">length</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span>
 <span class="gp">&gt;&gt;&gt; </span>                          <span class="n">height</span><span class="o">=</span><span class="mi">420</span><span class="p">,)</span>
@@ -660,6 +648,7 @@ But instead of just placing an object, it <code class="docutils literal notransl
 <dd class="field-even"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pythonparts</span> <span class="k">as</span> <span class="nn">pp</span>
 <span class="gp">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">create_element</span><span class="p">(</span><span class="n">build_ele</span><span class="p">,</span> <span class="n">doc</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>  <span class="n">scene</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">create_scene</span><span class="p">(</span><span class="n">build_ele</span><span class="o">=</span><span class="n">build_ele</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span>  <span class="n">column</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">create_cuboid</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">140</span><span class="p">,</span>
 <span class="gp">&gt;&gt;&gt; </span>                          <span class="n">length</span><span class="o">=</span><span class="mi">3000</span><span class="p">,</span>
 <span class="gp">&gt;&gt;&gt; </span>                          <span class="n">height</span><span class="o">=</span><span class="mi">2300</span><span class="p">,)</span>
@@ -690,6 +679,299 @@ But instead of just placing an object, it <code class="docutils literal notransl
 <dt class="sig sig-object py" id="Cuboid.reflect">
 <span class="sig-name descname"><span class="pre">reflect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">along_axis1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'x'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">along_axis2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'y'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">center</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">point_props</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Cuboid.reflect" title="Permalink to this definition">#</a></dt>
 <dd><p>Reflects the object and all child objects on some <code class="docutils literal notranslate"><span class="pre">degree</span></code> along plane, which defines by <code class="docutils literal notranslate"><span class="pre">axis1</span></code> and <code class="docutils literal notranslate"><span class="pre">axis2</span></code>.</p>
+<dl class="field-list">
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pythonparts</span> <span class="k">as</span> <span class="nn">pp</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">create_element</span><span class="p">(</span><span class="n">build_ele</span><span class="p">,</span> <span class="n">doc</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>  <span class="n">scene</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">create_scene</span><span class="p">(</span><span class="n">build_ele</span><span class="o">=</span><span class="n">build_ele</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>  <span class="n">column</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">create_cuboid</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">140</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>                          <span class="n">length</span><span class="o">=</span><span class="mi">3000</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>                          <span class="n">height</span><span class="o">=</span><span class="mi">2300</span><span class="p">,)</span>
+<span class="gp">&gt;&gt;&gt; </span>  <span class="n">slab</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">create_cuboid</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">1200</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>                       <span class="n">length</span><span class="o">=</span><span class="mi">3000</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>                       <span class="n">height</span><span class="o">=</span><span class="mi">300</span><span class="p">,)</span>
+<span class="gp">&gt;&gt;&gt; </span>  <span class="n">column</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">slab</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>  <span class="n">column</span><span class="o">.</span><span class="n">reflect</span><span class="p">(</span><span class="n">along_axis1</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">along_axis2</span><span class="o">=</span><span class="s2">&quot;z&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>  <span class="n">scene</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>  <span class="k">return</span> <span class="n">scene</span><span class="o">.</span><span class="n">pythonpart</span><span class="p">,</span> <span class="p">[]</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<img alt="Result of reflection" src="_images/reflect_001.png" />
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Pay attention on the difference when you reflect only <code class="docutils literal notranslate"><span class="pre">child</span></code> part</p>
+</div>
+<dl class="field-list">
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p>** Other code is the same **</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">slab</span><span class="o">.</span><span class="n">reflect</span><span class="p">(</span><span class="n">along_axis1</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">along_axis2</span><span class="o">=</span><span class="s2">&quot;z&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<img alt="Result of rotation" src="_images/reflect_002.png" />
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Cuboid.add_handle">
+<span class="sig-name descname"><span class="pre">add_handle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param_name).start(**concov_sides).end(**concov_sides</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Cuboid.add_handle" title="Permalink to this definition">#</a></dt>
+<dd><p>Allows you to put hadnle on your PythonPart</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>param_name</strong> (<em>str</em>) – Changes defined parameter name in build_ele</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><cite>Handle</cite> object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pythonparts.geometry.Handle</p>
+</dd>
+</dl>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>In the Example below we assign <strong>start</strong> with top=0 and <strong>end</strong> with nothing,
+because we remember that if nothing assigned, the default is left=0; bottom=0; front=0.
+In case of <strong>start</strong>: left=0; top=0; front=0.</p>
+</div>
+<dl class="field-list">
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pythonparts</span> <span class="k">as</span> <span class="nn">pp</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">create_element</span><span class="p">(</span><span class="n">build_ele</span><span class="p">,</span> <span class="n">doc</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>  <span class="n">scene</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">create_scene</span><span class="p">(</span><span class="n">build_ele</span><span class="o">=</span><span class="n">build_ele</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>  <span class="n">column</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">create_cuboid</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="n">build_ele</span><span class="o">.</span><span class="n">ColumnWidth</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>                    <span class="n">length</span><span class="o">=</span><span class="n">build_ele</span><span class="o">.</span><span class="n">ColumnLength</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>                    <span class="n">height</span><span class="o">=</span><span class="n">build_ele</span><span class="o">.</span><span class="n">SlabDist</span><span class="o">.</span><span class="n">value</span> <span class="o">+</span> <span class="n">build_ele</span><span class="o">.</span><span class="n">SlabHeight</span><span class="o">.</span><span class="n">value</span><span class="p">,)</span>
+<span class="gp">&gt;&gt;&gt; </span>  <span class="n">slab</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">create_cuboid</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="n">build_ele</span><span class="o">.</span><span class="n">SlabWidth</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>                  <span class="n">length</span><span class="o">=</span><span class="n">build_ele</span><span class="o">.</span><span class="n">ColumnLength</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>                  <span class="n">height</span><span class="o">=</span><span class="n">build_ele</span><span class="o">.</span><span class="n">SlabHeight</span><span class="o">.</span><span class="n">value</span><span class="p">,)</span>
+<span class="gp">&gt;&gt;&gt; </span>  <span class="n">column</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">slab</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>  <span class="n">column</span><span class="o">.</span><span class="n">add_handle</span><span class="p">(</span><span class="s1">&#39;SlabDist&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">top</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span>  <span class="n">scene</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>  <span class="k">return</span> <span class="n">scene</span><span class="o">.</span><span class="n">pythonpart</span><span class="p">,</span> <span class="n">scene</span><span class="o">.</span><span class="n">handles</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">move_handle</span><span class="p">(</span><span class="n">build_ele</span><span class="p">,</span> <span class="n">handle_prop</span><span class="p">,</span> <span class="n">input_pnt</span><span class="p">,</span> <span class="n">doc</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>  <span class="k">return</span> <span class="n">pp</span><span class="o">.</span><span class="n">move_handle</span><span class="p">(</span><span class="n">build_ele</span><span class="p">,</span> <span class="n">handle_prop</span><span class="p">,</span> <span class="n">input_pnt</span><span class="p">,</span> <span class="n">doc</span><span class="p">,</span> <span class="n">create_element</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Adding <code class="docutils literal notranslate"><span class="pre">pp.move_handle</span></code> is obligatory in order for hadnles to work properly.</p>
+</div>
+<img alt="Add handle 1" src="_images/handle_001.png" />
+</dd>
+<dt class="field-even">Example<span class="colon">:</span></dt>
+<dd class="field-even"><p>** Other code is the same **</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">column</span><span class="o">.</span><span class="n">add_handle</span><span class="p">(</span><span class="s1">&#39;SlabDist&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">right</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">end</span><span class="p">(</span><span class="n">right</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="n">slab</span><span class="o">.</span><span class="n">height</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="Add handle 2" src="_images/handle_002.png" />
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p>** Other code is the same **</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">column</span><span class="o">.</span><span class="n">add_handle</span><span class="p">(</span><span class="s1">&#39;ColumnLength&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">back</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">end</span><span class="p">(</span><span class="n">top</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="Add handle 3" src="_images/handle_003.png" />
+</dd>
+<dt class="field-even">Example<span class="colon">:</span></dt>
+<dd class="field-even"><p>** Other code is the same **</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">slab</span><span class="o">.</span><span class="n">add_handle</span><span class="p">(</span><span class="s1">&#39;SlabWidth&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">left</span><span class="o">=</span><span class="n">column</span><span class="o">.</span><span class="n">width</span><span class="p">)</span><span class="o">.</span><span class="n">end</span><span class="p">(</span><span class="n">right</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="Add handle 4" src="_images/handle_004.png" />
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Cuboid.add_longbars">
+<span class="sig-name descname"><span class="pre">add_longbars</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">along_axis=&quot;x&quot;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**longbars_arguments).start(**concov_sides).end(**concov_sides</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Cuboid.add_longbars" title="Permalink to this definition">#</a></dt>
+<dd><dl class="simple">
+<dt>Adds longbars along specified <code class="docutils literal notranslate"><span class="pre">axis</span></code>. You should obligatory assign the following arguments to create longbars:</dt><dd><ul class="simple">
+<li><p><strong>concrete_grade</strong></p></li>
+<li><p><strong>steel_grade</strong></p></li>
+<li><p><strong>bending_roller</strong></p></li>
+<li><p><strong>diameter</strong></p></li>
+<li><p>Either <strong>split_by_count</strong> and <strong>count</strong></p></li>
+<li><p>Or <strong>split_by_spacing</strong> and <strong>spacing</strong></p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>You cannot add longbars along Z-axis for now. Allplan prohibits doing so.
+The solution to the issue will be solved in the following versions.</p>
+</div>
+<dl class="field-list">
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pythonparts</span> <span class="k">as</span> <span class="nn">pp</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">create_element</span><span class="p">(</span><span class="n">build_ele</span><span class="p">,</span> <span class="n">doc</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>  <span class="n">scene</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">create_scene</span><span class="p">(</span><span class="n">build_ele</span><span class="o">=</span><span class="n">build_ele</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>  <span class="n">column</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">create_cuboid</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="n">build_ele</span><span class="o">.</span><span class="n">ColumnWidth</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>                    <span class="n">length</span><span class="o">=</span><span class="n">build_ele</span><span class="o">.</span><span class="n">ColumnLength</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>                    <span class="n">height</span><span class="o">=</span><span class="n">build_ele</span><span class="o">.</span><span class="n">SlabDist</span><span class="o">.</span><span class="n">value</span> <span class="o">+</span> <span class="n">build_ele</span><span class="o">.</span><span class="n">SlabHeight</span><span class="o">.</span><span class="n">value</span><span class="p">,)</span>
+<span class="gp">&gt;&gt;&gt; </span>  <span class="n">slab</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">create_cuboid</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="n">build_ele</span><span class="o">.</span><span class="n">SlabWidth</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>                  <span class="n">length</span><span class="o">=</span><span class="n">build_ele</span><span class="o">.</span><span class="n">ColumnLength</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>                  <span class="n">height</span><span class="o">=</span><span class="n">build_ele</span><span class="o">.</span><span class="n">SlabHeight</span><span class="o">.</span><span class="n">value</span><span class="p">,)</span>
+<span class="gp">&gt;&gt;&gt; </span>  <span class="n">column</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">slab</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">slab</span><span class="o">.</span><span class="n">add_longbars</span><span class="p">(</span><span class="n">along_axis</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>             <span class="n">concrete_grade</span><span class="o">=</span><span class="n">build_ele</span><span class="o">.</span><span class="n">ColumnReinfConcreteGrade</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>             <span class="n">steel_grade</span><span class="o">=</span><span class="n">build_ele</span><span class="o">.</span><span class="n">ColumnReinfSteelGrade</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>             <span class="n">bending_roller</span><span class="o">=</span><span class="n">build_ele</span><span class="o">.</span><span class="n">ColumnReinfBendingRoller</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>             <span class="n">diameter</span><span class="o">=</span><span class="n">build_ele</span><span class="o">.</span><span class="n">ColumnHorLongbarsBotDiameter</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>             <span class="n">split_by_count</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>             <span class="n">split_by_spacing</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>             <span class="n">count</span><span class="o">=</span><span class="n">build_ele</span><span class="o">.</span><span class="n">ColumnHorLongbarsBotCount</span><span class="o">.</span><span class="n">value</span><span class="p">,)</span><span class="o">.</span>\
+<span class="gp">&gt;&gt;&gt; </span> <span class="n">start</span><span class="p">()</span><span class="o">.</span><span class="n">end</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">back</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span> <span class="n">scene</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span> <span class="k">return</span> <span class="n">scene</span><span class="o">.</span><span class="n">pythonpart</span><span class="p">,</span> <span class="n">scene</span><span class="o">.</span><span class="n">handles</span>
+</pre></div>
+</div>
+<img alt="Longbars 1" src="_images/longbars_001.png" />
+<img alt="Longbars 2" src="_images/longbars_001_2.png" />
+</dd>
+<dt class="field-even">Example<span class="colon">:</span></dt>
+<dd class="field-even"><p>** Other code is the same **</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">column</span><span class="o">.</span><span class="n">add_longbars</span><span class="p">(</span><span class="n">along_axis</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>              <span class="n">concrete_grade</span><span class="o">=</span><span class="n">build_ele</span><span class="o">.</span><span class="n">ColumnReinfConcreteGrade</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>              <span class="n">steel_grade</span><span class="o">=</span><span class="n">build_ele</span><span class="o">.</span><span class="n">ColumnReinfSteelGrade</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>              <span class="n">bending_roller</span><span class="o">=</span><span class="n">build_ele</span><span class="o">.</span><span class="n">ColumnReinfBendingRoller</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>              <span class="n">diameter</span><span class="o">=</span><span class="n">build_ele</span><span class="o">.</span><span class="n">ColumnHorLongbarsBotDiameter</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>              <span class="n">split_by_count</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>              <span class="n">split_by_spacing</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>              <span class="n">count</span><span class="o">=</span><span class="n">build_ele</span><span class="o">.</span><span class="n">ColumnHorLongbarsBotCount</span><span class="o">.</span><span class="n">value</span> <span class="o">+</span> <span class="mi">5</span><span class="p">,)</span><span class="o">.</span>\
+<span class="gp">&gt;&gt;&gt; </span>     <span class="n">start</span><span class="p">(</span><span class="n">right</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">front</span><span class="o">=</span><span class="n">build_ele</span><span class="o">.</span><span class="n">ColumnHorLongbarsBotConcreteCoverFront</span><span class="o">.</span><span class="n">value</span><span class="p">)</span><span class="o">.</span>\
+<span class="gp">&gt;&gt;&gt; </span>     <span class="n">end</span><span class="p">(</span><span class="n">right</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">back</span><span class="o">=</span><span class="n">build_ele</span><span class="o">.</span><span class="n">ColumnHorLongbarsBotConcreteCoverBack</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="Longbars 1" src="_images/longbars_002.png" />
+<img alt="Longbars 2" src="_images/longbars_002_2.png" />
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p>** Other code is the same **</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">column</span><span class="o">.</span><span class="n">add_longbars</span><span class="p">(</span><span class="n">along_axis</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>              <span class="n">concrete_grade</span><span class="o">=</span><span class="n">build_ele</span><span class="o">.</span><span class="n">ColumnReinfConcreteGrade</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>              <span class="n">steel_grade</span><span class="o">=</span><span class="n">build_ele</span><span class="o">.</span><span class="n">ColumnReinfSteelGrade</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>              <span class="n">bending_roller</span><span class="o">=</span><span class="n">build_ele</span><span class="o">.</span><span class="n">ColumnReinfBendingRoller</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>              <span class="n">diameter</span><span class="o">=</span><span class="n">build_ele</span><span class="o">.</span><span class="n">ColumnHorLongbarsBotDiameter</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>              <span class="n">split_by_count</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>              <span class="n">split_by_spacing</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>              <span class="n">count</span><span class="o">=</span><span class="n">build_ele</span><span class="o">.</span><span class="n">ColumnHorLongbarsBotCount</span><span class="o">.</span><span class="n">value</span> <span class="o">+</span> <span class="mi">5</span><span class="p">,)</span><span class="o">.</span>\
+<span class="gp">&gt;&gt;&gt; </span>       <span class="n">start</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span>\
+<span class="gp">&gt;&gt;&gt; </span>       <span class="n">end</span><span class="p">(</span><span class="n">top</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="Longbars 1" src="_images/longbars_003.png" />
+<img alt="Longbars 2" src="_images/longbars_003_2.png" />
+</dd>
+</dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="Cuboid.add_stirrups">
+<span class="sig-name descname"><span class="pre">add_stirrups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stirrup_shape:</span> <span class="pre">Stirrups.Shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">along_axis=&quot;x&quot;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**stirrups_arguments).start(**concov_sides).end(**concov_sides</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Cuboid.add_stirrups" title="Permalink to this definition">#</a></dt>
+<dd><p>Adds stirrups with specific <code class="docutils literal notranslate"><span class="pre">Stirrups.Shape</span></code> along certain <code class="docutils literal notranslate"><span class="pre">axis</span></code>. Other arguments you need to include
+are same as in <code class="docutils literal notranslate"><span class="pre">Cuboid.add_longbars</span></code>.</p>
+<p>To create stirrups, we first need to generate a <code class="docutils literal notranslate"><span class="pre">Shape</span></code> for them:</p>
+<dl class="field-list">
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">stirrup_shape</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">create_stirrup_shape</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stirrup_shape</span><span class="o">.</span><span class="n">add_point</span><span class="p">(</span><span class="n">AllplanGeo</span><span class="o">.</span><span class="n">Point2D</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">.</span><span class="n">height</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stirrup_shape</span><span class="o">.</span><span class="n">add_point</span><span class="p">(</span><span class="n">AllplanGeo</span><span class="o">.</span><span class="n">Point2D</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stirrup_shape</span><span class="o">.</span><span class="n">add_point</span><span class="p">(</span><span class="n">AllplanGeo</span><span class="o">.</span><span class="n">Point2D</span><span class="p">(</span><span class="n">column</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stirrup_shape</span><span class="o">.</span><span class="n">add_point</span><span class="p">(</span><span class="n">AllplanGeo</span><span class="o">.</span><span class="n">Point2D</span><span class="p">(</span><span class="n">column</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">column</span><span class="o">.</span><span class="n">height</span><span class="p">))</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>After creating shape, everything is ready to add stirrups:</p>
+<dl class="field-list">
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">column</span><span class="o">.</span><span class="n">add_stirrups</span><span class="p">(</span><span class="n">stirrup_shape</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>              <span class="n">along_axis</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>              <span class="n">concrete_grade</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>              <span class="n">steel_grade</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>              <span class="n">bending_roller</span><span class="o">=</span><span class="mf">4.0</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>              <span class="n">diameter</span><span class="o">=</span><span class="mf">8.0</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>              <span class="n">split_by_count</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>              <span class="c1"># split_by_spacing=False,</span>
+<span class="gp">&gt;&gt;&gt; </span>              <span class="n">count</span><span class="o">=</span><span class="mi">10</span><span class="p">,)</span><span class="o">.</span>\
+<span class="gp">&gt;&gt;&gt; </span>     <span class="n">start</span><span class="p">()</span><span class="o">.</span>\
+<span class="gp">&gt;&gt;&gt; </span>     <span class="n">end</span><span class="p">(</span><span class="n">back</span><span class="o">=</span><span class="mf">10.</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="Stirrups 1" src="_images/stirrups_001.png" />
+<img alt="Stirrups 2" src="_images/stirrups_001_2.png" />
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Handle">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Handle</span></span><a class="headerlink" href="#Handle" title="Permalink to this definition">#</a></dt>
+<dd><p>Created after <a class="reference internal" href="#Cuboid.add_handle" title="Cuboid.add_handle"><code class="xref py py-func docutils literal notranslate"><span class="pre">add_handle</span></code></a> method.</p>
+<dl class="py property">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">start_point</span> <span class="pre">-&gt;</span> <span class="pre">AllplanGeo.Point3D</span></span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Start point of handle</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">end_point</span> <span class="pre">-&gt;</span> <span class="pre">AllplanGeo.Point3D</span></span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>End point of handle</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Handle.create">
+<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scene</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#Scene" title="Scene"><span class="pre">Scene</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Handle.create" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates Allplan compatible <code class="docutils literal notranslate"><span class="pre">HandleProperties</span></code> object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HandleProperties.HandleProperties</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Stirrups.Shape">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Stirrups.</span></span><span class="sig-name descname"><span class="pre">Shape</span></span><a class="headerlink" href="#Stirrups.Shape" title="Permalink to this definition">#</a></dt>
+<dd><p>A class for holding Stirrup’s list of AllplanGeo.Point2D objects</p>
+<dl class="py property">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">points</span> <span class="pre">-&gt;</span> <span class="pre">List[AllplanGeo.Point2D]</span></span></dt>
+<dd><p>Returns all added points. Used in <code class="docutils literal notranslate"><span class="pre">Stirrups</span></code> class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[AllplanGeo.Point2D]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Stirrups.Shape.add_point">
+<span class="sig-name descname"><span class="pre">add_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AllplanGeo.Point2D</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Stirrups.Shape.add_point" title="Permalink to this definition">#</a></dt>
+<dd><p>Adds a point to list of points</p>
 </dd></dl>
 
 </dd></dl>
@@ -750,6 +1032,7 @@ But instead of just placing an object, it <code class="docutils literal notransl
 <li><a class="reference internal" href="#create_cuboid"><code class="docutils literal notranslate"><span class="pre">create_cuboid()</span></code></a></li>
 <li><a class="reference internal" href="#create_cuboid_from_pyp"><code class="docutils literal notranslate"><span class="pre">create_cuboid_from_pyp()</span></code></a></li>
 <li><a class="reference internal" href="#move_handle"><code class="docutils literal notranslate"><span class="pre">move_handle()</span></code></a></li>
+<li><a class="reference internal" href="#create_stirrup_shape"><code class="docutils literal notranslate"><span class="pre">create_stirrup_shape()</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#classes">Classes</a><ul>
@@ -776,6 +1059,17 @@ But instead of just placing an object, it <code class="docutils literal notransl
 <li><a class="reference internal" href="#Cuboid.subtract"><code class="docutils literal notranslate"><span class="pre">Cuboid.subtract()</span></code></a></li>
 <li><a class="reference internal" href="#Cuboid.rotate"><code class="docutils literal notranslate"><span class="pre">Cuboid.rotate()</span></code></a></li>
 <li><a class="reference internal" href="#Cuboid.reflect"><code class="docutils literal notranslate"><span class="pre">Cuboid.reflect()</span></code></a></li>
+<li><a class="reference internal" href="#Cuboid.add_handle"><code class="docutils literal notranslate"><span class="pre">Cuboid.add_handle()</span></code></a></li>
+<li><a class="reference internal" href="#Cuboid.add_longbars"><code class="docutils literal notranslate"><span class="pre">Cuboid.add_longbars()</span></code></a></li>
+<li><a class="reference internal" href="#Cuboid.add_stirrups"><code class="docutils literal notranslate"><span class="pre">Cuboid.add_stirrups()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Handle"><code class="docutils literal notranslate"><span class="pre">Handle</span></code></a><ul>
+<li><a class="reference internal" href="#Handle.create"><code class="docutils literal notranslate"><span class="pre">Handle.create()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Stirrups.Shape"><code class="docutils literal notranslate"><span class="pre">Stirrups.Shape</span></code></a><ul>
+<li><a class="reference internal" href="#Stirrups.Shape.add_point"><code class="docutils literal notranslate"><span class="pre">Stirrups.Shape.add_point()</span></code></a></li>
 </ul>
 </li>
 </ul>

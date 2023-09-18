@@ -196,3 +196,8 @@ After placing ``column`` on left 150 and front 250 due to start
 of the Scene, we can see that ``slab``'s global coords changed
 once again. Because ``slab`` is anchored to ``column``, if we
 move ``column``, ``slab`` will move, too.
+
+
+Examples
+--------
+
