@@ -198,6 +198,17 @@ once again. Because ``slab`` is anchored to ``column``, if we
 move ``column``, ``slab`` will move, too.
 
 
+.. _examples:
+
 Examples
 --------
 
+Download the following files and set them as you would set your PythonPart.
+
+:download:`WSJ_PP.pyp <download/WSJ_PP.pyp>`
+:download:`wsj_pp.py <download/wsj_pp.py>`
+
+After setting the files, you should see the following PythonPart:
+
+.. image:: images/example_001.png
+    :alt: An example of implementation of PythonPart

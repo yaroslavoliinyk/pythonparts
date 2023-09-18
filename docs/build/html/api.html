@@ -312,6 +312,13 @@ Refer to <a class="reference internal" href="#Cuboid.add_handle" title="Cuboid.a
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="modify_element_property">
+<span class="sig-name descname"><span class="pre">modify_element_property</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">build_ele</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#modify_element_property" title="Permalink to this definition">#</a></dt>
+<dd><p>Enables to change parameter property lengths for handles
+Refer to <a class="reference internal" href="#Cuboid.add_handle" title="Cuboid.add_handle"><code class="xref py py-func docutils literal notranslate"><span class="pre">add_handle</span></code></a> method.</p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="create_stirrup_shape">
 <span class="sig-name descname"><span class="pre">create_stirrup_shape</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#create_stirrup_shape" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates shape for a Stirrup
@@ -758,9 +765,13 @@ In case of <strong>start</strong>: left=0; top=0; front=0.</p>
 <span class="gp">&gt;&gt;&gt; </span>  <span class="k">return</span> <span class="n">pp</span><span class="o">.</span><span class="n">move_handle</span><span class="p">(</span><span class="n">build_ele</span><span class="p">,</span> <span class="n">handle_prop</span><span class="p">,</span> <span class="n">input_pnt</span><span class="p">,</span> <span class="n">doc</span><span class="p">,</span> <span class="n">create_element</span><span class="p">)</span>
 </pre></div>
 </div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">modify_element_property</span><span class="p">(</span><span class="n">build_ele</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>  <span class="n">pp</span><span class="o">.</span><span class="n">modify_element_property</span><span class="p">(</span><span class="n">build_ele</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+</pre></div>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Adding <code class="docutils literal notranslate"><span class="pre">pp.move_handle</span></code> is obligatory in order for hadnles to work properly.</p>
+<p>Adding <code class="docutils literal notranslate"><span class="pre">pp.move_handle</span></code> and <code class="docutils literal notranslate"><span class="pre">pp.modify_element_property</span></code> are obligatory in order for hadnles to work properly.</p>
 </div>
 <img alt="Add handle 1" src="_images/handle_001.png" />
 </dd>
@@ -1032,6 +1043,7 @@ are same as in <code class="docutils literal notranslate"><span class="pre">Cubo
 <li><a class="reference internal" href="#create_cuboid"><code class="docutils literal notranslate"><span class="pre">create_cuboid()</span></code></a></li>
 <li><a class="reference internal" href="#create_cuboid_from_pyp"><code class="docutils literal notranslate"><span class="pre">create_cuboid_from_pyp()</span></code></a></li>
 <li><a class="reference internal" href="#move_handle"><code class="docutils literal notranslate"><span class="pre">move_handle()</span></code></a></li>
+<li><a class="reference internal" href="#modify_element_property"><code class="docutils literal notranslate"><span class="pre">modify_element_property()</span></code></a></li>
 <li><a class="reference internal" href="#create_stirrup_shape"><code class="docutils literal notranslate"><span class="pre">create_stirrup_shape()</span></code></a></li>
 </ul>
 </li>

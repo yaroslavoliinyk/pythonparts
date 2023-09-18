@@ -10,7 +10,9 @@ Welcome to Pythonparts' documentation!
 that offers a simple interface to build exciting PythonPart scripts for *Allplan*
 
 Check out the :doc:`usage` section for further information, including how to
-:ref:`install <installation>` the project.
+:ref:`install <installation>` the project. 
+
+See :ref:`Examples <examples>` to get into action right away.
 
 .. note::
 

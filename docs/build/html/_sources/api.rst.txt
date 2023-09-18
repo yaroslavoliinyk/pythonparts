@@ -92,6 +92,11 @@ Public Interface
    Automatically enables logics for all you Handles
    Refer to :func:`add_handle <Cuboid.add_handle>` method.
 
+.. function:: modify_element_property(build_ele, name, value)
+
+   Enables to change parameter property lengths for handles
+   Refer to :func:`add_handle <Cuboid.add_handle>` method.
+
 
 .. function:: create_stirrup_shape()
 
@@ -440,9 +445,12 @@ Classes
          >>> def move_handle(build_ele, handle_prop, input_pnt, doc):
          >>>   return pp.move_handle(build_ele, handle_prop, input_pnt, doc, create_element)
 
+         >>> def modify_element_property(build_ele, name, value):
+         >>>   pp.modify_element_property(build_ele, name, value)
+
          .. note:: 
 
-               Adding ``pp.move_handle`` is obligatory in order for hadnles to work properly.
+               Adding ``pp.move_handle`` and ``pp.modify_element_property`` are obligatory in order for hadnles to work properly.
 
          .. image:: images/handle_001.png
             :alt: Add handle 1
