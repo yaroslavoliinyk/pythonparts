@@ -34,10 +34,9 @@ class TestLongbars:
                             split_by_count=True,
                             # split_by_spacing=False,
                             count=10,
-                            add_back_hook=True,
-                            back_hook_length=100,
-                            add_front_hook=True,
-                            front_hook_length=50).\
+                            add_back_hook=(True, 100, "z"),
+                            add_front_hook=(True, 50, "z"),
+                            ).\
         start(top=0, left=0, front=15.).\
         end(bottom=0, left=0, back=10.)
 
@@ -69,10 +68,9 @@ class TestLongbars:
                             split_by_count=True,
                             # split_by_spacing=False,
                             count=10,
-                            add_back_hook=True,
-                            back_hook_length=100,
-                            add_front_hook=True,
-                            front_hook_length=50).\
+                            add_back_hook=(True, 100, "z"),
+                            add_front_hook=(True, 50, "z"),
+                            ).\
         start(right=0, front=15.).\
         end(top=0, right=0, back=10.)
 
@@ -119,5 +117,7 @@ class TestStirrups:
         # pp, handles = scene.pythonpart, scene.handles
         assert True
 
-# ts = TestStirrups()
-# ts.test_add_stirrups()
+
+
+tl = TestLongbars()
+tl.test_add_longbars2()

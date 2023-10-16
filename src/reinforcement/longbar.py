@@ -58,12 +58,12 @@ class Longbars(Reinforcement):
         shape_builder.AddPoints(
             [(AllplanGeo.Point3D(), 0), (self.end_point - self.end_placement_point, 0), (0)]
         )
-        if self._add_front_hook():
-            shape_builder.SetHookStart(self.properties["front_hook_length"],
+        if self.front_hook.enabled:
+            shape_builder.SetHookStart(self.front_hook.length,
                                        90.0,
                                        AllplanReinf.HookType.eAngle)
-        if self._add_back_hook():
-            shape_builder.SetHookEnd(self.properties["front_hook_length"],
+        if self.back_hook.enabled:
+            shape_builder.SetHookEnd(self.back_hook.length,
                                        90.0,
                                        AllplanReinf.HookType.eAngle)
         return shape_builder.CreateShape(shape_properties)

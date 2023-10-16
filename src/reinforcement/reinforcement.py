@@ -1,6 +1,7 @@
 import math
 
 from abc import ABC, abstractmethod
+from typing import Dict
 
 import NemAll_Python_Geometry as AllplanGeo
 import NemAll_Python_Reinforcement as AllplanReinf
@@ -11,7 +12,7 @@ from StdReinfShapeBuilder.ReinforcementShapeProperties import (
 )
 
 from ..geometry.concrete_cover import ConcreteCover
-from ..exceptions import AllplanGeometryError, AttributePermissionError
+from ..exceptions import AllplanGeometryError, AttributePermissionError, WrongParametersError
 from ..utils import (find_point_on_space,
                      check_correct_axis,)
 
@@ -41,6 +42,8 @@ class Reinforcement(ABC):
         self.properties = properties
         self.__class__.id += 1
         self.intersect_center = intersect_center
+        self.front_hook = Hook(properties, self.FRONT_HOOK_CONST)
+        self.back_hook = Hook(properties, self.BACK_HOOK_CONST)
 
 
     @property
@@ -78,7 +81,6 @@ class Reinforcement(ABC):
         self.end_concov.update(concov)
         return self
 
-    
     def get_shape_properties(self, shape_type: AllplanReinf.BendingShapeType):
         return ReinforcementShapeProperties.rebar(
             self.properties["diameter"],
@@ -87,12 +89,6 @@ class Reinforcement(ABC):
             self.properties["concrete_grade"],
             shape_type,
         )
-
-    def _add_front_hook(self):
-        return self.FRONT_HOOK_CONST in self.properties.keys() and self.properties[self.FRONT_HOOK_CONST]
-
-    def _add_back_hook(self):
-        return self.BACK_HOOK_CONST in self.properties.keys() and self.properties[self.BACK_HOOK_CONST]
 
     def _shift_concrete_covers_to_edge(self):
         aligned_side = self._find_aligned_side()
@@ -129,4 +125,12 @@ class Reinforcement(ABC):
         return self.name
 
 
-
+class Hook():
+    
+    def __init__(self, properties: Dict, name,):
+        self.enabled = False
+        if name in properties.keys():
+            try:
+                self.enabled, self.length, self.along_axis = properties[name]
+            except TypeError:
+                raise WrongParametersError(f"For {name} you should enter tuple(is_enabled, length, along_axis).")
